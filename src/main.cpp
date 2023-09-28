@@ -1,6 +1,7 @@
+#include "pico/stdlib.h"
 #include "core/fsw.hpp"
 
 
-int main(int argc, char *argv[]) {
+int main() {
     return 0;
 }
