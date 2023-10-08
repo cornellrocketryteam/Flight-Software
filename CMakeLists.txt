@@ -3,27 +3,28 @@ cmake_minimum_required(VERSION 3.21)
 # Pull in SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(crt_fsw C CXX ASM)
-
+project(fsw C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
 # Initialize the SDK
 pico_sdk_init()
 
-
 add_compile_options(-Wall
-    -Wno-format          # int != int32_t as far as the compiler is concerned because gcc has int32_t as long int
-    -Wno-unused-function # we have some for the docs that aren't called
+    -Wno-format          
+    -Wno-unused-function
 )
 
 # TODO: Refactor
-add_executable(crt_fsw
+add_executable(fsw
     src/main.cpp
 )
 
-# pull in common dependencies
-target_link_libraries(crt_fsw pico_stdlib)
+# Pull in common dependencies
+target_link_libraries(fsw pico_stdlib hardware_i2c)
 
-# create map/bin/hex file etc.
-pico_add_extra_outputs(crt_fsw)
+pico_enable_stdio_usb(fsw 1)
+pico_enable_stdio_uart(fsw 0)
+
+# Create map/bin/hex file etc.
+pico_add_extra_outputs(fsw)
