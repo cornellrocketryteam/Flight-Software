@@ -18,4 +18,4 @@ to build the ```bus_scan``` target. To build every target in the ```test/``` dir
 
 ## Contributing
 
-When adding a new test, make sure to ```add_subdirectory``` in the CMakeList files!
+When adding a new test, make sure to ```add_subdirectory``` in the CMakeLists files!

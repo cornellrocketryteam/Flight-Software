@@ -18,7 +18,13 @@ add_compile_options(-Wall
 # TODO: Refactor
 add_executable(fsw
     src/main.cpp
+    src/core/fsw.cpp
+    src/core/flight_mode.cpp
+    src/core/state.cpp
 )
+
+# target_sources(fsw PUBLIC src/core/constants.hpp)
+# target_sources(fsw PUBLIC src/core/state.hpp)
 
 # Pull in common dependencies
 target_link_libraries(fsw pico_stdlib hardware_i2c)
