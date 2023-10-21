@@ -1,7 +1,8 @@
-#ifndef FLIGHT_MODE_ENUM_
-#define FLIGHT_MODE_ENUM_
+#ifndef FLIGHT_MODE_
+#define FLIGHT_MODE_
 
 #include <string>
+#include "../sensors/sensor_suite.hpp"
 
 class FlightMode {
 public:
@@ -24,7 +25,7 @@ class StandbyMode : public FlightMode {
 public:
     void transition();
 
-    int id() { return 0; }
+    int id() { return 1; }
     std::string name() { return "Standby"; };
 };
 
@@ -32,7 +33,7 @@ class PoweredAscentMode : public FlightMode {
 public:
     void transition();
 
-    int id() { return 0; }
+    int id() { return 2; }
     std::string name() { return "Powered Ascent"; };
 };
 
@@ -40,7 +41,7 @@ class CoastingMode : public FlightMode {
 public:
     void transition();
 
-    int id() { return 0; }
+    int id() { return 3; }
     std::string name() { return "Coasting"; };
 private:
     bool apogee_detected();
@@ -51,7 +52,7 @@ class DrogueDeployedMode : public FlightMode {
 public:
     void transition();
 
-    int id() { return 0; }
+    int id() { return 4; }
     std::string name() { return "Drogue Deployed"; };
 private:
     void deploy_main();
@@ -61,8 +62,8 @@ class MainDeployedMode : public FlightMode {
 public:
     void transition() {};
 
-    int id() { return 0; }
+    int id() { return 5; }
     std::string name() { return "Main Deployed"; };
 };
 
-#endif
+#endif // FLIGHT_MODE_

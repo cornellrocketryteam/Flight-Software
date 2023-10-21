@@ -22,6 +22,8 @@ namespace state {
         extern FlightMode *main_deployed;
 
         extern FlightMode *mode;
+
+        extern bool armed;
     }
     namespace altimeter {
         extern bool init;
@@ -63,4 +65,4 @@ namespace state {
     }
 };
 
-#endif
+#endif // STATE_HPP_

@@ -1,11 +1,3 @@
-/**
- * @file main.cpp
- * @author Cameron Goddard
- * 
- * @brief Entry point to FSW
- *
- */
-
 #include <cstdio>
 
 #include "pico/stdlib.h"

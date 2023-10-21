@@ -21,6 +21,8 @@ namespace state {
         FlightMode *main_deployed = &main_deployed_class;
 
         FlightMode *mode = startup;
+
+        bool armed = false;
     }
     namespace altimeter {
         bool init = false;

@@ -3,7 +3,7 @@
 
 
 void FlightMode::execute() {
-    // Poll sensors
+    // TODO: Poll sensors
 }
 
 // Startup Mode
@@ -40,14 +40,13 @@ void StartupMode::transition() {
     if (!state::rfm::init) {
         // Retry
     }
-
     state::flight::mode = state::flight::standby;
 }
 
 // Standby Mode
 
 void StandbyMode::transition() {
-    // Detect acceleration of liftoff
+    // TODO: Detect acceleration of liftoff
 
     state::flight::mode = state::flight::powered_ascent;
 }
@@ -56,7 +55,7 @@ void StandbyMode::transition() {
 // Powered Ascent Mode
 
 void PoweredAscentMode::transition() {
-    // Detect slowing of rocket
+    // TODO: Detect slowing of rocket
 
     state::flight::mode = state::flight::coasting;
 }
@@ -64,9 +63,21 @@ void PoweredAscentMode::transition() {
 // Coasting Mode
 
 void CoastingMode::transition() {
-    // Detect apogee
+    if (apogee_detected()) {
+        deploy_drogue();
+        state::flight::mode = state::flight::drogue_deployed;
+    }
+}
 
-    state::flight::mode = state::flight::drogue_deployed;
+bool CoastingMode::apogee_detected() {
+    if (!state::flight::armed) {
+        return false;
+    }
+    // TODO: Port apogee prediction from old FSW
+}
+
+void CoastingMode::deploy_drogue() {
+    // TODO: Send drogue deploy trigger. Maybe this doesn't need to be its own method?
 }
 
 // Drogue Deployed Mode
