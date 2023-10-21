@@ -23,9 +23,6 @@ add_executable(fsw
     src/core/state.cpp
 )
 
-# target_sources(fsw PUBLIC src/core/constants.hpp)
-# target_sources(fsw PUBLIC src/core/state.hpp)
-
 # Pull in common dependencies
 target_link_libraries(fsw pico_stdlib hardware_i2c)
 
