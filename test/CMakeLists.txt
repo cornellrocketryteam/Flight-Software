@@ -17,3 +17,4 @@ add_compile_options(-Wall
 
 # Add all subdirectories
 add_subdirectory(basic)
+add_subdirectory(sd)

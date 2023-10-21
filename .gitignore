@@ -4,6 +4,8 @@
 # Doxygen output directory
 docs/
 
+lib/no-OS-FatFS-SD-SPI-RPi-Pico
+
 # macOS
 **/.DS_Store
 

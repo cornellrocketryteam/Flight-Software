@@ -21,10 +21,14 @@ add_executable(fsw
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
+    hw_config.c
 )
 
+# Add SD card driver library
+add_subdirectory(lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)
+
 # Pull in common dependencies
-target_link_libraries(fsw pico_stdlib hardware_i2c)
+target_link_libraries(fsw pico_stdlib hardware_i2c FatFs_SPI)
 
 pico_enable_stdio_usb(fsw 1)
 pico_enable_stdio_uart(fsw 0)
