@@ -1,0 +1,3 @@
+[submodule "src/sensors/Si7021-Pico"]
+	path = src/sensors/Si7021-Pico
+	url = git@github.com:cornellrocketryteam/Si7021-Pico.git
