@@ -1,6 +1,6 @@
 [submodule "lib/Si7021-Pico"]
 	path = lib/Si7021-Pico
-	url = git@github.com:cornellrocketryteam/Si7021-Pico.git
+	url = https://github.com/cornellrocketryteam/Si7021-Pico
 [submodule "lib/LIS3DH-Pico"]
 	path = lib/LIS3DH-Pico
 	url = https://github.com/cornellrocketryteam/LIS3DH-Pico
