@@ -4,3 +4,6 @@
 [submodule "lib/Si7021-Pico"]
 	path = lib/Si7021-Pico
 	url = git@github.com:cornellrocketryteam/Si7021-Pico.git
+[submodule "lib/no-OS-FatFS-SD-SPI-RPi-Pico"]
+	path = lib/no-OS-FatFS-SD-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SPI-RPi-Pico.git
