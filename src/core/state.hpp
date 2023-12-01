@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "flight_mode.hpp"
 
+#include "bno055.hpp"
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
@@ -48,6 +49,8 @@ namespace state {
         extern float gyro_x;
         extern float gyro_y;
         extern float gyro_z;
+
+        extern BNO055 imu;
     }
     namespace accel {
         extern bool init;

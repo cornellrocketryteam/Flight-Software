@@ -7,8 +7,17 @@
 void FlightMode::execute() {
     float x, y, z;
 
-    state::accel::accel.read_accel(&x, &y, &z);
+    state::imu::imu.read_gyro(&x, &y, &z);
+    state::imu::gyro_x = x;
+    state::imu::gyro_y = y;
+    state::imu::gyro_z = z;
 
+    state::imu::imu.read_mag(&x, &y, &z);
+    state::imu::mag_x = x;
+    state::imu::mag_y = y;
+    state::imu::mag_z = z;
+
+    state::accel::accel.read_accel(&x, &y, &z);
     state::accel::accel_x = x;
     state::accel::accel_y = y;
     state::accel::accel_z = z;
@@ -23,6 +32,10 @@ void StartupMode::execute() {
 
     if (gpio_get(ARMED)) {
         state::flight::key_armed = true;
+    }
+
+    if (state::imu::imu.begin()) {
+        state::imu::init = true;
     }
 
     if (state::accel::accel.begin()) {

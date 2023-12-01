@@ -46,6 +46,8 @@ namespace state {
         float gyro_x = -1;
         float gyro_y = -1;
         float gyro_z = -1;
+
+        BNO055 imu(I2C_PORT);
     }
     namespace accel {
         bool init = false;

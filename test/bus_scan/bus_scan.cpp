@@ -26,8 +26,8 @@
 #include "tusb.h"
 
 #define I2C_PORT i2c0
-#define I2C_SDA 4
-#define I2C_SCL 5
+#define I2C_SDA 12
+#define I2C_SCL 13
 
 // I2C reserves some addresses for special purposes. We exclude these from the scan.
 // These are any addresses of the form 000 0xxx or 111 1xxx
