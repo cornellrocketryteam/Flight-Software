@@ -1,15 +1,37 @@
 #include "flight_mode.hpp"
 #include "state.hpp"
+#include "hardware/gpio.h"
 
 
 void FlightMode::execute() {
-    // TODO: Poll sensors
+    float x, y, z;
+
+    state::accel::accel.read_accel(&x, &y, &z);
+
+    state::accel::accel_x = x;
+    state::accel::accel_y = y;
+    state::accel::accel_z = z;
+
+    state::therm::temp = state::therm::therm.read_temperature();
+    state::therm::humidity = state::therm::therm.read_humidity();
 }
 
 // Startup Mode
 
 void StartupMode::execute() {
-    // Try to init all sensors
+
+    if (gpio_get(6)) {
+        state::flight::key_armed = true;
+    }
+
+    if (state::accel::accel.begin()) {
+        state::accel::init = true;
+    }
+
+    if (state::therm::therm.begin()) {
+        state::therm::init = true;
+    }
+
 }
 
 void StartupMode::transition() {
@@ -40,7 +62,10 @@ void StartupMode::transition() {
     if (!state::rfm::init) {
         // Retry
     }
-    state::flight::mode = state::flight::standby;
+
+    if (state::flight::key_armed) {
+        state::flight::mode = state::flight::standby;
+    }
 }
 
 // Standby Mode

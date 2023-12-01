@@ -6,7 +6,7 @@
 
 class FlightMode {
 public:
-    void execute();
+    virtual void execute();
     virtual void transition() = 0;
     virtual int id() = 0;
     virtual std::string name() = 0;

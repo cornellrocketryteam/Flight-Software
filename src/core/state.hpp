@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include "flight_mode.hpp"
 
+#include "lis3dh.hpp"
+#include "si7021.hpp"
 
 namespace state {
     namespace flight {
@@ -23,6 +25,7 @@ namespace state {
 
         extern FlightMode *mode;
 
+        extern bool key_armed;
         extern bool armed;
     }
     namespace altimeter {
@@ -51,11 +54,15 @@ namespace state {
         extern float accel_x;
         extern float accel_y;
         extern float accel_z;
+
+        extern LIS3DH accel;
     }
     namespace therm {
         extern bool init;
         extern float temp;
         extern float humidity;
+
+        extern Si7021 therm;
     }
     namespace sd {
         extern bool init;

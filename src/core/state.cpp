@@ -22,6 +22,7 @@ namespace state {
 
         FlightMode *mode = startup;
 
+        bool key_armed = false;
         bool armed = false;
     }
     namespace altimeter {
@@ -50,11 +51,15 @@ namespace state {
         float accel_x = -1;
         float accel_y = -1;
         float accel_z = -1;
+
+        LIS3DH accel(i2c0);
     }
     namespace therm {
         bool init = false;
         float temp = -1;
         float humidity = -1;
+
+        Si7021 therm(i2c0);
     }
     namespace sd {
         bool init = false;
