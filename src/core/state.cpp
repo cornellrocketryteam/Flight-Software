@@ -1,4 +1,5 @@
 #include "state.hpp"
+#include "../pins.hpp"
 
 #include <stdint.h>
 
@@ -52,14 +53,14 @@ namespace state {
         float accel_y = -1;
         float accel_z = -1;
 
-        LIS3DH accel(i2c0);
+        LIS3DH accel(I2C_PORT);
     }
     namespace therm {
         bool init = false;
         float temp = -1;
         float humidity = -1;
 
-        Si7021 therm(i2c0);
+        Si7021 therm(I2C_PORT);
     }
     namespace sd {
         bool init = false;

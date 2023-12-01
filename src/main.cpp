@@ -8,12 +8,7 @@
 #endif
 
 #include "core/fsw.hpp"
-
-#define I2C_PORT i2c0
-#define I2C_SDA 4
-#define I2C_SCL 5
-
-#define ARMED_PIN 6
+#include "pins.hpp"
 
 Flight flight;
 
@@ -28,8 +23,8 @@ int main() {
     gpio_pull_up(I2C_SDA);
     gpio_pull_up(I2C_SCL);
 
-    gpio_init(ARMED_PIN);
-    gpio_set_dir(ARMED_PIN, GPIO_IN);
+    gpio_init(ARMED);
+    gpio_set_dir(ARMED, GPIO_IN);
 
 #ifdef DEBUG
     while (!tud_cdc_connected()) {

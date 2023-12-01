@@ -1,6 +1,7 @@
 #include "flight_mode.hpp"
 #include "state.hpp"
 #include "hardware/gpio.h"
+#include "../pins.hpp"
 
 
 void FlightMode::execute() {
@@ -20,7 +21,7 @@ void FlightMode::execute() {
 
 void StartupMode::execute() {
 
-    if (gpio_get(6)) {
+    if (gpio_get(ARMED)) {
         state::flight::key_armed = true;
     }
 
