@@ -9,7 +9,7 @@ void Flight::execute() {
 #ifdef VERBOSE
     printf("------------BEGIN LOOP------------\n");
     printf("Mode: %s\n", state::flight::mode->name().c_str());
-    printf("Armed: %d\n\n", state::flight::armed);
+    printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
 
     printf("Gyro X: %.3f\n", state::imu::gyro_x);
     printf("Gyro Y: %.3f\n", state::imu::gyro_y);

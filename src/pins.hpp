@@ -9,10 +9,10 @@
 
 #define SD_CS    5
 
-#define RF_CS    1
-#define RF_RST   22
-#define RF_DIO0  14
-#define RF_DIO1  15
+#define RFM_CS    1
+#define RFM_RST   22
+#define RFM_DIO0  14
+#define RFM_DIO1  15
 
 #define GPS_RST  28
 

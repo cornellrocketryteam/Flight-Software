@@ -24,7 +24,7 @@ namespace state {
         FlightMode *mode = startup;
 
         bool key_armed = false;
-        bool armed = false;
+        bool altitude_armed = false;
     }
     namespace altimeter {
         bool init = false;

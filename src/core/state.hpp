@@ -27,7 +27,7 @@ namespace state {
         extern FlightMode *mode;
 
         extern bool key_armed;
-        extern bool armed;
+        extern bool altitude_armed;
     }
     namespace altimeter {
         extern bool init;

@@ -45,7 +45,6 @@ public:
     std::string name() { return "Coasting"; };
 private:
     bool apogee_detected();
-    void deploy_drogue();
 };
 
 class DrogueDeployedMode : public FlightMode {
@@ -54,8 +53,6 @@ public:
 
     int id() { return 4; }
     std::string name() { return "Drogue Deployed"; };
-private:
-    void deploy_main();
 };
 
 class MainDeployedMode : public FlightMode {

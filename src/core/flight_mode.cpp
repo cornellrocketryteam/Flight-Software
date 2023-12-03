@@ -1,6 +1,7 @@
 #include "flight_mode.hpp"
 #include "state.hpp"
 #include "hardware/gpio.h"
+#include "../constants.hpp"
 #include "../pins.hpp"
 
 
@@ -24,6 +25,11 @@ void FlightMode::execute() {
 
     state::therm::temp = state::therm::therm.read_temperature();
     state::therm::humidity = state::therm::therm.read_humidity();
+
+    if (!state::flight::altitude_armed && state::altimeter::altitude > constants::flight::arming_altitude) {
+        state::flight::altitude_armed = true;
+        // TODO: Log event
+    }
 }
 
 // Startup Mode
@@ -32,51 +38,32 @@ void StartupMode::execute() {
 
     if (gpio_get(ARMED)) {
         state::flight::key_armed = true;
+        // TODO: Log event
     }
-
-    if (state::imu::imu.begin()) {
-        state::imu::init = true;
+    if (!state::imu::init) {
+        if (state::imu::imu.begin()) {
+            state::imu::init = true;
+        } else {
+            // TODO: Log failure
+        }
     }
-
-    if (state::accel::accel.begin()) {
-        state::accel::init = true;
+    if (!state::accel::init) {
+        if (state::accel::accel.begin()) {
+            state::accel::init = true;
+        } else {
+            // TODO: Log failure
+        }
     }
-
-    if (state::therm::therm.begin()) {
-        state::therm::init = true;
+    if (!state::therm::init) {
+        if (state::therm::therm.begin()) {
+            state::therm::init = true;
+        } else {
+            // TODO: Log failure
+        }
     }
-
 }
 
 void StartupMode::transition() {
-    if (!state::altimeter::init) {
-        // Retry
-    }
-
-    if (!state::gps::init) {
-        // Retry
-    }
-
-    if (!state::imu::init) {
-        // Retry
-    }
-
-    if (!state::accel::init) {
-        // Retry
-    }
-
-    if (!state::therm::init) {
-        // Retry
-    }
-    
-    if (!state::sd::init) {
-        // Retry
-    }
-
-    if (!state::rfm::init) {
-        // Retry
-    }
-
     if (state::flight::key_armed) {
         state::flight::mode = state::flight::standby;
     }
@@ -90,11 +77,10 @@ void StandbyMode::transition() {
     state::flight::mode = state::flight::powered_ascent;
 }
 
-
 // Powered Ascent Mode
 
 void PoweredAscentMode::transition() {
-    // TODO: Detect slowing of rocket
+    // TODO: Detect deceleration of rocket
 
     state::flight::mode = state::flight::coasting;
 }
@@ -103,26 +89,25 @@ void PoweredAscentMode::transition() {
 
 void CoastingMode::transition() {
     if (apogee_detected()) {
-        deploy_drogue();
+        // TODO: Log event
+        gpio_put(SSA_1, 1);
         state::flight::mode = state::flight::drogue_deployed;
     }
 }
 
 bool CoastingMode::apogee_detected() {
-    if (!state::flight::armed) {
+    if (!state::flight::altitude_armed) {
         return false;
     }
-    // TODO: Port apogee prediction from old FSW
-}
-
-void CoastingMode::deploy_drogue() {
-    // TODO: Send drogue deploy trigger. Maybe this doesn't need to be its own method?
+    // TODO: Port apogee detection from old FSW
 }
 
 // Drogue Deployed Mode
 
 void DrogueDeployedMode::transition() {
-    // Detect main deployment altitude
-
-    state::flight::mode = state::flight::main_deployed;
+    if (state::altimeter::altitude < constants::flight::main_deploy_altitude) {
+        // TODO: Log event
+        gpio_put(SSA_2, 1);
+        state::flight::mode = state::flight::main_deployed;
+    }
 }

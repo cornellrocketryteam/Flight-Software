@@ -26,6 +26,12 @@ int main() {
     gpio_init(ARMED);
     gpio_set_dir(ARMED, GPIO_IN);
 
+    gpio_init(SSA_1);
+    gpio_set_dir(SSA_1, GPIO_OUT);
+
+    gpio_init(SSA_2);
+    gpio_set_dir(SSA_2, GPIO_OUT);
+
 #ifdef DEBUG
     while (!tud_cdc_connected()) {
         sleep_ms(500);
