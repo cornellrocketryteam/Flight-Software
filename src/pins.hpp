@@ -9,7 +9,7 @@
 
 #define SD_CS    5
 
-#define RFM_CS    1
+#define RFM_CS    26
 #define RFM_RST   22
 #define RFM_DIO0  14
 #define RFM_DIO1  15

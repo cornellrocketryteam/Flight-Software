@@ -7,3 +7,6 @@
 [submodule "lib/BNO055-Pico"]
 	path = lib/BNO055-Pico
 	url = git@github.com:cornellrocketryteam/BNO055-Pico.git
+[submodule "lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico"]
+	path = lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
+	url = https://github.com/carlk3/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico.git

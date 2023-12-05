@@ -34,7 +34,7 @@ add_executable(${PROJECT_NAME}
 )
 
 # Add external libraries
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SPI-RPi-Pico/FatFs_SPI build)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
