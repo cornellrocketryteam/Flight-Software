@@ -1,8 +1,8 @@
 #ifndef STATE_HPP_
 #define STATE_HPP_
 
-#include <stdint.h>
 #include "flight_mode.hpp"
+#include <stdint.h>
 
 #include "bno055.hpp"
 #include "lis3dh.hpp"
@@ -32,19 +32,19 @@ namespace state {
 
         extern bool key_armed;
         extern bool altitude_armed;
-    }
+    } // namespace flight
     namespace altimeter {
         extern bool init;
         extern float pressure;
         extern float altitude;
-    }
+    } // namespace altimeter
     namespace gps {
         extern bool init;
         extern float latitude;
         extern float longitude;
         extern float altitude;
         extern uint8_t siv;
-    }
+    } // namespace gps
     namespace imu {
         extern bool init;
         extern float mag_x;
@@ -55,7 +55,7 @@ namespace state {
         extern float gyro_z;
 
         extern BNO055 imu;
-    }
+    } // namespace imu
     namespace accel {
         extern bool init;
         extern float accel_x;
@@ -63,22 +63,22 @@ namespace state {
         extern float accel_z;
 
         extern LIS3DH accel;
-    }
+    } // namespace accel
     namespace therm {
         extern bool init;
         extern float temp;
         extern float humidity;
 
         extern Si7021 therm;
-    }
+    } // namespace therm
     namespace sd {
         extern bool init;
 
         extern SD sd;
-    }
+    } // namespace sd
     namespace rfm {
         extern bool init;
     }
-};
+}; // namespace state
 
 #endif // STATE_HPP_

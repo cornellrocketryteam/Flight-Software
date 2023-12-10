@@ -42,6 +42,7 @@ public:
 
     int id() { return 3; }
     std::string name() { return "Coasting"; };
+
 private:
     bool apogee_detected();
 };

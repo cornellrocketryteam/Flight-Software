@@ -1,11 +1,10 @@
 #include "fsw.hpp"
 
-
 void Flight::execute() {
 #ifdef DEBUG
-    //sleep_ms(1000);
+    // sleep_ms(1000);
 #endif
-    
+
 #ifdef VERBOSE
     printf("------------BEGIN LOOP %d------------\n", state::flight::cycle_count);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
@@ -26,7 +25,7 @@ void Flight::execute() {
     printf("Temperature: %.3f\n", state::therm::temp);
     printf("Humidity: %.3f\n", state::therm::humidity);
 #endif
-    
+
     state::flight::mode->execute();
     state::flight::mode->transition();
 

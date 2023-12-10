@@ -1,7 +1,7 @@
 #include "sd.hpp"
 #include "../constants.hpp"
-#include <cstdio>
 #include "../core/state.hpp"
+#include <cstdio>
 
 bool SD::begin() {
     time_init();
@@ -18,7 +18,7 @@ bool SD::begin() {
 
 bool SD::log() {
     // Temporary dummy data
-    // char* log = "GYROX,GYROY,GYROZ,MAGX,MAGY,MAGZ,ACCELX,ACCELY,ACCELZ,TEMP,HUM,ALT,GPS1,GPS2,GPS3,GPS4,GPS5,GPS6\n"; 
+    // char* log = "GYROX,GYROY,GYROZ,MAGX,MAGY,MAGZ,ACCELX,ACCELY,ACCELZ,TEMP,HUM,ALT,GPS1,GPS2,GPS3,GPS4,GPS5,GPS6\n";
     // sprintf(log, "%d", state::flight::cycle_count);
 
     FRESULT fr = f_open(&file, constants::sd::filename, FA_OPEN_APPEND | FA_WRITE);

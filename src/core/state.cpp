@@ -27,19 +27,19 @@ namespace state {
 
         bool key_armed = false;
         bool altitude_armed = false;
-    }
+    } // namespace flight
     namespace altimeter {
         bool init = false;
         float pressure = -1;
         float altitude = -1;
-    }
+    } // namespace altimeter
     namespace gps {
         bool init = false;
         float latitude = -1;
         float longitude = -1;
         float altitude = -1;
         uint8_t siv = -1;
-    }
+    } // namespace gps
     namespace imu {
         bool init = false;
         float mag_x = -1;
@@ -50,7 +50,7 @@ namespace state {
         float gyro_z = -1;
 
         BNO055 imu(I2C_PORT);
-    }
+    } // namespace imu
     namespace accel {
         bool init = false;
         float accel_x = -1;
@@ -58,21 +58,21 @@ namespace state {
         float accel_z = -1;
 
         LIS3DH accel(I2C_PORT);
-    }
+    } // namespace accel
     namespace therm {
         bool init = false;
         float temp = -1;
         float humidity = -1;
 
         Si7021 therm(I2C_PORT);
-    }
+    } // namespace therm
     namespace sd {
         bool init = false;
         FIL file;
 
         SD sd;
-    }
+    } // namespace sd
     namespace rfm {
         bool init = false;
     }
-};
+}; // namespace state

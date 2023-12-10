@@ -1,10 +1,9 @@
 #include "flight_mode.hpp"
-#include "state.hpp"
-#include "hardware/gpio.h"
 #include "../constants.hpp"
 #include "../pins.hpp"
 #include "../sd/sd.hpp"
-
+#include "hardware/gpio.h"
+#include "state.hpp"
 
 void FlightMode::execute() {
     float x, y, z;

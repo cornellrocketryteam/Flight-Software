@@ -2,13 +2,13 @@
 #define FSW_HPP_
 
 #include "flight_mode.hpp"
-#include "state.hpp"
 #include "pico/stdlib.h"
+#include "state.hpp"
 
 /**
  * Container for flight-level related functionality.
- * 
-*/
+ *
+ */
 class Flight {
 public:
     void execute();
