@@ -6,4 +6,4 @@ NamespaceIndentation: All
 ColumnLimit: 0
 SpaceBeforeCpp11BracedList: true
 AlignTrailingComments:
-    Kind: Leave
+  Kind: Leave
