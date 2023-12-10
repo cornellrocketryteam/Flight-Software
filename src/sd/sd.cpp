@@ -10,7 +10,6 @@ bool SD::begin() {
     FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
 
     if (fr != FR_OK) {
-        panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
@@ -35,6 +34,7 @@ bool SD::log() {
     fr = f_close(&file);
     if (FR_OK != fr) {
         printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
+        return false;
     }
 
     return true;

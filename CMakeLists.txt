@@ -26,12 +26,12 @@ set(SOURCES
     src/core/flight_mode.cpp
     src/core/state.cpp
     src/sd/sd.cpp
+    src/sd/hw_config.c
 )
 
 # Add all executables
 add_executable(${PROJECT_NAME}
     ${SOURCES}
-    hw_config.c
 )
 
 # Add external libraries

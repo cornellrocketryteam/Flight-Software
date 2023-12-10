@@ -18,7 +18,7 @@ add_compile_options(
 
 add_executable(sd_write
     sd_write.cpp
-    ../../hw_config.c
+    ../../src/sd/hw_config.c
 )
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)

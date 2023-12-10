@@ -20,6 +20,7 @@ int main() {
     if (FR_OK != fr) {
         panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
     }
+    printf("Card mounted\n");
 
     FIL fil;
     const char* const filename = "test.txt";
@@ -28,16 +29,21 @@ int main() {
     if (FR_OK != fr && FR_EXIST != fr) {
         panic("f_open(%s) error: %s (%d)\n", filename, FRESULT_str(fr), fr);
     }
+    printf("File opened\n");
         
     if (f_printf(&fil, "Hello, world!\n") < 0) {
         printf("f_printf failed\n");
     }
+    printf("Data written\n");
 
     fr = f_close(&fil);
     if (FR_OK != fr) {
         printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
     }
+    printf("File closed\n");
+
     f_unmount(pSD->pcName);
+    printf("Card unmounted\n");
 
     return 0;
 }
