@@ -7,7 +7,7 @@ static spi_t spi = {
     .sck_gpio = SPI_SCK,
     .mosi_gpio = SPI_MOSI,
     .miso_gpio = SPI_MISO,
-    .baud_rate = 12 * 1000 * 1000
+    .baud_rate = 12 * 1000 * 1000 // Actual frequency: 10416666.
 };
 
 /* SPI Interface */
