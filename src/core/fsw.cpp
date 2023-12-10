@@ -7,7 +7,7 @@ void Flight::execute() {
 #endif
     
 #ifdef VERBOSE
-    printf("------------BEGIN LOOP------------\n");
+    printf("------------BEGIN LOOP %d------------\n", state::flight::cycle_count);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
     printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
 
@@ -33,4 +33,5 @@ void Flight::execute() {
 #ifdef VERBOSE
     printf("-------------END LOOP-------------\n\n");
 #endif
+    state::flight::cycle_count++;
 }

@@ -23,6 +23,8 @@ namespace state {
 
         FlightMode *mode = startup;
 
+        int cycle_count = 0;
+
         bool key_armed = false;
         bool altitude_armed = false;
     }
@@ -66,6 +68,9 @@ namespace state {
     }
     namespace sd {
         bool init = false;
+        FIL file;
+
+        SD sd;
     }
     namespace rfm {
         bool init = false;

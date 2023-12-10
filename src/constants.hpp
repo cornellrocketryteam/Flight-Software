@@ -12,6 +12,9 @@ namespace constants {
     namespace imu {
         constexpr float declination = 11.7;        // Duffield declination - change for launch
     }
+    namespace sd {
+        const char* const filename = "log.txt";      // The file to which data is logged
+    }
 };
 
 #endif // CONSTANTS_HPP_

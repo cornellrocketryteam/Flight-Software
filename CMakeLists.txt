@@ -25,6 +25,7 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
+    src/sd/sd.cpp
 )
 
 # Add all executables

@@ -2,7 +2,6 @@
 #define FLIGHT_MODE_
 
 #include <string>
-#include "../sensors/sensor_suite.hpp"
 
 class FlightMode {
 public:

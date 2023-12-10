@@ -3,6 +3,7 @@
 #include "hardware/gpio.h"
 #include "../constants.hpp"
 #include "../pins.hpp"
+#include "../sd/sd.hpp"
 
 
 void FlightMode::execute() {
@@ -30,6 +31,8 @@ void FlightMode::execute() {
         state::flight::altitude_armed = true;
         // TODO: Log event
     }
+
+    state::sd::sd.log();
 }
 
 // Startup Mode
@@ -57,6 +60,13 @@ void StartupMode::execute() {
     if (!state::therm::init) {
         if (state::therm::therm.begin()) {
             state::therm::init = true;
+        } else {
+            // TODO: Log failure
+        }
+    }
+    if (!state::sd::init) {
+        if (state::sd::sd.begin()) {
+            state::sd::init = true;
         } else {
             // TODO: Log failure
         }

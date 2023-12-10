@@ -8,6 +8,8 @@
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
+#include "../sd/sd.hpp"
+
 namespace state {
     namespace flight {
         extern StartupMode startup_class;
@@ -25,6 +27,8 @@ namespace state {
         extern FlightMode *main_deployed;
 
         extern FlightMode *mode;
+
+        extern int cycle_count;
 
         extern bool key_armed;
         extern bool altitude_armed;
@@ -69,6 +73,8 @@ namespace state {
     }
     namespace sd {
         extern bool init;
+
+        extern SD sd;
     }
     namespace rfm {
         extern bool init;

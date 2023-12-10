@@ -2,24 +2,24 @@
 
 /* Configuration of RP2040 hardware SPI object */
 static spi_t spi = {
-        .hw_inst = spi0,
-        .sck_gpio = 2,
-        .mosi_gpio = 3,
-        .miso_gpio = 4,
-        .baud_rate = 12 * 1000 * 1000
+    .hw_inst = spi0,
+    .sck_gpio = 2,
+    .mosi_gpio = 3,
+    .miso_gpio = 4,
+    .baud_rate = 12 * 1000 * 1000
 };
 
 /* SPI Interface */
 static sd_spi_if_t spi_if = {
-        .spi = &spi,  // Pointer to the SPI driving this card
-        .ss_gpio = 5      // The SPI slave select GPIO for this SD card
+    .spi = &spi,  // Pointer to the SPI driving this card
+    .ss_gpio = 5      // The SPI slave select GPIO for this SD card
 };
 
 /* Configuration of the SD Card socket object */
 static sd_card_t sd_card = {
-        .pcName = "0:",
-        .type = SD_IF_SPI,
-        .spi_if_p = &spi_if  // Pointer to the SPI interface driving this card
+    .pcName = "0:",
+    .type = SD_IF_SPI,
+    .spi_if_p = &spi_if  // Pointer to the SPI interface driving this card
 };
 
 size_t sd_get_num() { return 1; }
