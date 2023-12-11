@@ -1,0 +1,1 @@
+clang-format -i ./src/*.cpp ./src/*.hpp ./src/**/*.cpp ./src/**/*.hpp ./src/**/*.c
