@@ -109,6 +109,7 @@ bool CoastingMode::apogee_detected() {
         return false;
     }
     // TODO: Port apogee detection from old FSW
+    return false;
 }
 
 // Drogue Deployed Mode
