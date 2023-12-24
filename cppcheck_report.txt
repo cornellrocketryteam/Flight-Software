@@ -1,0 +1,188 @@
+src/core/flight_mode.hpp:47:10: performance:inconclusive: Technically the member function 'CoastingMode::apogee_detected' can be static (but you may consider moving to unnamed namespace). [functionStatic]
+    bool apogee_detected();
+         ^
+src/core/flight_mode.cpp:107:20: note: Technically the member function 'CoastingMode::apogee_detected' can be static (but you may consider moving to unnamed namespace).
+bool CoastingMode::apogee_detected() {
+                   ^
+src/core/flight_mode.hpp:47:10: note: Technically the member function 'CoastingMode::apogee_detected' can be static (but you may consider moving to unnamed namespace).
+    bool apogee_detected();
+         ^
+src/core/flight_mode.hpp:16:10: style: The function 'execute' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void execute();
+         ^
+src/core/flight_mode.hpp:8:18: note: Virtual function in base class
+    virtual void execute();
+                 ^
+src/core/flight_mode.hpp:16:10: note: Function in derived class
+    void execute();
+         ^
+src/core/flight_mode.hpp:17:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition();
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:17:10: note: Function in derived class
+    void transition();
+         ^
+src/core/flight_mode.hpp:19:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 0; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:19:9: note: Function in derived class
+    int id() { return 0; }
+        ^
+src/core/flight_mode.hpp:20:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Startup"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:20:17: note: Function in derived class
+    std::string name() { return "Startup"; };
+                ^
+src/core/flight_mode.hpp:25:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition();
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:25:10: note: Function in derived class
+    void transition();
+         ^
+src/core/flight_mode.hpp:27:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 1; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:27:9: note: Function in derived class
+    int id() { return 1; }
+        ^
+src/core/flight_mode.hpp:28:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Standby"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:28:17: note: Function in derived class
+    std::string name() { return "Standby"; };
+                ^
+src/core/flight_mode.hpp:33:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition();
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:33:10: note: Function in derived class
+    void transition();
+         ^
+src/core/flight_mode.hpp:35:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 2; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:35:9: note: Function in derived class
+    int id() { return 2; }
+        ^
+src/core/flight_mode.hpp:36:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Powered Ascent"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:36:17: note: Function in derived class
+    std::string name() { return "Powered Ascent"; };
+                ^
+src/core/flight_mode.hpp:41:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition();
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:41:10: note: Function in derived class
+    void transition();
+         ^
+src/core/flight_mode.hpp:43:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 3; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:43:9: note: Function in derived class
+    int id() { return 3; }
+        ^
+src/core/flight_mode.hpp:44:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Coasting"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:44:17: note: Function in derived class
+    std::string name() { return "Coasting"; };
+                ^
+src/core/flight_mode.hpp:52:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition();
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:52:10: note: Function in derived class
+    void transition();
+         ^
+src/core/flight_mode.hpp:54:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 4; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:54:9: note: Function in derived class
+    int id() { return 4; }
+        ^
+src/core/flight_mode.hpp:55:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Drogue Deployed"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:55:17: note: Function in derived class
+    std::string name() { return "Drogue Deployed"; };
+                ^
+src/core/flight_mode.hpp:60:10: style: The function 'transition' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    void transition() {};
+         ^
+src/core/flight_mode.hpp:9:18: note: Virtual function in base class
+    virtual void transition() = 0;
+                 ^
+src/core/flight_mode.hpp:60:10: note: Function in derived class
+    void transition() {};
+         ^
+src/core/flight_mode.hpp:62:9: style: The function 'id' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    int id() { return 5; }
+        ^
+src/core/flight_mode.hpp:10:17: note: Virtual function in base class
+    virtual int id() = 0;
+                ^
+src/core/flight_mode.hpp:62:9: note: Function in derived class
+    int id() { return 5; }
+        ^
+src/core/flight_mode.hpp:63:17: style: The function 'name' overrides a function in a base class but is not marked with a 'override' specifier. [missingOverride]
+    std::string name() { return "Main Deployed"; };
+                ^
+src/core/flight_mode.hpp:11:25: note: Virtual function in base class
+    virtual std::string name() = 0;
+                        ^
+src/core/flight_mode.hpp:63:17: note: Function in derived class
+    std::string name() { return "Main Deployed"; };
+                ^
+test/detect_armed/detect_armed.cpp:20:13: warning: %u in format string (no. 1) requires 'unsigned int' but the argument type is 'signed int'. [invalidPrintfArgType_uint]
+            printf("Armed from GPIO %u\n", ARMED_PIN);
+            ^
+src/sd/hw_config.c:26:0: style: The function 'sd_get_num' is never used. [unusedFunction]
+
+^
+nofile:0:0: information: Cppcheck cannot find all the include files (use --check-config for details) [missingInclude]
+
