@@ -1,4 +1,4 @@
-name: cpp Check
+name: cppcheck
 on: [push, pull_request]
 jobs:
   linting:
@@ -7,3 +7,5 @@ jobs:
     steps:
       - name: c-linter
         uses: tonybaloney/cppcheck-action@master
+        with:
+          path: 'src'
