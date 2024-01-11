@@ -5,16 +5,17 @@
 
 #include <pico/stdlib.h>
 
-#include "../pins.hpp"
-#include "hardware/gpio.h"
 #include "hardware/spi.h"
 #include "hardware/timer.h"
 
 class PicoHal : public RadioLibHal {
 public:
-    PicoHal(spi_inst_t *spiChannel, uint32_t spiSpeed = 500 * 1000)
+    PicoHal(spi_inst_t *spiChannel, uint32_t misoPin, uint32_t mosiPin, uint32_t sckPin, uint32_t spiSpeed = 500 * 1000)
         : RadioLibHal(GPIO_IN, GPIO_OUT, 0, 1, GPIO_IRQ_EDGE_RISE, GPIO_IRQ_EDGE_FALL),
           _spiChannel(spiChannel),
+          _misoPin(misoPin),
+          _mosiPin(mosiPin),
+          _sckPin(sckPin),
           _spiSpeed(spiSpeed) {
     }
 
@@ -105,9 +106,9 @@ public:
         spi_init(_spiChannel, _spiSpeed);
         spi_set_format(_spiChannel, 8, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
 
-        gpio_set_function(SPI_SCK, GPIO_FUNC_SPI);
-        gpio_set_function(SPI_MOSI, GPIO_FUNC_SPI);
-        gpio_set_function(SPI_MISO, GPIO_FUNC_SPI);
+        gpio_set_function(_sckPin, GPIO_FUNC_SPI);
+        gpio_set_function(_mosiPin, GPIO_FUNC_SPI);
+        gpio_set_function(_misoPin, GPIO_FUNC_SPI);
     }
 
     void spiBeginTransaction() {}
@@ -124,7 +125,10 @@ public:
 
 private:
     spi_inst_t *_spiChannel;
-    const unsigned int _spiSpeed;
+    uint32_t _spiSpeed;
+    uint32_t _misoPin;
+    uint32_t _mosiPin;
+    uint32_t _sckPin;
 };
 
 #endif // PICO_HAL_H_
