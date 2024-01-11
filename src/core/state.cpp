@@ -76,5 +76,5 @@ namespace state {
         bool init = false;
 
         RFM rfm;
-    }
+    } // namespace rfm
 }; // namespace state

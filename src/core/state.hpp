@@ -8,8 +8,8 @@
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
-#include "../sd/sd.hpp"
 #include "../rfm/rfm.hpp"
+#include "../sd/sd.hpp"
 
 namespace state {
     namespace flight {
@@ -81,7 +81,7 @@ namespace state {
         extern bool init;
 
         extern RFM rfm;
-    }
+    } // namespace rfm
 }; // namespace state
 
 #endif // STATE_HPP_
