@@ -13,3 +13,6 @@
 [submodule "lib/pico-sdk"]
 	path = lib/pico-sdk
 	url = git@github.com:raspberrypi/pico-sdk.git
+[submodule "lib/RadioLib"]
+	path = lib/RadioLib
+	url = git@github.com:jgromes/RadioLib.git

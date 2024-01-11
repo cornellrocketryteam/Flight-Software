@@ -32,6 +32,7 @@ void FlightMode::execute() {
     }
 
     state::sd::sd.log();
+    state::rfm::rfm.transmit();
 }
 
 // Startup Mode
@@ -66,6 +67,13 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         if (state::sd::sd.begin()) {
             state::sd::init = true;
+        } else {
+            // TODO: Log failure
+        }
+    }
+    if (!state::rfm::init) {
+        if (state::rfm::rfm.begin()) {
+            state::rfm::init = true;
         } else {
             // TODO: Log failure
         }

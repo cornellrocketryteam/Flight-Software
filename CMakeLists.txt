@@ -25,6 +25,7 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
+    src/rfm/rfm.cpp
     src/sd/sd.cpp
     src/sd/hw_config.c
 )
@@ -35,6 +36,7 @@ add_executable(${PROJECT_NAME}
 )
 
 # Add external libraries
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/RadioLib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
@@ -61,6 +63,7 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib 
     hardware_i2c 
     hardware_gpio
+    RadioLib
     FatFs_SPI 
     BNO055-Pico
     LIS3DH-Pico 

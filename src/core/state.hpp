@@ -8,6 +8,7 @@
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
+#include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 
 namespace state {
@@ -78,7 +79,9 @@ namespace state {
     } // namespace sd
     namespace rfm {
         extern bool init;
-    }
+
+        extern RFM rfm;
+    } // namespace rfm
 }; // namespace state
 
 #endif // STATE_HPP_
