@@ -9,6 +9,7 @@
 #include "si7021.hpp"
 
 #include "../sd/sd.hpp"
+#include "../rfm/rfm.hpp"
 
 namespace state {
     namespace flight {
@@ -78,6 +79,8 @@ namespace state {
     } // namespace sd
     namespace rfm {
         extern bool init;
+
+        extern RFM rfm;
     }
 }; // namespace state
 

@@ -21,5 +21,10 @@ bool RFM::begin() {
 }
 
 bool RFM::transmit() {
-    return true;
+    int state = radio.transmit("test");
+
+    if (state == RADIOLIB_ERR_NONE) {
+        return true;
+    }
+    return false;
 }

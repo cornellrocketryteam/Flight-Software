@@ -9,7 +9,7 @@ struct RFM {
     bool begin();
     bool transmit();
 
-    PicoHal *hal = new PicoHal(SPI_PORT);
+    PicoHal *hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK);
     SX1276 radio = new Module(hal, RFM_CS, RFM_DIO0, RADIOLIB_NC, RFM_DIO1);
 };
 
