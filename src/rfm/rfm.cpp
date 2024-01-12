@@ -32,7 +32,7 @@ bool RFM::transmit() {
         return true;
     }
 #ifdef VERBOSE
-        printf("RFM: Transmit failed, code %d\n", state);
+    printf("RFM: Transmit failed, code %d\n", state);
 #endif
     return false;
 }
