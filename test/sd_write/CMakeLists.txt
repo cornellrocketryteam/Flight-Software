@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.27)
 
 # Pull in SDK (must be before project)
-include(../../lib/pico_sdk_init.cmake)
+include(../../lib/pico-sdk/pico_sdk_init.cmake)
 
 project(sd_write C CXX ASM)
 set(CMAKE_C_STANDARD 11)
@@ -25,7 +25,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pic
 
 
 # Pull in common dependencies
-target_link_libraries(sd_write pico_stdlib FatFs_SPI)
+target_link_libraries(sd_write pico_stdlib hardware_gpio FatFs_SPI)
 
 pico_enable_stdio_usb(sd_write 1)
 pico_enable_stdio_uart(sd_write 0)

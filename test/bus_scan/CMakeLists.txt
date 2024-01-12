@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 # Pull in SDK (must be before project)
-include(../../lib/pico_sdk_init.cmake)
+include(../../lib/pico-sdk/pico_sdk_init.cmake)
 
 project(bus_scan C CXX ASM)
 set(CMAKE_C_STANDARD 11)

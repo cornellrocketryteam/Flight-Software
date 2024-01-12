@@ -14,7 +14,9 @@ bool RFM::begin() {
 
     int state = radio.begin();
     if (state != RADIOLIB_ERR_NONE) {
-        printf("failed, code %d\n", state);
+#ifdef VERBOSE
+        printf("RFM: Init failed, code %d\n", state);
+#endif
         return false;
     }
     return true;
@@ -24,7 +26,13 @@ bool RFM::transmit() {
     int state = radio.transmit("test");
 
     if (state == RADIOLIB_ERR_NONE) {
+#ifdef VERBOSE
+        printf("RFM: Transmit success\n");
+#endif
         return true;
     }
+#ifdef VERBOSE
+        printf("RFM: Transmit failed, code %d\n", state);
+#endif
     return false;
 }

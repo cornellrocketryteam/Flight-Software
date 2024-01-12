@@ -32,6 +32,10 @@ int main() {
     gpio_init(SSA_2);
     gpio_set_dir(SSA_2, GPIO_OUT);
 
+    gpio_init(RFM_CS);
+    gpio_set_dir(RFM_CS, GPIO_OUT);
+    gpio_put(RFM_CS, 1);
+
 #ifdef DEBUG
     while (!tud_cdc_connected()) {
         sleep_ms(500);

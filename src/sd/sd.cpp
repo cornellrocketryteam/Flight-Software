@@ -36,6 +36,9 @@ bool SD::log() {
         printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
+#ifdef VERBOSE
+    printf("SD: Log success\n");
+#endif
 
     return true;
 }

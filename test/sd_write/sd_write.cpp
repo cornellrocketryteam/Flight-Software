@@ -4,10 +4,16 @@
 #include "hw_config.h"
 #include "rtc.h"
 #include "tusb.h"
+#include "hardware/gpio.h"
+#include "../../src/pins.hpp"
 
 int main() {
     stdio_init_all();
     time_init();
+
+    gpio_init(RFM_CS);
+    gpio_set_dir(RFM_CS, GPIO_OUT);
+    gpio_put(RFM_CS, 1);
 
     while (!tud_cdc_connected()) {
         sleep_ms(500);
