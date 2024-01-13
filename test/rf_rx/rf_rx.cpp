@@ -7,7 +7,7 @@
 
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
-SX1276 radio = new Module(hal, RFM_CS, RFM_DIO0, RADIOLIB_NC, RFM_DIO1);
+SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RX_DIO1);
 
 int main() {
     stdio_init_all();
@@ -16,16 +16,16 @@ int main() {
         sleep_ms(500);
     }
 
-    gpio_init(RFM_CS);
-    gpio_set_dir(RFM_CS, GPIO_OUT);
+    gpio_init(RX_CS);
+    gpio_set_dir(RX_CS, GPIO_OUT);
 
-    gpio_init(RFM_RST);
-    gpio_set_dir(RFM_RST, GPIO_OUT);
+    gpio_init(RX_RST);
+    gpio_set_dir(RX_RST, GPIO_OUT);
 
     sleep_ms(10);
-    gpio_put(RFM_RST, 0);
+    gpio_put(RX_RST, 0);
     sleep_ms(10);
-    gpio_put(RFM_RST, 1);
+    gpio_put(RX_RST, 1);
 
     printf("[SX1276] Initializing ... ");
 
