@@ -40,7 +40,7 @@ int main() {
         // send a packet
         printf("[SX1276] Transmitting packet ... ");
 
-        state = radio.transmit("Hello World!");
+        state = radio.transmit("test");
 
         if (state == RADIOLIB_ERR_NONE) {
             // the packet was successfully transmitted
