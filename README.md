@@ -7,7 +7,8 @@ Flight software for the Cornell Rocketry Team.
 ### Dependencies Required
 * ```cmake```
 * ```doxygen```
-* ```gcc-arm-embedded```
+* ```gcc-arm-embedded``` (for macOS)
+* ```gcc-arm-none-eabi``` (for Linux)
   
 ### Setup
 * Install the required dependencies
