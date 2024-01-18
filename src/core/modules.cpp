@@ -1,6 +1,5 @@
 #include "modules.hpp"
 
-
 namespace modules {
     BMP388 altimeter(I2C_PORT);
     BNO055 imu(I2C_PORT);
@@ -9,4 +8,4 @@ namespace modules {
 
     SD sd;
     RFM rfm;
-};
+}; // namespace modules

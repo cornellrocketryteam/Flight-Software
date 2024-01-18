@@ -9,7 +9,6 @@
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 
-
 namespace modules {
     extern BMP388 altimeter;
     extern BNO055 imu;
@@ -18,6 +17,6 @@ namespace modules {
 
     extern SD sd;
     extern RFM rfm;
-};
+}; // namespace modules
 
 #endif
