@@ -8,6 +8,9 @@
 void FlightMode::execute() {
     float x, y, z;
 
+    state::altimeter::altimeter.read_altitude(&state::altimeter::altitude, constants::altimeter::ref_pressure);
+    state::altimeter::altimeter.read_pressure(&state::altimeter::pressure);
+
     state::imu::imu.read_gyro(&x, &y, &z);
     state::imu::gyro_x = x;
     state::imu::gyro_y = y;
@@ -42,6 +45,13 @@ void StartupMode::execute() {
     if (gpio_get(ARMED)) {
         state::flight::key_armed = true;
         // TODO: Log event
+    }
+    if (!state::altimeter::init) {
+        if (state::altimeter::altimeter.begin()) {
+            state::altimeter::init = true;
+        } else {
+            // TODO: Log failure
+        }
     }
     if (!state::imu::init) {
         if (state::imu::imu.begin()) {

@@ -16,3 +16,6 @@
 [submodule "lib/RadioLib"]
 	path = lib/RadioLib
 	url = git@github.com:jgromes/RadioLib.git
+[submodule "lib/BMP388-Pico"]
+	path = lib/BMP388-Pico
+	url = git@github.com:cornellrocketryteam/BMP388-Pico.git

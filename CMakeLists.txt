@@ -38,6 +38,7 @@ add_executable(${PROJECT_NAME}
 # Add external libraries
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/RadioLib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
@@ -45,6 +46,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
 # Link library directories
 target_link_directories(${PROJECT_NAME} 
     PRIVATE
+    ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
@@ -53,6 +55,7 @@ target_link_directories(${PROJECT_NAME}
 # Include library headers
 target_include_directories(${PROJECT_NAME}
     PRIVATE
+    ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
@@ -65,6 +68,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_gpio
     RadioLib
     FatFs_SPI 
+    BMP388-Pico
     BNO055-Pico
     LIS3DH-Pico 
     Si7021-Pico
