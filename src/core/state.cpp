@@ -33,7 +33,6 @@ namespace state {
         double pressure = -1;
         double altitude = -1;
 
-        BMP388 altimeter(I2C_PORT);
     } // namespace altimeter
     namespace gps {
         bool init = false;
@@ -51,7 +50,6 @@ namespace state {
         float gyro_y = -1;
         float gyro_z = -1;
 
-        BNO055 imu(I2C_PORT);
     } // namespace imu
     namespace accel {
         bool init = false;
@@ -59,24 +57,20 @@ namespace state {
         float accel_y = -1;
         float accel_z = -1;
 
-        LIS3DH accel(I2C_PORT);
     } // namespace accel
     namespace therm {
         bool init = false;
         float temp = -1;
         float humidity = -1;
 
-        Si7021 therm(I2C_PORT);
     } // namespace therm
     namespace sd {
         bool init = false;
         FIL file;
 
-        SD sd;
     } // namespace sd
     namespace rfm {
         bool init = false;
 
-        RFM rfm;
     } // namespace rfm
 }; // namespace state
