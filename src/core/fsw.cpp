@@ -10,6 +10,9 @@ void Flight::execute() {
     printf("Mode: %s\n", state::flight::mode->name().c_str());
     printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
 
+    printf("Altitude: %.3f\n", state::altimeter::altitude);
+    printf("Pressure: %.3f\n\n", state::altimeter::pressure);
+
     printf("Gyro X: %.3f\n", state::imu::gyro_x);
     printf("Gyro Y: %.3f\n", state::imu::gyro_y);
     printf("Gyro Z: %.3f\n\n", state::imu::gyro_z);

@@ -30,8 +30,10 @@ namespace state {
     } // namespace flight
     namespace altimeter {
         bool init = false;
-        float pressure = -1;
-        float altitude = -1;
+        double pressure = -1;
+        double altitude = -1;
+
+        BMP388 altimeter(I2C_PORT);
     } // namespace altimeter
     namespace gps {
         bool init = false;

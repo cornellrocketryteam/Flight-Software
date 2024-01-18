@@ -7,10 +7,10 @@ namespace constants {
         constexpr int main_deploy_altitude = 2286; // Main parachute deployment altitude (m)
     } // namespace flight
     namespace altimeter {
-        constexpr float ref_pressure = 102106.3;   // Reference pressure (Pa)
+        constexpr double ref_pressure = 1013.25;   // Reference pressure (hPa)
     }
     namespace imu {
-        constexpr float declination = 11.7;        // Duffield declination - change for launch
+        constexpr double declination = 11.7;        // Duffield declination - change for launch
     }
     namespace sd {
         const char *const filename = "log.txt";      // The file to which data is logged

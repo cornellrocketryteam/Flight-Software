@@ -4,6 +4,7 @@
 #include "flight_mode.hpp"
 #include <stdint.h>
 
+#include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
 #include "si7021.hpp"
@@ -36,8 +37,10 @@ namespace state {
     } // namespace flight
     namespace altimeter {
         extern bool init;
-        extern float pressure;
-        extern float altitude;
+        extern double pressure;
+        extern double altitude;
+
+        extern BMP388 altimeter;
     } // namespace altimeter
     namespace gps {
         extern bool init;
