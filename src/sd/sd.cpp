@@ -20,9 +20,35 @@ bool SD::begin() {
 }
 
 bool SD::log() {
-    // Temporary dummy data
-    // char* log = "GYROX,GYROY,GYROZ,MAGX,MAGY,MAGZ,ACCELX,ACCELY,ACCELZ,TEMP,HUM,ALT,GPS1,GPS2,GPS3,GPS4,GPS5,GPS6\n";
-    // sprintf(log, "%d", state::flight::cycle_count);
+    std::string log;
+
+    // clang-format off
+    log += std::to_string(state::flight::cycle_count) + ","
+        + std::to_string(state::flight::mode->id()) + ","
+
+        + std::to_string(state::alt::init) + ","
+        + std::to_string(state::alt::altitude) + ","
+        + std::to_string(state::alt::pressure) + ","
+
+        + std::to_string(state::imu::init) + ","
+        + std::to_string(state::imu::gyro_x) + ","
+        + std::to_string(state::imu::gyro_y) + ","
+        + std::to_string(state::imu::gyro_z) + ","
+        + std::to_string(state::imu::mag_x) + ","
+        + std::to_string(state::imu::mag_y) + ","
+        + std::to_string(state::imu::mag_z) + ","
+
+        + std::to_string(state::accel::init) + ","
+        + std::to_string(state::accel::accel_x) + ","
+        + std::to_string(state::accel::accel_y) + ","
+        + std::to_string(state::accel::accel_z) + ","
+
+        + std::to_string(state::therm::init) + ","
+        + std::to_string(state::therm::temp) + ","
+        + std::to_string(state::therm::humidity) + ","
+
+        + std::to_string(state::rfm::init) + ",";
+    // clang-format on
 
     FRESULT fr = f_open(&file, constants::sd::filename, FA_OPEN_APPEND | FA_WRITE);
 
@@ -33,7 +59,7 @@ bool SD::log() {
         return false;
     }
 
-    if (f_printf(&file, "%d\n", state::flight::cycle_count) < 0) {
+    if (f_printf(&file, "%s\n", log.c_str()) < 0) {
 #ifdef VERBOSE
         printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
 #endif
