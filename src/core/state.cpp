@@ -43,25 +43,25 @@ namespace state {
     } // namespace gps
     namespace imu {
         bool init = false;
-        float mag_x = -1;
-        float mag_y = -1;
-        float mag_z = -1;
-        float gyro_x = -1;
-        float gyro_y = -1;
-        float gyro_z = -1;
+        double mag_x = -1;
+        double mag_y = -1;
+        double mag_z = -1;
+        double gyro_x = -1;
+        double gyro_y = -1;
+        double gyro_z = -1;
 
     } // namespace imu
     namespace accel {
         bool init = false;
-        float accel_x = -1;
-        float accel_y = -1;
-        float accel_z = -1;
+        double accel_x = -1;
+        double accel_y = -1;
+        double accel_z = -1;
 
     } // namespace accel
     namespace therm {
         bool init = false;
-        float temp = -1;
-        float humidity = -1;
+        double temp = -1;
+        double humidity = -1;
 
     } // namespace therm
     namespace sd {

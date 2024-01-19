@@ -6,7 +6,7 @@
 #include "state.hpp"
 
 void FlightMode::execute() {
-    float x, y, z;
+    double x, y, z;
 
     modules::altimeter.read_altitude(&state::altimeter::altitude, constants::altimeter::ref_pressure);
     modules::altimeter.read_pressure(&state::altimeter::pressure);
@@ -26,8 +26,8 @@ void FlightMode::execute() {
     state::accel::accel_y = y;
     state::accel::accel_z = z;
 
-    state::therm::temp = modules::therm.read_temperature();
-    state::therm::humidity = modules::therm.read_humidity();
+    modules::therm.read_temperature(&state::therm::temp);
+    modules::therm.read_humidity(&state::therm::humidity);
 
     if (!state::flight::altitude_armed && state::altimeter::altitude > constants::flight::arming_altitude) {
         state::flight::altitude_armed = true;

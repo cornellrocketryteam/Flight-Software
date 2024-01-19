@@ -1,5 +1,5 @@
-#ifndef FLIGHT_MODE_
-#define FLIGHT_MODE_
+#ifndef FLIGHT_MODE_HPP_
+#define FLIGHT_MODE_HPP_
 
 #include <string>
 
@@ -63,4 +63,4 @@ public:
     std::string name() { return "Main Deployed"; };
 };
 
-#endif // FLIGHT_MODE_
+#endif // FLIGHT_MODE_HPP_

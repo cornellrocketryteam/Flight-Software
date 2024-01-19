@@ -44,25 +44,25 @@ namespace state {
     } // namespace gps
     namespace imu {
         extern bool init;
-        extern float mag_x;
-        extern float mag_y;
-        extern float mag_z;
-        extern float gyro_x;
-        extern float gyro_y;
-        extern float gyro_z;
+        extern double mag_x;
+        extern double mag_y;
+        extern double mag_z;
+        extern double gyro_x;
+        extern double gyro_y;
+        extern double gyro_z;
 
     } // namespace imu
     namespace accel {
         extern bool init;
-        extern float accel_x;
-        extern float accel_y;
-        extern float accel_z;
+        extern double accel_x;
+        extern double accel_y;
+        extern double accel_z;
 
     } // namespace accel
     namespace therm {
         extern bool init;
-        extern float temp;
-        extern float humidity;
+        extern double temp;
+        extern double humidity;
 
     } // namespace therm
     namespace sd {
