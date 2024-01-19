@@ -95,13 +95,13 @@ void StartupMode::execute() {
             // TODO: Log failure
         }
     }
-    // if (!state::rfm::init) {
-    //     if (modules::rfm.begin()) {
-    //         state::rfm::init = true;
-    //     } else {
-    //         // TODO: Log failure
-    //     }
-    // }
+    if (!state::rfm::init) {
+        if (modules::rfm.begin()) {
+            state::rfm::init = true;
+        } else {
+            // TODO: Log failure
+        }
+    }
 }
 
 void StartupMode::transition() {
@@ -115,20 +115,12 @@ void StartupMode::transition() {
 void StandbyMode::transition() {
     // TODO: Detect acceleration of liftoff
 
-    state::flight::mode = state::flight::powered_ascent;
+    state::flight::mode = state::flight::ascent;
 }
 
-// Powered Ascent Mode
+// Ascent Mode
 
-void PoweredAscentMode::transition() {
-    // TODO: Detect deceleration of rocket
-
-    state::flight::mode = state::flight::coasting;
-}
-
-// Coasting Mode
-
-void CoastingMode::transition() {
+void AscentMode::transition() {
     if (apogee_detected()) {
         // TODO: Log event
         gpio_put(SSA_1, 1);
@@ -136,7 +128,7 @@ void CoastingMode::transition() {
     }
 }
 
-bool CoastingMode::apogee_detected() {
+bool AscentMode::apogee_detected() {
     if (!state::flight::altitude_armed) {
         return false;
     }

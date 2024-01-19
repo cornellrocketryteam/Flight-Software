@@ -14,15 +14,13 @@ namespace state {
     namespace flight {
         extern StartupMode startup_class;
         extern StandbyMode standby_class;
-        extern PoweredAscentMode powered_ascent_class;
-        extern CoastingMode coasting_class;
+        extern AscentMode ascent_class;
         extern DrogueDeployedMode drogue_deployed_class;
         extern MainDeployedMode main_deployed_class;
 
         extern FlightMode *startup;
         extern FlightMode *standby;
-        extern FlightMode *powered_ascent;
-        extern FlightMode *coasting;
+        extern FlightMode *ascent;
         extern FlightMode *drogue_deployed;
         extern FlightMode *main_deployed;
 

@@ -61,27 +61,18 @@ public:
     std::string name() { return "Standby"; };
 };
 
-class PoweredAscentMode : public FlightMode {
-public:
-    // TODO: Combine this with coasting mode
-    void transition();
-
-    int id() { return 2; }
-    std::string name() { return "Powered Ascent"; };
-};
-
 /**
  * Flight mode representing the period between liftoff and apogee.
  */
-class CoastingMode : public FlightMode {
+class AscentMode : public FlightMode {
 public:
     /**
      * Transition to drogue deployed mode if apogee has been reached.
      */
     void transition();
 
-    int id() { return 3; }
-    std::string name() { return "Coasting"; };
+    int id() { return 2; }
+    std::string name() { return "Ascent"; };
 
 private:
     /**
@@ -101,7 +92,7 @@ public:
      */
     void transition();
 
-    int id() { return 4; }
+    int id() { return 3; }
     std::string name() { return "Drogue Deployed"; };
 };
 
@@ -115,7 +106,7 @@ public:
      */
     void transition() {};
 
-    int id() { return 5; }
+    int id() { return 4; }
     std::string name() { return "Main Deployed"; };
 };
 

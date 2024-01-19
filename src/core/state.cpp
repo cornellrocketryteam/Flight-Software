@@ -9,15 +9,13 @@ namespace state {
     namespace flight {
         StartupMode startup_class;
         StandbyMode standby_class;
-        PoweredAscentMode powered_ascent_class;
-        CoastingMode coasting_class;
+        AscentMode ascent_class;
         DrogueDeployedMode drogue_deployed_class;
         MainDeployedMode main_deployed_class;
 
         FlightMode *startup = &startup_class;
         FlightMode *standby = &standby_class;
-        FlightMode *powered_ascent = &powered_ascent_class;
-        FlightMode *coasting = &coasting_class;
+        FlightMode *ascent = &ascent_class;
         FlightMode *drogue_deployed = &drogue_deployed_class;
         FlightMode *main_deployed = &main_deployed_class;
 
