@@ -33,7 +33,7 @@ namespace state {
         double pressure = -1;
         double altitude = -1;
 
-    } // namespace altimeter
+    } // namespace alt
     namespace gps {
         bool init = false;
         float latitude = -1;

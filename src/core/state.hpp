@@ -34,7 +34,7 @@ namespace state {
         extern double pressure;
         extern double altitude;
 
-    } // namespace altimeter
+    } // namespace alt
     namespace gps {
         extern bool init;
         extern float latitude;

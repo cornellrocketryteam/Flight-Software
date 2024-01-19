@@ -25,14 +25,14 @@ void FlightMode::execute() {
         state::imu::mag_y = y;
         state::imu::mag_z = z;
     }
-    
+
     if (state::accel::init) {
         ret = modules::accel.read_accel(&x, &y, &z);
         state::accel::accel_x = x;
         state::accel::accel_y = y;
         state::accel::accel_z = z;
     }
-    
+
     if (state::therm::init) {
         modules::therm.read_temperature(&state::therm::temp);
         modules::therm.read_humidity(&state::therm::humidity);
@@ -50,7 +50,6 @@ void FlightMode::execute() {
     if (state::rfm::init) {
         modules::rfm.transmit();
     }
-    
 }
 
 // Startup Mode

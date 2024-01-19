@@ -45,7 +45,7 @@ bool SD::log() {
 #ifdef VERBOSE
         printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
 #endif
-        
+
         return false;
     }
 #ifdef VERBOSE
