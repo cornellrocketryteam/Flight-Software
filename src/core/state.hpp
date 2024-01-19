@@ -29,7 +29,7 @@ namespace state {
         extern bool key_armed;
         extern bool altitude_armed;
     } // namespace flight
-    namespace altimeter {
+    namespace alt {
         extern bool init;
         extern double pressure;
         extern double altitude;

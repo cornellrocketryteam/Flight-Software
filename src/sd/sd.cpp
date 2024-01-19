@@ -10,6 +10,9 @@ bool SD::begin() {
     FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
 
     if (fr != FR_OK) {
+#ifdef VERBOSE
+        printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
+#endif
         return false;
     }
 
@@ -24,16 +27,25 @@ bool SD::log() {
     FRESULT fr = f_open(&file, constants::sd::filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
+#ifdef VERBOSE
+        printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
+#endif
         return false;
     }
 
     if (f_printf(&file, "%d\n", state::flight::cycle_count) < 0) {
+#ifdef VERBOSE
+        printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
+#endif
         return false;
     }
 
     fr = f_close(&file);
     if (FR_OK != fr) {
-        printf("f_close error: %s (%d)\n", FRESULT_str(fr), fr);
+#ifdef VERBOSE
+        printf("SD: %s (%d)\n", FRESULT_str(fr), fr);
+#endif
+        
         return false;
     }
 #ifdef VERBOSE

@@ -28,7 +28,7 @@ namespace state {
         bool key_armed = false;
         bool altitude_armed = false;
     } // namespace flight
-    namespace altimeter {
+    namespace alt {
         bool init = false;
         double pressure = -1;
         double altitude = -1;

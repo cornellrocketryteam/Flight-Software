@@ -6,7 +6,7 @@ namespace constants {
         constexpr int arming_altitude = 1524;      // Arming altitude (m)
         constexpr int main_deploy_altitude = 2286; // Main parachute deployment altitude (m)
     } // namespace flight
-    namespace altimeter {
+    namespace alt {
         constexpr double ref_pressure = 1013.25;   // Reference pressure (hPa)
     }
     namespace imu {
