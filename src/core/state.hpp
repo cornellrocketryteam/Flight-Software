@@ -6,6 +6,10 @@
 
 #include "../sd/sd.hpp"
 
+/**
+ * Container for the current flight state. Contains sensor data,
+ * sensor statuses, and flight level data.
+ */
 namespace state {
     namespace flight {
         extern StartupMode startup_class;

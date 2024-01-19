@@ -9,6 +9,9 @@
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 
+/**
+ * Container for all sensor, SD card, and RFM objects.
+ */
 namespace modules {
     extern BMP388 altimeter;
     extern BNO055 imu;
@@ -19,4 +22,4 @@ namespace modules {
     extern RFM rfm;
 }; // namespace modules
 
-#endif
+#endif // MODULES_HPP_
