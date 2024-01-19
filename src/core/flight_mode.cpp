@@ -1,41 +1,41 @@
 #include "flight_mode.hpp"
 #include "../constants.hpp"
 #include "../pins.hpp"
-#include "../sd/sd.hpp"
 #include "hardware/gpio.h"
+#include "modules.hpp"
 #include "state.hpp"
 
 void FlightMode::execute() {
-    float x, y, z;
+    double x, y, z;
 
-    state::altimeter::altimeter.read_altitude(&state::altimeter::altitude, constants::altimeter::ref_pressure);
-    state::altimeter::altimeter.read_pressure(&state::altimeter::pressure);
+    modules::altimeter.read_altitude(&state::altimeter::altitude, constants::altimeter::ref_pressure);
+    modules::altimeter.read_pressure(&state::altimeter::pressure);
 
-    state::imu::imu.read_gyro(&x, &y, &z);
+    modules::imu.read_gyro(&x, &y, &z);
     state::imu::gyro_x = x;
     state::imu::gyro_y = y;
     state::imu::gyro_z = z;
 
-    state::imu::imu.read_mag(&x, &y, &z);
+    modules::imu.read_mag(&x, &y, &z);
     state::imu::mag_x = x;
     state::imu::mag_y = y;
     state::imu::mag_z = z;
 
-    state::accel::accel.read_accel(&x, &y, &z);
+    modules::accel.read_accel(&x, &y, &z);
     state::accel::accel_x = x;
     state::accel::accel_y = y;
     state::accel::accel_z = z;
 
-    state::therm::temp = state::therm::therm.read_temperature();
-    state::therm::humidity = state::therm::therm.read_humidity();
+    modules::therm.read_temperature(&state::therm::temp);
+    modules::therm.read_humidity(&state::therm::humidity);
 
     if (!state::flight::altitude_armed && state::altimeter::altitude > constants::flight::arming_altitude) {
         state::flight::altitude_armed = true;
         // TODO: Log event
     }
 
-    state::sd::sd.log();
-    state::rfm::rfm.transmit();
+    // modules::sd.log();
+    // modules::rfm.transmit();
 }
 
 // Startup Mode
@@ -47,47 +47,47 @@ void StartupMode::execute() {
         // TODO: Log event
     }
     if (!state::altimeter::init) {
-        if (state::altimeter::altimeter.begin()) {
+        if (modules::altimeter.begin()) {
             state::altimeter::init = true;
         } else {
             // TODO: Log failure
         }
     }
     if (!state::imu::init) {
-        if (state::imu::imu.begin()) {
+        if (modules::imu.begin()) {
             state::imu::init = true;
         } else {
             // TODO: Log failure
         }
     }
     if (!state::accel::init) {
-        if (state::accel::accel.begin()) {
+        if (modules::accel.begin()) {
             state::accel::init = true;
         } else {
             // TODO: Log failure
         }
     }
     if (!state::therm::init) {
-        if (state::therm::therm.begin()) {
+        if (modules::therm.begin()) {
             state::therm::init = true;
         } else {
             // TODO: Log failure
         }
     }
-    if (!state::sd::init) {
-        if (state::sd::sd.begin()) {
-            state::sd::init = true;
-        } else {
-            // TODO: Log failure
-        }
-    }
-    if (!state::rfm::init) {
-        if (state::rfm::rfm.begin()) {
-            state::rfm::init = true;
-        } else {
-            // TODO: Log failure
-        }
-    }
+    // if (!state::sd::init) {
+    //     if (modules::sd.begin()) {
+    //         state::sd::init = true;
+    //     } else {
+    //         // TODO: Log failure
+    //     }
+    // }
+    // if (!state::rfm::init) {
+    //     if (modules::rfm.begin()) {
+    //         state::rfm::init = true;
+    //     } else {
+    //         // TODO: Log failure
+    //     }
+    // }
 }
 
 void StartupMode::transition() {
