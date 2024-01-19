@@ -95,13 +95,13 @@ void StartupMode::execute() {
             // TODO: Log failure
         }
     }
-    if (!state::rfm::init) {
-        if (modules::rfm.begin()) {
-            state::rfm::init = true;
-        } else {
-            // TODO: Log failure
-        }
-    }
+    // if (!state::rfm::init) {
+    //     if (modules::rfm.begin()) {
+    //         state::rfm::init = true;
+    //     } else {
+    //         // TODO: Log failure
+    //     }
+    // }
 }
 
 void StartupMode::transition() {

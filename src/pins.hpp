@@ -14,10 +14,10 @@
 #define RFM_DIO0 14
 #define RFM_DIO1 15
 
-#define RX_CS 5
-#define RX_RST 0
-#define RX_DIO0 13
-#define RX_DIO1 14
+// #define RX_CS 5
+// #define RX_RST 0
+// #define RX_DIO0 13
+// #define RX_DIO1 14
 
 #define GPS_RST 28
 
