@@ -22,6 +22,7 @@ namespace state {
         FlightMode *mode = startup;
 
         int cycle_count = 0;
+        uint32_t timestamp = 0;
 
         bool key_armed = false;
         bool altitude_armed = false;

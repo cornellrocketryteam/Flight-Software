@@ -7,6 +7,7 @@ void Flight::execute() {
 
 #ifdef VERBOSE
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
+    printf("Time: %d\n", state::flight::timestamp);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
     printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
 
@@ -45,4 +46,5 @@ void Flight::execute() {
     printf("----------------END LOOP----------------\n\n");
 #endif
     state::flight::cycle_count++;
+    state::flight::timestamp = to_ms_since_boot(get_absolute_time());
 }

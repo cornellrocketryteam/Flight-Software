@@ -2,7 +2,9 @@
 
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
+#include "hardware/rtc.h"
 #include "pico/stdlib.h"
+#include "pico/util/datetime.h"
 #ifdef DEBUG
 #include "tusb.h"
 #endif

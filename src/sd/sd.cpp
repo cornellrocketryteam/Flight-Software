@@ -23,7 +23,8 @@ bool SD::log() {
     std::string log;
 
     // clang-format off
-    log += std::to_string(state::flight::cycle_count) + ","
+    log += std::to_string(state::flight::timestamp) + ","
+        + std::to_string(state::flight::cycle_count) + ","
         + std::to_string(state::flight::mode->id()) + ","
 
         + std::to_string(state::alt::init) + ","

@@ -27,6 +27,7 @@ namespace state {
         extern FlightMode *mode;
 
         extern int cycle_count;
+        extern uint32_t timestamp;
 
         extern bool key_armed;
         extern bool altitude_armed;
