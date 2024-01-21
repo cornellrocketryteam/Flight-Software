@@ -21,6 +21,10 @@ struct RFM {
      */
     bool transmit();
 
+    static void set_flag();
+
+    int state = RADIOLIB_ERR_NONE;
+
     /**
      * A RadioLib hardware abstraction layer.
      */

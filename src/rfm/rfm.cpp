@@ -1,5 +1,11 @@
 #include "rfm.hpp"
 
+volatile bool transmitted = false;
+
+void RFM::set_flag() {
+    transmitted = true;
+}
+
 bool RFM::begin() {
     gpio_init(RFM_CS);
     gpio_init(RFM_RST);
@@ -12,27 +18,44 @@ bool RFM::begin() {
     sleep_ms(10);
     gpio_put(RFM_RST, 1);
 
-    int state = radio.begin();
+    state = radio.begin();
     if (state != RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
         printf("RFM: Init failed, code %d\n", state);
 #endif
         return false;
     }
+
+    radio.setPacketSentAction(set_flag);
+
+    state = radio.startTransmit("first");
     return true;
 }
 
 bool RFM::transmit() {
-    int state = radio.transmit("test");
+    if (transmitted) {
+        transmitted = false;
 
-    if (state == RADIOLIB_ERR_NONE) {
-#ifdef VERBOSE
-        printf("RFM: Transmit success\n");
-#endif
-        return true;
+        if (state == RADIOLIB_ERR_NONE) {
+            printf("RFM: Transmit success\n");
+        } else {
+            printf("RFM: Transmit failed, code %d\n", state);
+        }
+        radio.finishTransmit();
+
+        state = radio.startTransmit("test");
     }
-#ifdef VERBOSE
-    printf("RFM: Transmit failed, code %d\n", state);
-#endif
+    return true;
+    //state = radio.transmit("test");
+
+//     if (state == RADIOLIB_ERR_NONE) {
+// #ifdef VERBOSE
+//         printf("RFM: Transmit success\n");
+// #endif
+//         return true;
+//     }
+// #ifdef VERBOSE
+//     printf("RFM: Transmit failed, code %d\n", state);
+// #endif
     return false;
 }
