@@ -70,6 +70,11 @@ public:
 class AscentMode : public FlightMode {
 public:
     /**
+     * Checks arming altitude in addition to sensor reading.
+     */
+    void execute() override;
+
+    /**
      * Transition to drogue deployed mode if apogee has been reached.
      */
     void transition();

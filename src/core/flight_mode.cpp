@@ -7,7 +7,6 @@
 
 void FlightMode::execute() {
     bool ret;
-    double x, y, z;
 
     if (state::alt::init) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, constants::alt::ref_pressure);
@@ -15,33 +14,30 @@ void FlightMode::execute() {
     }
 
     if (state::imu::init) {
-        ret = modules::imu.read_gyro(&x, &y, &z);
-        state::imu::gyro_x = x;
-        state::imu::gyro_y = y;
-        state::imu::gyro_z = z;
+        ret = modules::imu.read_gyro(
+            &state::imu::gyro_x,
+            &state::imu::gyro_y,
+            &state::imu::gyro_z
+        );
 
-        ret = modules::imu.read_mag(&x, &y, &z);
-        state::imu::mag_x = x;
-        state::imu::mag_y = y;
-        state::imu::mag_z = z;
+        ret = modules::imu.read_mag(
+            &state::imu::mag_x,
+            &state::imu::mag_y,
+            &state::imu::mag_z
+        );
     }
 
     if (state::accel::init) {
-        ret = modules::accel.read_accel(&x, &y, &z);
-        state::accel::accel_x = x;
-        state::accel::accel_y = y;
-        state::accel::accel_z = z;
+        ret = modules::accel.read_accel(
+            &state::accel::accel_x,
+            &state::accel::accel_y,
+            &state::accel::accel_z
+        );
     }
 
     if (state::therm::init) {
         modules::therm.read_temperature(&state::therm::temp);
         modules::therm.read_humidity(&state::therm::humidity);
-    }
-
-    // TODO: Move this
-    if (!state::flight::altitude_armed && state::alt::altitude > constants::flight::arming_altitude) {
-        state::flight::altitude_armed = true;
-        state::flight::events.emplace_back("Alt armed");
     }
 
     if (state::sd::init) {
@@ -124,6 +120,15 @@ void StandbyMode::transition() {
 }
 
 // Ascent Mode
+
+void AscentMode::execute() {
+    FlightMode::execute();
+
+    if (!state::flight::altitude_armed && state::alt::altitude > constants::flight::arming_altitude) {
+        state::flight::altitude_armed = true;
+        state::flight::events.emplace_back("Alt armed");
+    }
+}
 
 void AscentMode::transition() {
     if (apogee_detected()) {
