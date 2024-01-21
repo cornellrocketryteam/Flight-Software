@@ -1,9 +1,9 @@
 #include "rfm.hpp"
 
-volatile bool transmitted = false;
+volatile bool awaiting = true;
 
 void RFM::set_flag() {
-    transmitted = true;
+    awaiting = true;
 }
 
 bool RFM::begin() {
@@ -21,41 +21,34 @@ bool RFM::begin() {
     state = radio.begin();
     if (state != RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
-        printf("RFM: Init failed, code %d\n", state);
+        printf("RFM Error: Init failed, code %d\n", state);
 #endif
         return false;
     }
 
     radio.setPacketSentAction(set_flag);
 
-    state = radio.startTransmit("first");
     return true;
 }
 
 bool RFM::transmit() {
-    if (transmitted) {
-        transmitted = false;
+    if (awaiting) {
+        awaiting = false;
 
         if (state == RADIOLIB_ERR_NONE) {
+#ifdef VERBOSE
             printf("RFM: Transmit success\n");
+#endif
         } else {
-            printf("RFM: Transmit failed, code %d\n", state);
+#ifdef VERBOSE
+            printf("RFM Error: Transmit failed, code %d\n", state);
+            return false;
         }
+#endif
         radio.finishTransmit();
 
         state = radio.startTransmit("test");
+        return true;
     }
-    return true;
-    //state = radio.transmit("test");
-
-//     if (state == RADIOLIB_ERR_NONE) {
-// #ifdef VERBOSE
-//         printf("RFM: Transmit success\n");
-// #endif
-//         return true;
-//     }
-// #ifdef VERBOSE
-//     printf("RFM: Transmit failed, code %d\n", state);
-// #endif
     return false;
 }

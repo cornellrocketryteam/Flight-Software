@@ -21,9 +21,10 @@ struct RFM {
      */
     bool transmit();
 
+    /**
+     * Callback function for when a transmission is finished.
+     */
     static void set_flag();
-
-    int state = RADIOLIB_ERR_NONE;
 
     /**
      * A RadioLib hardware abstraction layer.
@@ -34,6 +35,11 @@ struct RFM {
      * A RadioLib radio object representation.
      */
     SX1276 radio = new Module(hal, RFM_CS, RFM_DIO0, RADIOLIB_NC, RFM_DIO1);
+
+    /**
+     * Radio return state.
+     */
+    int state = RADIOLIB_ERR_NONE;
 };
 
 #endif // RFM_HPP_
