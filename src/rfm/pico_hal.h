@@ -13,10 +13,10 @@ public:
     PicoHal(spi_inst_t *spiChannel, uint32_t misoPin, uint32_t mosiPin, uint32_t sckPin, uint32_t spiSpeed = 500 * 1000)
         : RadioLibHal(GPIO_IN, GPIO_OUT, 0, 1, GPIO_IRQ_EDGE_RISE, GPIO_IRQ_EDGE_FALL),
           _spiChannel(spiChannel),
+          _spiSpeed(spiSpeed),
           _misoPin(misoPin),
           _mosiPin(mosiPin),
-          _sckPin(sckPin),
-          _spiSpeed(spiSpeed) {
+          _sckPin(sckPin) {
     }
 
     void init() override {

@@ -55,6 +55,9 @@ public:
  */
 class StandbyMode : public FlightMode {
 public:
+    /**
+     * Transitions to ascent mode upon acceleration of liftoff.
+     */
     void transition();
 
     int id() { return 1; }
