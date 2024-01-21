@@ -3,6 +3,7 @@
 
 #include "flight_mode.hpp"
 #include <stdint.h>
+#include <vector>
 
 #include "../sd/sd.hpp"
 
@@ -31,6 +32,8 @@ namespace state {
 
         extern bool key_armed;
         extern bool altitude_armed;
+
+        extern std::vector<std::string> events;
     } // namespace flight
     namespace alt {
         extern bool init;

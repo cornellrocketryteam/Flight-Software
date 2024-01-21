@@ -51,6 +51,10 @@ bool SD::log() {
         + std::to_string(state::rfm::init) + ",";
     // clang-format on
 
+    for (std::string event : state::flight::events) {
+        log += event + ",";
+    }
+
     FRESULT fr = f_open(&file, constants::sd::filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
