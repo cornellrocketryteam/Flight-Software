@@ -1,6 +1,7 @@
 #ifndef FLIGHT_MODE_HPP_
 #define FLIGHT_MODE_HPP_
 
+#include "modules.hpp"
 #include <string>
 
 /**
@@ -19,6 +20,14 @@ public:
      * in state, if necessary.
      */
     virtual void transition() = 0;
+
+    /**
+     * Checks the return result from a sensor reading and updates state on
+     * failure, if necessary.
+     * @param sensor The enum describing which sensor is being checked
+     * @param ret The return result from the sensor
+     */
+    void check_sensor(enum Sensor sensor, bool ret);
 
     /**
      * A short integer ID for storage and transmission purposes.

@@ -30,20 +30,26 @@ namespace state {
         std::vector<std::string> events = {};
     } // namespace flight
     namespace alt {
-        bool init = false;
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
+
         double pressure = -1;
         double altitude = -1;
 
     } // namespace alt
     namespace gps {
-        bool init = false;
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
+
         float latitude = -1;
         float longitude = -1;
         float altitude = -1;
         uint8_t siv = -1;
     } // namespace gps
     namespace imu {
-        bool init = false;
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
+
         double mag_x = -1;
         double mag_y = -1;
         double mag_z = -1;
@@ -53,14 +59,18 @@ namespace state {
 
     } // namespace imu
     namespace accel {
-        bool init = false;
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
+
         double accel_x = -1;
         double accel_y = -1;
         double accel_z = -1;
 
     } // namespace accel
     namespace therm {
-        bool init = false;
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
+
         double temp = -1;
         double humidity = -1;
 

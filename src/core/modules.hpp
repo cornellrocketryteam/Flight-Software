@@ -9,6 +9,13 @@
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 
+enum Sensor {
+    ALT,
+    IMU,
+    ACCEL,
+    THERM
+};
+
 /**
  * Container for all sensor, SD card, and RFM objects.
  */

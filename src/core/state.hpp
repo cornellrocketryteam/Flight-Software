@@ -7,6 +7,12 @@
 
 #include "../sd/sd.hpp"
 
+enum SensorState {
+    OFF,
+    VALID,
+    INVALID
+};
+
 /**
  * Container for the current flight state. Contains sensor data,
  * sensor statuses, and flight level data.
@@ -36,20 +42,26 @@ namespace state {
         extern std::vector<std::string> events;
     } // namespace flight
     namespace alt {
-        extern bool init;
+        extern enum SensorState status;
+        extern uint8_t failed_reads;
+
         extern double pressure;
         extern double altitude;
 
     } // namespace alt
     namespace gps {
-        extern bool init;
+        extern enum SensorState status;
+        extern uint8_t failed_reads;
+
         extern float latitude;
         extern float longitude;
         extern float altitude;
         extern uint8_t siv;
     } // namespace gps
     namespace imu {
-        extern bool init;
+        extern enum SensorState status;
+        extern uint8_t failed_reads;
+
         extern double mag_x;
         extern double mag_y;
         extern double mag_z;
@@ -59,14 +71,18 @@ namespace state {
 
     } // namespace imu
     namespace accel {
-        extern bool init;
+        extern enum SensorState status;
+        extern uint8_t failed_reads;
+
         extern double accel_x;
         extern double accel_y;
         extern double accel_z;
 
     } // namespace accel
     namespace therm {
-        extern bool init;
+        extern enum SensorState status;
+        extern uint8_t failed_reads;
+
         extern double temp;
         extern double humidity;
 

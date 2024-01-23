@@ -7,15 +7,15 @@ void Flight::execute() {
 
 #ifdef VERBOSE
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
-    printf("Time: %d\n", state::flight::timestamp);
+    printf("Time: %d ms\n", state::flight::timestamp);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
     printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
 
-    printf("ALTIMETER: %d\n", state::alt::init);
+    printf("ALTIMETER: %d\n", state::alt::status);
     printf("Altitude: %.3f\n", state::alt::altitude);
     printf("Pressure: %.3f\n\n", state::alt::pressure);
 
-    printf("IMU: %d\n", state::imu::init);
+    printf("IMU: %d\n", state::imu::status);
     printf("Gyro X: %.3f\n", state::imu::gyro_x);
     printf("Gyro Y: %.3f\n", state::imu::gyro_y);
     printf("Gyro Z: %.3f\n\n", state::imu::gyro_z);
@@ -24,12 +24,12 @@ void Flight::execute() {
     printf("Mag Y: %.3f\n", state::imu::mag_y);
     printf("Mag Z: %.3f\n\n", state::imu::mag_z);
 
-    printf("ACCELEROMETER: %d\n", state::accel::init);
+    printf("ACCELEROMETER: %d\n", state::accel::status);
     printf("Accel X: %.3f\n", state::accel::accel_x);
     printf("Accel Y: %.3f\n", state::accel::accel_y);
     printf("Accel Z: %.3f\n\n", state::accel::accel_z);
 
-    printf("THERMOMETER: %d\n", state::therm::init);
+    printf("THERMOMETER: %d\n", state::therm::status);
     printf("Temperature: %.3f\n", state::therm::temp);
     printf("Humidity: %.3f\n\n", state::therm::humidity);
 

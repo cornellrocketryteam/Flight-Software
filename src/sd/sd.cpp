@@ -27,11 +27,11 @@ bool SD::log() {
         + std::to_string(state::flight::cycle_count) + ","
         + std::to_string(state::flight::mode->id()) + ","
 
-        + std::to_string(state::alt::init) + ","
+        + std::to_string(state::alt::status) + ","
         + std::to_string(state::alt::altitude) + ","
         + std::to_string(state::alt::pressure) + ","
 
-        + std::to_string(state::imu::init) + ","
+        + std::to_string(state::imu::status) + ","
         + std::to_string(state::imu::gyro_x) + ","
         + std::to_string(state::imu::gyro_y) + ","
         + std::to_string(state::imu::gyro_z) + ","
@@ -39,12 +39,12 @@ bool SD::log() {
         + std::to_string(state::imu::mag_y) + ","
         + std::to_string(state::imu::mag_z) + ","
 
-        + std::to_string(state::accel::init) + ","
+        + std::to_string(state::accel::status) + ","
         + std::to_string(state::accel::accel_x) + ","
         + std::to_string(state::accel::accel_y) + ","
         + std::to_string(state::accel::accel_z) + ","
 
-        + std::to_string(state::therm::init) + ","
+        + std::to_string(state::therm::status) + ","
         + std::to_string(state::therm::temp) + ","
         + std::to_string(state::therm::humidity) + ","
 

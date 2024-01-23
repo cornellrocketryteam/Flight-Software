@@ -4,6 +4,7 @@ AccessModifierOffset: -4
 AlignAfterOpenBracket: BlockIndent
 AlignTrailingComments:
   Kind: Leave
+AllowShortIfStatementsOnASingleLine: true
 ColumnLimit: 0
 IndentWidth: 4
 NamespaceIndentation: All
