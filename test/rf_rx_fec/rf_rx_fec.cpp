@@ -1,9 +1,12 @@
+#include <cstring>
+#include <string>
+#include <iostream>
 #include <RadioLib.h>
 #include "pico/stdlib.h"
 #include "tusb.h"
+#include "../../lib/RS-FEC.h"
 #include "../../src/rfm/pico_hal.h"
 #include "../../src/pins.hpp"
-#include <string>
 
 #define RX_CS 5
 #define RX_RST 0
@@ -13,6 +16,13 @@
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
 SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RX_DIO1);
+
+const int msglen = 61;
+const uint8_t ECC_LENGTH = 50;
+char encoded[msglen + ECC_LENGTH];
+char repaired[msglen];
+
+RS::ReedSolomon<msglen, ECC_LENGTH> rs;
 
 int main() {
     stdio_init_all();
@@ -41,25 +51,28 @@ int main() {
     }
     printf("success!\n");
 
-    uint8_t str[4];
+    uint8_t str[8];
 
     while (true) {
         // receive a packet
         printf("[SX1276] Waiting for incoming transmission ... ");
 
-        int state = radio.receive(str, 4);
-
+        uint8_t encoded[msglen+ECC_LENGTH];
+        int state = radio.receive(encoded, msglen+ECC_LENGTH);
+        
         if (state == RADIOLIB_ERR_NONE) {
             // packet was successfully received
             printf("success!");
-
             // print the data of the packet
-            printf("[SX1276] Data: ");
-            for (int i=0; i<4; i++) {
-                printf("%c", str[i]);
-            }
-            printf("\n");
+            printf("\n[SX1276] Raw Data Length: %d\n[SX1276] Raw Data: ", sizeof(encoded));
+            for(uint i = 0; i < sizeof(encoded); i++) {    printf("%c", encoded[i]);    }    printf("\n");
 
+            rs.Decode(encoded, repaired);
+            std::string result = repaired;
+            printf("Result: \"");
+            for (int i=0; i<msglen; i++) printf("%c", (char) repaired[i]);
+            printf("\"\n");
+            
             // // print the RSSI (Received Signal Strength Indicator)
             // // of the last received packet
             // Serial.print(F("[SX1278] RSSI:\t\t\t"));
