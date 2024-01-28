@@ -48,6 +48,7 @@ namespace state {
         extern double pressure;
         extern double altitude;
 
+        extern double ref_pressure;
     } // namespace alt
     namespace gps {
         extern enum SensorState status;

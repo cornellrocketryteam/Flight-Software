@@ -36,6 +36,7 @@ namespace state {
         double pressure = -1;
         double altitude = -1;
 
+        double ref_pressure = -1;
     } // namespace alt
     namespace gps {
         enum SensorState status = OFF;

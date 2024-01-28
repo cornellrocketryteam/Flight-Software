@@ -9,7 +9,7 @@ void FlightMode::execute() {
     bool ret;
 
     if (!state::alt::status == OFF) {
-        ret = modules::altimeter.read_altitude(&state::alt::altitude, 1004.285);
+        ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT, ret);
     }
@@ -132,6 +132,11 @@ void StartupMode::execute() {
     if (state::alt::status == OFF) {
         if (modules::altimeter.begin()) {
             state::alt::status = VALID;
+            // TODO: Investigate the cause of the first reading always being bad
+            modules::altimeter.read_pressure(&state::alt::ref_pressure);
+            sleep_ms(10);
+
+            modules::altimeter.read_pressure(&state::alt::ref_pressure);
         } else {
             state::flight::events.emplace_back("Alt init failed");
         }
@@ -197,22 +202,37 @@ void AscentMode::execute() {
         state::flight::altitude_armed = true;
         state::flight::events.emplace_back("Alt armed");
     }
+    if (state::flight::altitude_armed && !state::alt::status == OFF) {
+        altitude_sum += state::alt::altitude;
+        next_alt++;
+    }
 }
 
 void AscentMode::transition() {
-    if (apogee_detected()) {
-        gpio_put(SSA_1, 1);
-        state::flight::events.emplace_back("Drogue triggered");
-        state::flight::mode = state::flight::drogue_deployed;
+    if (state::flight::altitude_armed && !state::alt::status == OFF && next_alt % 10 == 0) {
+        run_filter();
+        if (apogee_detected()) {
+            gpio_put(SSA_1, 1);
+            state::flight::events.emplace_back("Drogue triggered");
+            state::flight::mode = state::flight::drogue_deployed;
+        }
     }
 }
 
 bool AscentMode::apogee_detected() {
-    if (!state::flight::altitude_armed) {
-        return false;
+    // TODO: Change to an array of filtered alts to support different filtering lengths
+    if (filtered_alt1 > filtered_alt2 && filtered_alt2 > filtered_alt3) {
+        return true;
     }
-    // TODO: Port apogee detection from old FSW
     return false;
+}
+
+void AscentMode::run_filter() {
+    // TODO: Probably refactor
+    filtered_alt1 = filtered_alt2;
+    filtered_alt2 = filtered_alt3;
+    filtered_alt3 = altitude_sum / 10.0;
+    altitude_sum = 0;
 }
 
 // Drogue Deployed Mode

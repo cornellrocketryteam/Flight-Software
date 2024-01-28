@@ -97,6 +97,16 @@ private:
      * @return True if apogee has been detected, false otherwise.
      */
     bool apogee_detected();
+
+    void run_filter();
+
+    int next_alt;
+
+    double altitude_sum;
+
+    double filtered_alt1 = 0;
+    double filtered_alt2 = 0;
+    double filtered_alt3 = 0;
 };
 
 /**
