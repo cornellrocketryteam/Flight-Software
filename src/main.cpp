@@ -25,8 +25,11 @@ int main() {
     gpio_pull_up(I2C_SDA);
     gpio_pull_up(I2C_SCL);
 
-    gpio_init(ARMED);
-    gpio_set_dir(ARMED, GPIO_IN);
+    gpio_init(ARMED_IN);
+    gpio_set_dir(ARMED_IN, GPIO_IN);
+
+    gpio_init(ARMED_OUT);
+    gpio_set_dir(ARMED_OUT, GPIO_OUT);
 
     gpio_init(SSA_1);
     gpio_set_dir(SSA_1, GPIO_OUT);

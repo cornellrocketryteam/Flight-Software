@@ -14,14 +14,10 @@
 #define RFM_DIO0 14
 #define RFM_DIO1 15
 
-// #define RX_CS 5
-// #define RX_RST 0
-// #define RX_DIO0 13
-// #define RX_DIO1 14
-
 #define GPS_RST 28
 
 #define SSA_1 20
 #define SSA_2 21
 
-#define ARMED 6
+#define ARMED_IN 6
+#define ARMED_OUT 7

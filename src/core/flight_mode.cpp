@@ -125,8 +125,9 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
 
 void StartupMode::execute() {
 
-    if (gpio_get(ARMED)) {
+    if (gpio_get(ARMED_IN)) {
         state::flight::key_armed = true;
+        gpio_put(ARMED_OUT, 1);
         state::flight::events.emplace_back("Key armed");
     }
     if (state::alt::status == OFF) {
