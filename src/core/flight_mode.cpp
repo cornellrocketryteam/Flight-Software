@@ -67,7 +67,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             state::alt::failed_reads++;
             state::alt::status = INVALID;
             state::flight::events.emplace_back("Alt reading failed");
-            if (state::alt::failed_reads == constants::flight::max_failed_reads) {
+            if (state::alt::failed_reads == constants::max_failed_reads) {
                 state::alt::status = OFF;
                 state::flight::events.emplace_back("Alt turned off");
             }
@@ -82,7 +82,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             state::imu::failed_reads++;
             state::imu::status = INVALID;
             state::flight::events.emplace_back("IMU reading failed");
-            if (state::imu::failed_reads == constants::flight::max_failed_reads) {
+            if (state::imu::failed_reads == constants::max_failed_reads) {
                 state::imu::status = OFF;
                 state::flight::events.emplace_back("IMU turned off");
             }
@@ -97,7 +97,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             state::accel::failed_reads++;
             state::accel::status = INVALID;
             state::flight::events.emplace_back("Accel reading failed");
-            if (state::accel::failed_reads == constants::flight::max_failed_reads) {
+            if (state::accel::failed_reads == constants::max_failed_reads) {
                 state::accel::status = OFF;
                 state::flight::events.emplace_back("Accel turned off");
             }
@@ -112,7 +112,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             state::therm::failed_reads++;
             state::therm::status = INVALID;
             state::flight::events.emplace_back("Therm reading failed");
-            if (state::therm::failed_reads == constants::flight::max_failed_reads) {
+            if (state::therm::failed_reads == constants::max_failed_reads) {
                 state::therm::status = OFF;
                 state::flight::events.emplace_back("Therm turned off");
             }
@@ -199,7 +199,7 @@ void AscentMode::execute() {
     FlightMode::execute();
 
     // TODO: Change to take in multiple values for arming
-    if (state::alt::status == VALID && !state::flight::altitude_armed && state::alt::altitude > constants::flight::arming_altitude) {
+    if (state::alt::status == VALID && !state::flight::altitude_armed && state::alt::altitude > constants::arming_altitude) {
         state::flight::altitude_armed = true;
         state::flight::events.emplace_back("Alt armed");
     }
@@ -239,7 +239,7 @@ void AscentMode::run_filter() {
 // Drogue Deployed Mode
 
 void DrogueDeployedMode::transition() {
-    if (state::alt::altitude < constants::flight::main_deploy_altitude) {
+    if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_2, 1);
         state::flight::events.emplace_back("Main triggered");
         state::flight::mode = state::flight::main_deployed;

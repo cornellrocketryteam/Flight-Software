@@ -55,7 +55,7 @@ bool SD::log() {
         log += event + ",";
     }
 
-    FRESULT fr = f_open(&file, constants::sd::filename, FA_OPEN_APPEND | FA_WRITE);
+    FRESULT fr = f_open(&file, constants::filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
 #ifdef VERBOSE

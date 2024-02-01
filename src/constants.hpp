@@ -5,20 +5,14 @@
  * Container for flight-related constants.
  */
 namespace constants {
-    namespace flight {
-        constexpr int arming_altitude = 1524;      // Arming altitude (m)
-        constexpr int main_deploy_altitude = 2286; // Main parachute deployment altitude (m)
-        constexpr uint8_t max_failed_reads = 10;   // The number of times a sensor reading can fail before shutdown
-    } // namespace flight
-    namespace alt {
-        constexpr double ref_pressure = 1013.25;   // Reference pressure (hPa)
-    }
-    namespace imu {
-        constexpr double declination = 11.7;        // Duffield declination - change for launch
-    }
-    namespace sd {
-        const char *const filename = "log.txt";      // The file to which data is logged
-    }
+
+    constexpr uint16_t arming_altitude = 25;        // meters           TODO: CHANGE TO 1524 FOR LAUNCH
+    constexpr uint16_t main_deploy_altitude = 40;   // meters           TODO: CHANGE TO 2286 FOR LAUNCH
+    constexpr uint8_t max_failed_reads = 10; 
+
+    constexpr uint8_t accel_threshold = 3;          // m/s^2            TODO: CHANGE FOR LAUNCH
+
+    const char *const filename = "log.txt";
 }; // namespace constants
 
 #endif // CONSTANTS_HPP_
