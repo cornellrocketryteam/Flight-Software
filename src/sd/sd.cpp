@@ -46,7 +46,6 @@ bool SD::log() {
 
         + std::to_string(state::therm::status) + ","
         + std::to_string(state::therm::temp) + ","
-        + std::to_string(state::therm::humidity) + ","
 
         + std::to_string(state::rfm::init) + ",";
     // clang-format on

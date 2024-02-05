@@ -73,7 +73,6 @@ namespace state {
         uint8_t failed_reads = 0;
 
         double temp = -1;
-        double humidity = -1;
 
     } // namespace therm
     namespace sd {

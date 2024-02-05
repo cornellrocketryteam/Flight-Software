@@ -85,7 +85,6 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern double temp;
-        extern double humidity;
 
     } // namespace therm
     namespace sd {

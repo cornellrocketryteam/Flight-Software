@@ -39,7 +39,6 @@ void FlightMode::execute() {
 
     if (!state::imu::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
-        ret = modules::therm.read_humidity(&state::therm::humidity);
         check_sensor(THERM, ret);
     }
 
