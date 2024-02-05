@@ -5,7 +5,7 @@
 #include "hardware/rtc.h"
 #include "pico/stdlib.h"
 #include "pico/util/datetime.h"
-#ifdef DEBUG
+#ifndef LAUNCH
 #include "tusb.h"
 #endif
 
@@ -16,6 +16,13 @@ Flight flight;
 
 int main() {
     stdio_init_all();
+#ifdef LAUNCH
+    sleep_ms(3000);
+    printf("Unplug from computer\n");
+    sleep_ms(5000);
+    printf("ERROR: Too late. Restart process\n");
+    sleep_ms(1000);
+#endif
 
     i2c_init(I2C_PORT, 400 * 1000);
 
@@ -41,7 +48,7 @@ int main() {
     gpio_set_dir(RFM_CS, GPIO_OUT);
     gpio_put(RFM_CS, 1);
 
-#ifdef DEBUG
+#ifndef LAUNCH
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }

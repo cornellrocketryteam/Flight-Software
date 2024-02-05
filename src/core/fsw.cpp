@@ -1,9 +1,6 @@
 #include "fsw.hpp"
 
 void Flight::execute() {
-#ifdef DEBUG
-    // sleep_ms(1000);
-#endif
 
 #ifdef VERBOSE
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
