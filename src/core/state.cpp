@@ -33,10 +33,10 @@ namespace state {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        double pressure = -1;
-        double altitude = -1;
+        float pressure = -1;
+        float altitude = -1;
 
-        double ref_pressure = -1;
+        float ref_pressure = -1;
     } // namespace alt
     namespace gps {
         enum SensorState status = OFF;
@@ -51,28 +51,28 @@ namespace state {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        double mag_x = -1;
-        double mag_y = -1;
-        double mag_z = -1;
-        double gyro_x = -1;
-        double gyro_y = -1;
-        double gyro_z = -1;
+        float mag_x = -1;
+        float mag_y = -1;
+        float mag_z = -1;
+        float gyro_x = -1;
+        float gyro_y = -1;
+        float gyro_z = -1;
 
     } // namespace imu
     namespace accel {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        double accel_x = -1;
-        double accel_y = -1;
-        double accel_z = -1;
+        float accel_x = -1;
+        float accel_y = -1;
+        float accel_z = -1;
 
     } // namespace accel
     namespace therm {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        double temp = -1;
+        float temp = -1;
 
     } // namespace therm
     namespace sd {

@@ -45,10 +45,10 @@ namespace state {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double pressure;
-        extern double altitude;
+        extern float pressure;
+        extern float altitude;
 
-        extern double ref_pressure;
+        extern float ref_pressure;
     } // namespace alt
     namespace gps {
         extern enum SensorState status;
@@ -63,28 +63,28 @@ namespace state {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double mag_x;
-        extern double mag_y;
-        extern double mag_z;
-        extern double gyro_x;
-        extern double gyro_y;
-        extern double gyro_z;
+        extern float mag_x;
+        extern float mag_y;
+        extern float mag_z;
+        extern float gyro_x;
+        extern float gyro_y;
+        extern float gyro_z;
 
     } // namespace imu
     namespace accel {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double accel_x;
-        extern double accel_y;
-        extern double accel_z;
+        extern float accel_x;
+        extern float accel_y;
+        extern float accel_z;
 
     } // namespace accel
     namespace therm {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double temp;
+        extern float temp;
 
     } // namespace therm
     namespace sd {
