@@ -69,6 +69,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             if (state::alt::failed_reads == constants::max_failed_reads) {
                 state::alt::status = OFF;
                 state::flight::events.emplace_back("Alt turned off");
+                state::flight::mode = state::flight::fault;
             }
         }
         break;
@@ -99,6 +100,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             if (state::accel::failed_reads == constants::max_failed_reads) {
                 state::accel::status = OFF;
                 state::flight::events.emplace_back("Accel turned off");
+                state::flight::mode = state::flight::fault;
             }
         }
         break;
@@ -181,6 +183,9 @@ void StartupMode::execute() {
 void StartupMode::transition() {
     if (state::flight::key_armed) {
         state::flight::mode = state::flight::standby;
+    }
+    if (state::alt::status != VALID || state::accel::status != VALID) {
+        state::flight::mode = state::flight::fault;
     }
 }
 

@@ -24,12 +24,14 @@ namespace state {
         extern AscentMode ascent_class;
         extern DrogueDeployedMode drogue_deployed_class;
         extern MainDeployedMode main_deployed_class;
+        extern FaultMode fault_class;
 
         extern FlightMode *startup;
         extern FlightMode *standby;
         extern FlightMode *ascent;
         extern FlightMode *drogue_deployed;
         extern FlightMode *main_deployed;
+        extern FlightMode *fault;
 
         extern FlightMode *mode;
 

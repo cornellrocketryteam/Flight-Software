@@ -137,4 +137,18 @@ public:
     std::string name() { return "Main Deployed"; };
 };
 
+/**
+ * Flight mode representating situations where flight functions are not able to proceed.
+ */
+class FaultMode : public FlightMode {
+public:
+    /**
+     * Flight functionality is disabled. No transition criteria.
+     */
+    void transition() {};
+
+    int id() { return 5; };
+    std::string name() { return "Fault"; };
+};
+
 #endif // FLIGHT_MODE_HPP_

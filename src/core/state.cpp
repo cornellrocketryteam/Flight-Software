@@ -12,12 +12,14 @@ namespace state {
         AscentMode ascent_class;
         DrogueDeployedMode drogue_deployed_class;
         MainDeployedMode main_deployed_class;
+        FaultMode fault_class;
 
         FlightMode *startup = &startup_class;
         FlightMode *standby = &standby_class;
         FlightMode *ascent = &ascent_class;
         FlightMode *drogue_deployed = &drogue_deployed_class;
         FlightMode *main_deployed = &main_deployed_class;
+        FlightMode *fault = &fault_class;
 
         FlightMode *mode = startup;
 
