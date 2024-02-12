@@ -115,6 +115,10 @@ private:
 class DrogueDeployedMode : public FlightMode {
 public:
     /**
+     * Checks ematch on-time in addition to sensor reading.
+     */
+    void execute() override;
+    /**
      * Transition to main deployed mode if the proper altitude has been reached.
      */
     void transition();
@@ -129,6 +133,11 @@ public:
 class MainDeployedMode : public FlightMode {
 public:
     /**
+     * Checks e-match on-time in addition to sensor reading.
+     */
+    void execute() override;
+
+        /**
      * Final mode. No transition criteria.
      */
     void transition() {};

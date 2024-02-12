@@ -12,6 +12,8 @@ namespace constants {
 
     constexpr uint8_t accel_threshold = 3;          // m/s^2            TODO: CHANGE FOR LAUNCH
 
+    constexpr uint8_t ematch_threshold = 200;       // ms
+
     const char *const filename = "log.txt";
 }; // namespace constants
 

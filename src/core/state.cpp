@@ -29,6 +29,8 @@ namespace state {
         bool key_armed = false;
         bool altitude_armed = false;
 
+        uint32_t ematch_start = 0;
+
         std::vector<std::string> events = {};
     } // namespace flight
     namespace alt {

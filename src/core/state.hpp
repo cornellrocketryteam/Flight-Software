@@ -41,6 +41,8 @@ namespace state {
         extern bool key_armed;
         extern bool altitude_armed;
 
+        extern uint32_t ematch_start;
+
         extern std::vector<std::string> events;
     } // namespace flight
     namespace alt {

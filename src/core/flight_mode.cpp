@@ -218,6 +218,7 @@ void AscentMode::transition() {
         run_filter();
         if (apogee_detected()) {
             gpio_put(SSA_1, 1);
+            state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
             state::flight::events.emplace_back("Drogue triggered");
             state::flight::mode = state::flight::drogue_deployed;
         }
@@ -242,10 +243,27 @@ void AscentMode::run_filter() {
 
 // Drogue Deployed Mode
 
+void DrogueDeployedMode::execute() {
+    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
+        gpio_put(SSA_1, 0);
+    }
+    FlightMode::execute();
+}
+
 void DrogueDeployedMode::transition() {
     if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_2, 1);
+        state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
         state::flight::events.emplace_back("Main triggered");
         state::flight::mode = state::flight::main_deployed;
     }
+}
+
+// Main Deployed Mode
+
+void MainDeployedMode::execute() {
+    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
+        gpio_put(SSA_2, 0);
+    }
+    FlightMode::execute();
 }
