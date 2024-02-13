@@ -50,8 +50,8 @@ bool SD::log() {
         + std::to_string(state::rfm::init) + ",";
     // clang-format on
 
-    for (std::string event : state::flight::events) {
-        log += event + ",";
+    for (Event event : state::flight::events) {
+        log += std::to_string(static_cast<uint8_t>(event)) + ",";
     }
 
     FRESULT fr = f_open(&file, constants::filename, FA_OPEN_APPEND | FA_WRITE);

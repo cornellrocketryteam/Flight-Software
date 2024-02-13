@@ -1,6 +1,7 @@
 #ifndef STATE_HPP_
 #define STATE_HPP_
 
+#include "../constants.hpp"
 #include "flight_mode.hpp"
 #include <stdint.h>
 #include <vector>
@@ -43,7 +44,7 @@ namespace state {
 
         extern uint32_t ematch_start;
 
-        extern std::vector<std::string> events;
+        extern std::vector<Event> events;
     } // namespace flight
     namespace alt {
         extern enum SensorState status;

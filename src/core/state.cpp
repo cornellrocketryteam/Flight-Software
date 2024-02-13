@@ -31,7 +31,7 @@ namespace state {
 
         uint32_t ematch_start = 0;
 
-        std::vector<std::string> events = {};
+        std::vector<Event> events = {};
     } // namespace flight
     namespace alt {
         enum SensorState status = OFF;
