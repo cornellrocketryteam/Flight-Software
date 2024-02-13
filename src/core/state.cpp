@@ -27,7 +27,7 @@ namespace state {
         uint32_t timestamp = 0;
 
         bool key_armed = false;
-        bool altitude_armed = false;
+        bool alt_armed = false;
 
         uint32_t ematch_start = 0;
 

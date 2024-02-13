@@ -6,7 +6,7 @@ void Flight::execute() {
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
     printf("Time: %d ms\n", state::flight::timestamp);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
-    printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
+    printf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     printf("ALTIMETER: %d\n", state::alt::status);
     printf("Altitude (m): %.3f\n", state::alt::altitude);

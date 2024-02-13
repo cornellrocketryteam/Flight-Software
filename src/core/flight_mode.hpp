@@ -32,7 +32,7 @@ public:
     /**
      * A short integer ID for storage and transmission purposes.
      */
-    virtual int id() = 0;
+    virtual uint8_t id() = 0;
 
     /**
      * A verbose name for debugging purposes.
@@ -55,7 +55,7 @@ public:
      */
     void transition();
 
-    int id() { return 0; }
+    uint8_t id() { return 0; }
     std::string name() { return "Startup"; };
 };
 
@@ -69,7 +69,7 @@ public:
      */
     void transition();
 
-    int id() { return 1; }
+    uint8_t id() { return 1; }
     std::string name() { return "Standby"; };
 };
 
@@ -88,7 +88,7 @@ public:
      */
     void transition();
 
-    int id() { return 2; }
+    uint8_t id() { return 2; }
     std::string name() { return "Ascent"; };
 
 private:
@@ -124,7 +124,7 @@ public:
      */
     void transition();
 
-    int id() { return 3; }
+    uint8_t id() { return 3; }
     std::string name() { return "Drogue Deployed"; };
 };
 
@@ -143,7 +143,7 @@ public:
      */
     void transition() {};
 
-    int id() { return 4; }
+    uint8_t id() { return 4; }
     std::string name() { return "Main Deployed"; };
 };
 
@@ -157,7 +157,7 @@ public:
      */
     void transition() {};
 
-    int id() { return 5; };
+    uint8_t id() { return 5; };
     std::string name() { return "Fault"; };
 };
 

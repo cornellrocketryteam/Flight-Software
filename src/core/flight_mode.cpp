@@ -205,13 +205,13 @@ void AscentMode::execute() {
     FlightMode::execute();
 
     // Check for arming altitude
-    if (state::alt::status == VALID && !state::flight::altitude_armed && state::alt::altitude > constants::arming_altitude) {
-        state::flight::altitude_armed = true;
+    if (state::alt::status == VALID && !state::flight::alt_armed && state::alt::altitude > constants::arming_altitude) {
+        state::flight::alt_armed = true;
         state::flight::events.emplace_back(Event::alt_armed);
     }
 
     // If we're altitude armed, start checking altitudes for apogee detection
-    if (state::flight::altitude_armed && state::alt::status != OFF) {
+    if (state::flight::alt_armed && state::alt::status != OFF) {
         altitude_sum += state::alt::altitude;
         next_alt++;
     }
@@ -219,7 +219,7 @@ void AscentMode::execute() {
 
 void AscentMode::transition() {
     // Every 10 readings, if we're armed and the altimeter is valid, check for apogee
-    if (state::flight::altitude_armed && state::alt::status == VALID && next_alt % 10 == 0) {
+    if (state::flight::alt_armed && state::alt::status == VALID && next_alt % 10 == 0) {
         run_filter();
         if (apogee_detected()) {
             gpio_put(SSA_1, 1);

@@ -1,15 +1,17 @@
 #ifndef STATE_HPP_
 #define STATE_HPP_
 
-#include "../constants.hpp"
+// clang-format off
 #include "flight_mode.hpp"
+#include "../constants.hpp"
 #include <stdint.h>
 #include <vector>
+// clang-format on
 
 #include "../sd/sd.hpp"
 
 enum SensorState {
-    OFF,
+    OFF = 0,
     VALID,
     INVALID
 };
@@ -40,7 +42,7 @@ namespace state {
         extern uint32_t timestamp;
 
         extern bool key_armed;
-        extern bool altitude_armed;
+        extern bool alt_armed;
 
         extern uint32_t ematch_start;
 
