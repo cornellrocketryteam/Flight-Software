@@ -20,6 +20,7 @@ void FlightMode::execute() {
             &state::imu::gyro_y,
             &state::imu::gyro_z
         );
+        check_sensor(IMU, ret);
         ret = modules::imu.read_mag(
             &state::imu::mag_x,
             &state::imu::mag_y,
@@ -131,6 +132,8 @@ void StartupMode::execute() {
         gpio_put(ARMED_OUT, 1);
         state::flight::events.emplace_back(Event::key_armed);
     }
+
+    // Attempt to initialize all modules
     if (state::alt::status == OFF) {
         if (modules::altimeter.begin()) {
             state::alt::status = VALID;
@@ -194,9 +197,28 @@ void StartupMode::transition() {
 // Standby Mode
 
 void StandbyMode::transition() {
-    // TODO: Detect acceleration of liftoff
+    if (state::accel::status == VALID) {
+        filter_accel();
 
-    state::flight::mode = state::flight::ascent;
+        if (filtered_accel[0] > constants::accel_threshold &&
+            filtered_accel[1] > constants::accel_threshold &&
+            filtered_accel[2] > constants::accel_threshold) {
+            state::flight::mode = state::flight::ascent;
+        }
+    }
+}
+
+void StandbyMode::filter_accel() {
+    accel_sum += state::accel::accel_z;
+    sample_count++;
+
+    if (sample_count == 10) {
+        filtered_accel[2] = filtered_accel[1];
+        filtered_accel[1] = filtered_accel[0];
+        filtered_accel[0] = accel_sum / 10;
+        accel_sum = 0;
+        sample_count = 0;
+    }
 }
 
 // Ascent Mode
@@ -209,19 +231,14 @@ void AscentMode::execute() {
         state::flight::alt_armed = true;
         state::flight::events.emplace_back(Event::alt_armed);
     }
-
-    // If we're altitude armed, start checking altitudes for apogee detection
-    if (state::flight::alt_armed && state::alt::status != OFF) {
-        altitude_sum += state::alt::altitude;
-        next_alt++;
-    }
 }
 
 void AscentMode::transition() {
-    // Every 10 readings, if we're armed and the altimeter is valid, check for apogee
-    if (state::flight::alt_armed && state::alt::status == VALID && next_alt % 10 == 0) {
-        run_filter();
-        if (apogee_detected()) {
+    // If we're armed and the altimeter is valid, check for apogee
+    if (state::flight::alt_armed && state::alt::status == VALID) {
+        filter_alt();
+
+        if (filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             gpio_put(SSA_1, 1);
             state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
             state::flight::mode = state::flight::drogue_deployed;
@@ -229,20 +246,17 @@ void AscentMode::transition() {
     }
 }
 
-bool AscentMode::apogee_detected() {
-    // TODO: Change to an array of filtered alts to support different filtering lengths
-    if (filtered_alt1 > filtered_alt2 && filtered_alt2 > filtered_alt3) {
-        return true;
-    }
-    return false;
-}
+void AscentMode::filter_alt() {
+    alt_sum += state::alt::altitude;
+    sample_count++;
 
-void AscentMode::run_filter() {
-    // TODO: Probably refactor
-    filtered_alt1 = filtered_alt2;
-    filtered_alt2 = filtered_alt3;
-    filtered_alt3 = altitude_sum / 10.0;
-    altitude_sum = 0;
+    if (sample_count == 10) {
+        filtered_alt[2] = filtered_alt[1];
+        filtered_alt[1] = filtered_alt[0];
+        filtered_alt[0] = alt_sum / 10;
+        alt_sum = 0;
+        sample_count = 0;
+    }
 }
 
 // Drogue Deployed Mode

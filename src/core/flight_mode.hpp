@@ -71,6 +71,28 @@ public:
 
     uint8_t id() { return 1; }
     std::string name() { return "Standby"; };
+
+private:
+    /**
+     * Calculates moving averages of z-axis acceleration readings
+     * and stores them in filtered_accel.
+     */
+    void filter_accel();
+
+    /**
+     * Tracks the number of samples taken for moving averages.
+     */
+    int sample_count;
+
+    /**
+     * Accumulates the z-axis acceleration for moving averages.
+     */
+    float accel_sum;
+
+    /**
+     * Stores moving averages of z-axis accelerations.
+     */
+    float filtered_accel[3] = {0, 0, 0};
 };
 
 /**
@@ -93,20 +115,25 @@ public:
 
 private:
     /**
-     * Detects apogee with a moving average filter. Must be above the arming altitude.
-     * @return True if apogee has been detected, false otherwise.
+     * Takes moving averages of altitude readings and stores
+     * them in filtered_alt.
      */
-    bool apogee_detected();
+    void filter_alt();
 
-    void run_filter();
+    /**
+     * Tracks the number of samples taken for moving averages.
+     */
+    int sample_count;
 
-    int next_alt;
+    /**
+     * Accumulates altitude readings for moving averages.
+     */
+    float alt_sum;
 
-    double altitude_sum;
-
-    double filtered_alt1 = 0;
-    double filtered_alt2 = 0;
-    double filtered_alt3 = 0;
+    /**
+     * Stores moving averages of altitudes.
+     */
+    float filtered_alt[3] = {0, 0, 0};
 };
 
 /**
