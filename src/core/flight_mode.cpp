@@ -4,10 +4,14 @@
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
+#ifdef SIM
+#include "hardware/uart.h"
+#include "pico/multicore.h"
+#endif
 
 void FlightMode::execute() {
     bool ret;
-
+#ifndef SIM
     if (!state::alt::status == OFF) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
@@ -42,18 +46,24 @@ void FlightMode::execute() {
         ret = modules::therm.read_temperature(&state::therm::temp);
         check_sensor(THERM, ret);
     }
+#else
+    sleep_ms(1000);
+    uint32_t data;
+    data = multicore_fifo_pop_blocking();
+    printf("data after fifo: %d\n", data);
 
-    if (state::sd::init) {
-        modules::sd.log();
-    }
+#endif
+    // if (state::sd::init) {
+    //     modules::sd.log();
+    // }
 
-    if (!state::flight::events.empty()) {
-        state::flight::events.clear();
-    }
+    // if (!state::flight::events.empty()) {
+    //     state::flight::events.clear();
+    // }
 
-    if (state::rfm::init) {
-        modules::rfm.transmit();
-    }
+    // if (state::rfm::init) {
+    //     modules::rfm.transmit();
+    // }
 }
 
 void FlightMode::check_sensor(enum Sensor sensor, bool ret) {

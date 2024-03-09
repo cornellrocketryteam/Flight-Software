@@ -8,11 +8,34 @@
 #ifndef LAUNCH
 #include "tusb.h"
 #endif
+#ifdef SIM
+#include "hardware/uart.h"
+#include "pico/multicore.h"
+#endif
 
 #include "core/fsw.hpp"
 #include "pins.hpp"
 
 Flight flight;
+
+#ifdef SIM
+void poll_sim_layer() {
+    while (true) {
+        uint8_t buf[4];
+        uart_read_blocking(UART_ID, buf, 4);
+        for (int i = 0; i < 4; i++) {
+            printf("byte %d: %d\n", i, buf[i]);
+        }
+
+        uint32_t data;
+        data = (buf[3] << 24) | (buf[2] << 16) | (buf[1] << 8) | (buf[0]);
+        printf("data before fifo: %d\n", data);
+
+        multicore_fifo_drain();
+        multicore_fifo_push_blocking(data);
+    }
+}
+#endif
 
 int main() {
     stdio_init_all();
@@ -47,6 +70,14 @@ int main() {
     gpio_init(RFM_CS);
     gpio_set_dir(RFM_CS, GPIO_OUT);
     gpio_put(RFM_CS, 1);
+
+#ifdef SIM
+    uart_init(UART_ID, BAUD_RATE);
+    gpio_set_function(UART_TX_PIN, GPIO_FUNC_UART);
+    gpio_set_function(UART_RX_PIN, GPIO_FUNC_UART);
+
+    multicore_launch_core1(poll_sim_layer);
+#endif
 
 #ifndef LAUNCH
     while (!tud_cdc_connected()) {

@@ -18,6 +18,7 @@ add_compile_options(
 )
 
 add_definitions(-DVERBOSE)
+add_definitions(-DSIM)
 
 # Add source files from src/
 set(SOURCES
@@ -67,6 +68,8 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib 
     hardware_i2c 
     hardware_gpio
+    hardware_uart
+    pico_multicore
     RadioLib
     FatFs_SPI 
     BMP388-Pico
