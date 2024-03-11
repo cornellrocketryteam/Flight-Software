@@ -50,7 +50,7 @@ bool RFM::transmit() {
 #endif
         radio.finishTransmit();
 
-        uint8_t packet[61];
+        uint8_t packet[82];
 
         uint16_t metadata = 0;
 
@@ -63,7 +63,7 @@ bool RFM::transmit() {
         metadata |= (static_cast<uint8_t>(state::therm::status) & 0b11) << 3;
 
         metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 2;
-        metadata |= (static_cast<uint8_t>(state::flight::key_armed) & 0b1) << 1;
+        metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 1;
         metadata |= (static_cast<uint8_t>(state::flight::alt_armed) & 0b1);
 
         std::bitset<24> event_bits;
@@ -82,21 +82,29 @@ bool RFM::transmit() {
 
         memcpy(&packet[13], &state::gps::latitude, sizeof(float));
         memcpy(&packet[17], &state::gps::longitude, sizeof(float));
-        memcpy(&packet[21], &state::gps::altitude, sizeof(float));
+        memcpy(&packet[21], &state::gps::siv, sizeof(uint8_t));
 
-        memcpy(&packet[25], &state::accel::accel_x, sizeof(float));
-        memcpy(&packet[29], &state::accel::accel_y, sizeof(float));
-        memcpy(&packet[33], &state::accel::accel_z, sizeof(float));
+        memcpy(&packet[22], &state::accel::accel_x, sizeof(float));
+        memcpy(&packet[26], &state::accel::accel_y, sizeof(float));
+        memcpy(&packet[30], &state::accel::accel_z, sizeof(float));
 
-        memcpy(&packet[37], &state::imu::gyro_x, sizeof(float));
-        memcpy(&packet[41], &state::imu::gyro_y, sizeof(float));
-        memcpy(&packet[45], &state::imu::gyro_z, sizeof(float));
+        memcpy(&packet[34], &state::imu::gyro_x, sizeof(float));
+        memcpy(&packet[38], &state::imu::gyro_y, sizeof(float));
+        memcpy(&packet[42], &state::imu::gyro_z, sizeof(float));
 
-        // memcpy(&packet[49], &state::imu::mag_x, sizeof(float));
-        // memcpy(&packet[53], &state::imu::mag_y, sizeof(float));
-        // memcpy(&packet[57], &state::imu::mag_z, sizeof(float));
+        memcpy(&packet[46], &state::imu::accel_x, sizeof(float));
+        memcpy(&packet[50], &state::imu::accel_y, sizeof(float));
+        memcpy(&packet[54], &state::imu::accel_z, sizeof(float));
 
-        state = radio.startTransmit(packet, 61);
+        memcpy(&packet[58], &state::imu::orientation_x, sizeof(float));
+        memcpy(&packet[62], &state::imu::orientation_y, sizeof(float));
+        memcpy(&packet[66], &state::imu::orientation_z, sizeof(float));
+
+        memcpy(&packet[70], &state::imu::gravity_x, sizeof(float));
+        memcpy(&packet[74], &state::imu::gravity_y, sizeof(float));
+        memcpy(&packet[78], &state::imu::gravity_z, sizeof(float));
+
+        state = radio.startTransmit(packet, 82);
         return true;
     }
     return false;

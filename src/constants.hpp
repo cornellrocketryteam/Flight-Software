@@ -37,7 +37,7 @@ namespace constants {
     constexpr uint16_t main_deploy_altitude = 40;   // meters           TODO: CHANGE TO 2286 FOR LAUNCH
     constexpr uint8_t max_failed_reads = 10;
 
-    constexpr uint8_t accel_threshold = 3;          // m/s^2            TODO: CHANGE TO 5 FOR LAUNCH
+    constexpr uint8_t accel_threshold = 2;          // G            TODO: CHANGE TO 5 FOR LAUNCH
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
