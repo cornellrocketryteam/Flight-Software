@@ -46,6 +46,7 @@ namespace state {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
+        bool valid = false;
         float latitude = -1;
         float longitude = -1;
         float altitude = -1;
@@ -55,12 +56,21 @@ namespace state {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        float mag_x = -1;
-        float mag_y = -1;
-        float mag_z = -1;
+        float accel_x = -1;
+        float accel_y = -1;
+        float accel_z = -1;
+
         float gyro_x = -1;
         float gyro_y = -1;
         float gyro_z = -1;
+
+        float orientation_x = -1;
+        float orientation_y = -1;
+        float orientation_z = -1;
+
+        float gravity_x = -1;
+        float gravity_y = -1;
+        float gravity_z = -1;
 
     } // namespace imu
     namespace accel {

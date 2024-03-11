@@ -61,6 +61,7 @@ namespace state {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
+        extern bool valid;
         extern float latitude;
         extern float longitude;
         extern float altitude;
@@ -70,12 +71,21 @@ namespace state {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern float mag_x;
-        extern float mag_y;
-        extern float mag_z;
+        extern float accel_x;
+        extern float accel_y;
+        extern float accel_z;
+        
         extern float gyro_x;
         extern float gyro_y;
         extern float gyro_z;
+
+        extern float orientation_x;
+        extern float orientation_y;
+        extern float orientation_z;
+
+        extern float gravity_x;
+        extern float gravity_y;
+        extern float gravity_z;
 
     } // namespace imu
     namespace accel {

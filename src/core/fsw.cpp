@@ -13,18 +13,26 @@ void Flight::execute() {
     printf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
     printf("IMU: %d\n", state::imu::status);
-    printf("Gyro X (m/s^2): %.3f\n", state::imu::gyro_x);
-    printf("Gyro Y (m/s^2): %.3f\n", state::imu::gyro_y);
-    printf("Gyro Z (m/s^2): %.3f\n\n", state::imu::gyro_z);
+    printf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
+    printf("Gyro Y (deg/s): %.3f\n", state::imu::gyro_y);
+    printf("Gyro Z (deg/s): %.3f\n\n", state::imu::gyro_z);
 
-    printf("Mag X (m/s^2): %.3f\n", state::imu::mag_x);
-    printf("Mag Y (m/s^2): %.3f\n", state::imu::mag_y);
-    printf("Mag Z (m/s^2): %.3f\n\n", state::imu::mag_z);
+    printf("Accel X (m/s^2): %.3f\n", state::imu::accel_x);
+    printf("Accel Y (m/s^2): %.3f\n", state::imu::accel_y);
+    printf("Accel Z (m/s^2): %.3f\n\n", state::imu::accel_z);
+
+    printf("Orientation X (deg): %.3f\n", state::imu::orientation_x);
+    printf("Orientation Y (deg): %.3f\n", state::imu::orientation_y);
+    printf("Orientation Z (deg): %.3f\n\n", state::imu::orientation_z);
+
+    printf("Gravity X (m/s^2): %.3f\n", state::imu::gravity_x);
+    printf("Gravity Y (m/s^2): %.3f\n", state::imu::gravity_y);
+    printf("Gravity Z (m/s^2): %.3f\n\n", state::imu::gravity_z);
 
     printf("ACCELEROMETER: %d\n", state::accel::status);
-    printf("Accel X (m/s^2): %.3f\n", state::accel::accel_x);
-    printf("Accel Y (m/s^2): %.3f\n", state::accel::accel_y);
-    printf("Accel Z (m/s^2): %.3f\n\n", state::accel::accel_z);
+    printf("Accel X (G): %.3f\n", state::accel::accel_x);
+    printf("Accel Y (G): %.3f\n", state::accel::accel_y);
+    printf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
     printf("THERMOMETER: %d\n", state::therm::status);
     printf("Temperature (C): %.3f\n\n", state::therm::temp);

@@ -21,10 +21,22 @@ void FlightMode::execute() {
             &state::imu::gyro_z
         );
         check_sensor(IMU, ret);
-        ret = modules::imu.read_mag(
-            &state::imu::mag_x,
-            &state::imu::mag_y,
-            &state::imu::mag_z
+        ret = modules::imu.read_accel(
+            &state::imu::accel_x,
+            &state::imu::accel_y,
+            &state::imu::accel_z
+        );
+        check_sensor(IMU, ret);
+        ret = modules::imu.read_orientation(
+            &state::imu::orientation_x,
+            &state::imu::orientation_y,
+            &state::imu::orientation_z
+        );
+        check_sensor(IMU, ret);
+        ret = modules::imu.read_gravity(
+            &state::imu::gravity_x,
+            &state::imu::gravity_y,
+            &state::imu::gravity_z
         );
         check_sensor(IMU, ret);
     }
