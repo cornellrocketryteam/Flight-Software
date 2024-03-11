@@ -41,7 +41,9 @@ namespace constants {
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
-    const char *const filename = "log.txt";
+    const char *const log_filename = "log.txt";
+
+    constexpr uint8_t packet_size = 86;
 }; // namespace constants
 
 #endif // CONSTANTS_HPP_

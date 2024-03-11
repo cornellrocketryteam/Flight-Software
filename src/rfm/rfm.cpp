@@ -50,7 +50,7 @@ bool RFM::transmit() {
 #endif
         radio.finishTransmit();
 
-        uint8_t packet[82];
+        uint8_t packet[constants::packet_size];
 
         uint16_t metadata = 0;
 
@@ -80,8 +80,8 @@ bool RFM::transmit() {
 
         memcpy(&packet[9], &state::alt::altitude, sizeof(float));
 
-        memcpy(&packet[13], &state::gps::latitude, sizeof(float));
-        memcpy(&packet[17], &state::gps::longitude, sizeof(float));
+        memcpy(&packet[13], &state::gps::latitude, sizeof(int32_t));
+        memcpy(&packet[17], &state::gps::longitude, sizeof(int32_t));
         memcpy(&packet[21], &state::gps::siv, sizeof(uint8_t));
 
         memcpy(&packet[22], &state::accel::accel_x, sizeof(float));
@@ -104,7 +104,9 @@ bool RFM::transmit() {
         memcpy(&packet[74], &state::imu::gravity_y, sizeof(float));
         memcpy(&packet[78], &state::imu::gravity_z, sizeof(float));
 
-        state = radio.startTransmit(packet, 82);
+        memcpy(&packet[82], &state::therm::temp, sizeof(float));
+
+        state = radio.startTransmit(packet, constants::packet_size);
         return true;
     }
     return false;

@@ -62,9 +62,9 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern bool valid;
-        extern float latitude;
-        extern float longitude;
-        extern float altitude;
+        extern int32_t latitude;
+        extern int32_t longitude;
+        extern int32_t altitude;
         extern uint8_t siv;
     } // namespace gps
     namespace imu {

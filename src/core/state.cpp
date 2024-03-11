@@ -47,9 +47,9 @@ namespace state {
         uint8_t failed_reads = 0;
 
         bool valid = false;
-        float latitude = -1;
-        float longitude = -1;
-        float altitude = -1;
+        int32_t latitude = -1;
+        int32_t longitude = -1;
+        int32_t altitude = -1;
         uint8_t siv = -1;
     } // namespace gps
     namespace imu {

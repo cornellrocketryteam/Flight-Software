@@ -60,7 +60,7 @@ bool SD::log() {
         log += std::to_string(static_cast<uint8_t>(event)) + ",";
     }
 
-    FRESULT fr = f_open(&file, constants::filename, FA_OPEN_APPEND | FA_WRITE);
+    FRESULT fr = f_open(&file, constants::log_filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
 #ifdef VERBOSE
