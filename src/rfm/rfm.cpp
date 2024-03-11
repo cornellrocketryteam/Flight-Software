@@ -92,9 +92,9 @@ bool RFM::transmit() {
         memcpy(&packet[41], &state::imu::gyro_y, sizeof(float));
         memcpy(&packet[45], &state::imu::gyro_z, sizeof(float));
 
-        memcpy(&packet[49], &state::imu::mag_x, sizeof(float));
-        memcpy(&packet[53], &state::imu::mag_y, sizeof(float));
-        memcpy(&packet[57], &state::imu::mag_z, sizeof(float));
+        // memcpy(&packet[49], &state::imu::mag_x, sizeof(float));
+        // memcpy(&packet[53], &state::imu::mag_y, sizeof(float));
+        // memcpy(&packet[57], &state::imu::mag_z, sizeof(float));
 
         state = radio.startTransmit(packet, 61);
         return true;
