@@ -1,3 +1,9 @@
+/**
+ * @file ssa.cpp
+ * @brief Unit test of SSA actuation for both main and drogue deployment.
+ * @author csg83
+ */
+
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "tusb.h"
@@ -14,6 +20,7 @@ int main() {
 
     uint32_t ematch_start = 0;
 
+    // Mimic the behavior of FSW - Loop continuously while checking the on-time
     printf("Drogue ematch set HIGH\n");
     gpio_put(SSA_1, 1);
     ematch_start = to_ms_since_boot(get_absolute_time());
