@@ -1,7 +1,8 @@
 /**
  * @file ssa.cpp
- * @brief Unit test of SSA actuation for both main and drogue deployment.
  * @author csg83
+ * 
+ * @brief Unit test of SSA actuation for both main and drogue deployment.
  */
 
 #include "pico/stdlib.h"
@@ -17,6 +18,7 @@ int main() {
         sleep_ms(500);
     }
     printf("Connected\n");
+    sleep_ms(10000);
 
     uint32_t ematch_start = 0;
 
@@ -31,7 +33,8 @@ int main() {
         }
     }
     printf("Drogue ematch set LOW\n");
-    sleep_ms(5000);
+    
+    sleep_ms(10000);
 
     printf("Main ematch set HIGH\n");
     gpio_put(SSA_2, 1);
