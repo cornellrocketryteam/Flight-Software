@@ -30,6 +30,13 @@ public:
     void check_sensor(enum Sensor sensor, bool ret);
 
     /**
+     * Switches to the specified flight mode and updates
+     * the boot file, if able.
+     * @param mode The flight mode to switch to
+     */
+    void to_mode(FlightMode *mode);
+
+    /**
      * A short integer ID for storage and transmission purposes.
      */
     virtual uint8_t id() = 0;
@@ -146,7 +153,7 @@ public:
      */
     void execute() override;
 
-        /**
+    /**
      * Transition to main deployed mode if the proper altitude has been reached.
      */
     void transition();

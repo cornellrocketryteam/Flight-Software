@@ -23,14 +23,25 @@ struct SD {
     bool log();
 
     /**
+     * Logs the current flight mode to the boot file.
+     * @return True on successful log, false on file open, write, or close failures.
+     */
+    bool write_mode();
+
+    /**
      * SD card representation.
      */
     sd_card_t *pSD;
 
     /**
-     * File object representation.
+     * Log file object representation.
      */
-    FIL file;
+    FIL log_file;
+
+    /**
+     * Boot file object representation.
+     */
+    FIL boot_file;
 };
 
 #endif // SD_HPP_

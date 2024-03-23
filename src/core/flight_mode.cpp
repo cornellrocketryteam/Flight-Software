@@ -4,6 +4,7 @@
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
+#include <bitset>
 
 void FlightMode::execute() {
     bool ret;
@@ -59,12 +60,12 @@ void FlightMode::execute() {
         modules::sd.log();
     }
 
+    // if (state::rfm::init) {
+    //     modules::rfm.transmit();
+    // }
+
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
-    }
-
-    if (state::rfm::init) {
-        modules::rfm.transmit();
     }
 }
 
@@ -82,7 +83,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             if (state::alt::failed_reads >= constants::max_failed_reads) {
                 state::alt::status = OFF;
                 state::flight::events.emplace_back(Event::alt_turn_off);
-                state::flight::mode = state::flight::fault;
+                to_mode(state::flight::fault);
             }
         }
         break;
@@ -113,7 +114,7 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             if (state::accel::failed_reads >= constants::max_failed_reads) {
                 state::accel::status = OFF;
                 state::flight::events.emplace_back(Event::accel_turn_off);
-                state::flight::mode = state::flight::fault;
+                to_mode(state::flight::fault);
             }
         }
         break;
@@ -132,6 +133,13 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
             }
         }
         break;
+    }
+}
+
+void FlightMode::to_mode(FlightMode *mode) {
+    state::flight::mode = mode;
+    if (state::sd::init) {
+        modules::sd.write_mode();
     }
 }
 
@@ -185,24 +193,24 @@ void StartupMode::execute() {
             state::flight::events.emplace_back(Event::sd_init_fail);
         }
     }
-    if (!state::rfm::init) {
-        if (modules::rfm.begin()) {
-            state::rfm::init = true;
-        } else {
-            state::flight::events.emplace_back(Event::rfm_init_fail);
-        }
-    }
+    // if (!state::rfm::init) {
+    //     if (modules::rfm.begin()) {
+    //         state::rfm::init = true;
+    //     } else {
+    //         state::flight::events.emplace_back(Event::rfm_init_fail);
+    //     }
+    // }
 }
 
 void StartupMode::transition() {
     // Proceed to Standby Mode if the arming key is turned
     if (state::flight::key_armed) {
-        state::flight::mode = state::flight::standby;
+        to_mode(state::flight::standby);
     }
 
     // Proceed to Fault Mode if either flight-critical sensor is non-operational
     if (state::alt::status != VALID || state::accel::status != VALID) {
-        state::flight::mode = state::flight::fault;
+        to_mode(state::flight::fault);
     }
 }
 
@@ -215,7 +223,7 @@ void StandbyMode::transition() {
         if (filtered_accel[0] > constants::accel_threshold &&
             filtered_accel[1] > constants::accel_threshold &&
             filtered_accel[2] > constants::accel_threshold) {
-            state::flight::mode = state::flight::ascent;
+            to_mode(state::flight::ascent);
         }
     }
 }
@@ -253,7 +261,7 @@ void AscentMode::transition() {
         if (filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             gpio_put(SSA_1, 1);
             state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-            state::flight::mode = state::flight::drogue_deployed;
+            to_mode(state::flight::drogue_deployed);
         }
     }
 }
@@ -286,7 +294,7 @@ void DrogueDeployedMode::transition() {
     if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_2, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-        state::flight::mode = state::flight::main_deployed;
+        to_mode(state::flight::main_deployed);
     }
 }
 
