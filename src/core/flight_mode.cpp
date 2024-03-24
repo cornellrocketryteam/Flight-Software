@@ -51,14 +51,14 @@ void FlightMode::execute() {
         check_sensor(ACCEL, ret);
     }
 
-    if (!state::imu::status == OFF) {
+    if (!state::therm::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
         check_sensor(THERM, ret);
     }
 
-    if (state::sd::init) {
-        modules::sd.log();
-    }
+    // if (state::sd::init) {
+    //     modules::sd.log();
+    // }
 
     // if (state::rfm::init) {
     //     modules::rfm.transmit();
@@ -186,13 +186,13 @@ void StartupMode::execute() {
             state::flight::events.emplace_back(Event::therm_init_fail);
         }
     }
-    if (!state::sd::init) {
-        if (modules::sd.begin()) {
-            state::sd::init = true;
-        } else {
-            state::flight::events.emplace_back(Event::sd_init_fail);
-        }
-    }
+    // if (!state::sd::init) {
+    //     if (modules::sd.begin()) {
+    //         state::sd::init = true;
+    //     } else {
+    //         state::flight::events.emplace_back(Event::sd_init_fail);
+    //     }
+    // }
     // if (!state::rfm::init) {
     //     if (modules::rfm.begin()) {
     //         state::rfm::init = true;
