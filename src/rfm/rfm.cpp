@@ -26,6 +26,10 @@ bool RFM::begin() {
 #ifdef VERBOSE
         printf("RFM Error: Init failed, code %d\n", state);
 #endif
+        // printf("spi is writable AFTER BEGIN: %d\n", spi_is_writable(spi0));
+
+        // spi_deinit(spi0);
+        // spi_init(spi0, 100 * 1000);
         return false;
     }
 
@@ -45,9 +49,10 @@ bool RFM::transmit() {
         } else {
 #ifdef VERBOSE
             printf("RFM Error: Transmit failed, code %d\n", state);
+#endif
             return false;
         }
-#endif
+
         radio.finishTransmit();
 
         uint8_t packet[constants::packet_size];

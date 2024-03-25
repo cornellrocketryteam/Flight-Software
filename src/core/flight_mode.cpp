@@ -56,13 +56,13 @@ void FlightMode::execute() {
         check_sensor(THERM, ret);
     }
 
-    // if (state::sd::init) {
-    //     modules::sd.log();
-    // }
+    if (state::rfm::init) {
+        modules::rfm.transmit();
+    }
 
-    // if (state::rfm::init) {
-    //     modules::rfm.transmit();
-    // }
+    if (state::sd::init) {
+        modules::sd.log();
+    }
 
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
@@ -186,20 +186,20 @@ void StartupMode::execute() {
             state::flight::events.emplace_back(Event::therm_init_fail);
         }
     }
-    // if (!state::sd::init) {
-    //     if (modules::sd.begin()) {
-    //         state::sd::init = true;
-    //     } else {
-    //         state::flight::events.emplace_back(Event::sd_init_fail);
-    //     }
-    // }
-    // if (!state::rfm::init) {
-    //     if (modules::rfm.begin()) {
-    //         state::rfm::init = true;
-    //     } else {
-    //         state::flight::events.emplace_back(Event::rfm_init_fail);
-    //     }
-    // }
+    if (!state::rfm::init) {
+        if (modules::rfm.begin()) {
+            state::rfm::init = true;
+        } else {
+            state::flight::events.emplace_back(Event::rfm_init_fail);
+        }
+    }
+    if (!state::sd::init) {
+        if (modules::sd.begin()) {
+            state::sd::init = true;
+        } else {
+            state::flight::events.emplace_back(Event::sd_init_fail);
+        }
+    }
 }
 
 void StartupMode::transition() {
