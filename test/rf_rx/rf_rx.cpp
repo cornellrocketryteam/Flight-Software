@@ -5,14 +5,14 @@
 #include "../../src/pins.hpp"
 #include <string>
 
-// #define RFM_CS 5
-// #define RFM_RST 0
-// #define RX_DIO0 13
-// #define RX_DIO1 14
+#define RX_CS 5
+#define RX_RST 0
+#define RX_DIO0 13
+#define RX_DIO1 14
 
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
-SX1276 radio = new Module(hal, RFM_CS, RFM_DIO0, RADIOLIB_NC, RFM_DIO1);
+SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RADIOLIB_NC);
 
 int main() {
     stdio_init_all();
@@ -21,16 +21,16 @@ int main() {
         sleep_ms(500);
     }
 
-    gpio_init(RFM_CS);
-    gpio_set_dir(RFM_CS, GPIO_OUT);
+    gpio_init(RX_CS);
+    gpio_set_dir(RX_CS, GPIO_OUT);
 
-    gpio_init(RFM_RST);
-    gpio_set_dir(RFM_RST, GPIO_OUT);
+    gpio_init(RX_RST);
+    gpio_set_dir(RX_RST, GPIO_OUT);
 
     sleep_ms(10);
-    gpio_put(RFM_RST, 0);
+    gpio_put(RX_RST, 0);
     sleep_ms(10);
-    gpio_put(RFM_RST, 1);
+    gpio_put(RX_RST, 1);
 
     printf("[SX1276] Initializing ... ");
 
@@ -41,6 +41,12 @@ int main() {
     }
     printf("success!\n");
 
+    state = radio.setFrequency(900);
+    if (state != RADIOLIB_ERR_NONE) {
+        printf("Set Frequency failed, code %d\n", state);
+        return 1;
+    }
+
     uint8_t str[4];
 
     while (true) {
@@ -48,7 +54,7 @@ int main() {
         printf("[SX1276] Waiting for incoming transmission ... ");
 
         int state = radio.receive(str, 4);
-
+        //printf("after state\n");
         if (state == RADIOLIB_ERR_NONE) {
             // packet was successfully received
             printf("success!");
