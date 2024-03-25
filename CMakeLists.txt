@@ -36,6 +36,13 @@ add_executable(${PROJECT_NAME}
     ${SOURCES}
 )
 
+# Add a "upload" target that automatically uploads the uf2 to a Pico in boot-select mode
+add_custom_target(upload
+    COMMAND ${CMAKE_COMMAND} --build . --target all
+    COMMAND cp -X ${PROJECT_NAME}.uf2 /Volumes/RPI-RP2/
+    DEPENDS ${PROJECT_NAME}
+)
+
 # Add external libraries
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/RadioLib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
