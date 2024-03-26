@@ -25,9 +25,8 @@ public:
      * Checks the return result from a sensor reading and updates state on
      * failure, if necessary.
      * @param sensor The enum describing which sensor is being checked
-     * @param ret The return result from the sensor
      */
-    void check_sensor(enum Sensor sensor, bool ret);
+    void check_sensor(enum Sensor sensor);
 
     /**
      * Switches to the specified flight mode and updates
@@ -45,6 +44,12 @@ public:
      * A verbose name for debugging purposes.
      */
     virtual std::string name() = 0;
+
+private:
+    /**
+     * A variable to hold the sensor return statuses.
+     */
+    bool ret;
 };
 
 /**

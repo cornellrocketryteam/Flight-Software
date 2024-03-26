@@ -7,12 +7,10 @@
 #include <bitset>
 
 void FlightMode::execute() {
-    bool ret;
-
     if (!state::alt::status == OFF) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
-        check_sensor(ALT, ret);
+        check_sensor(ALT);
     }
 
     if (!state::imu::status == OFF) {
@@ -21,25 +19,25 @@ void FlightMode::execute() {
             &state::imu::gyro_y,
             &state::imu::gyro_z
         );
-        check_sensor(IMU, ret);
+        check_sensor(IMU);
         ret = modules::imu.read_accel(
             &state::imu::accel_x,
             &state::imu::accel_y,
             &state::imu::accel_z
         );
-        check_sensor(IMU, ret);
+        check_sensor(IMU);
         ret = modules::imu.read_orientation(
             &state::imu::orientation_x,
             &state::imu::orientation_y,
             &state::imu::orientation_z
         );
-        check_sensor(IMU, ret);
+        check_sensor(IMU);
         ret = modules::imu.read_gravity(
             &state::imu::gravity_x,
             &state::imu::gravity_y,
             &state::imu::gravity_z
         );
-        check_sensor(IMU, ret);
+        check_sensor(IMU);
     }
 
     if (!state::accel::status == OFF) {
@@ -48,12 +46,12 @@ void FlightMode::execute() {
             &state::accel::accel_y,
             &state::accel::accel_z
         );
-        check_sensor(ACCEL, ret);
+        check_sensor(ACCEL);
     }
 
     if (!state::therm::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
-        check_sensor(THERM, ret);
+        check_sensor(THERM);
     }
 
     if (state::rfm::init) {
@@ -69,7 +67,7 @@ void FlightMode::execute() {
     }
 }
 
-void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
+void FlightMode::check_sensor(enum Sensor sensor) {
     switch (sensor) {
     case ALT:
         if (ret) {
