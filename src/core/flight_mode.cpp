@@ -186,7 +186,8 @@ void StartupMode::execute() {
             state::flight::events.emplace_back(Event::therm_init_fail);
         }
     }
-    if (!state::rfm::init) {
+    if (!state::rfm::attempted_init) {
+        state::rfm::attempted_init = true;
         if (modules::rfm.begin()) {
             state::rfm::init = true;
         } else {

@@ -110,6 +110,7 @@ namespace state {
     } // namespace sd
     namespace rfm {
         extern bool init;
+        extern bool attempted_init;
 
     } // namespace rfm
 }; // namespace state

@@ -96,6 +96,7 @@ namespace state {
     } // namespace sd
     namespace rfm {
         bool init = false;
+        bool attempted_init = false;
 
     } // namespace rfm
 }; // namespace state
