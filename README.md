@@ -21,6 +21,8 @@ Flight software for the Cornell Rocketry Team.
 3. Run ```make```
 4. Move ```fsw.uf2``` to a Pico in boot select mode
 
+_Note: You can also run_ ```make upload``` _to automatically make and move_ ```fsw.uf2``` _to a Pico in boot select mode_
+
 ## Contributing
 1. Create a new branch with ```git checkout -b YOUR_BRANCH_NAME```
 2. Make some changes!
