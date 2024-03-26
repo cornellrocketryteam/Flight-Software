@@ -1,5 +1,5 @@
-#ifndef STATE_HPP_
-#define STATE_HPP_
+#ifndef STATE_HPP
+#define STATE_HPP
 
 // clang-format off
 #include "flight_mode.hpp"
@@ -115,4 +115,4 @@ namespace state {
     } // namespace rfm
 }; // namespace state
 
-#endif // STATE_HPP_
+#endif // STATE_HPP

@@ -1,5 +1,5 @@
-#ifndef FSW_HPP_
-#define FSW_HPP_
+#ifndef FSW_HPP
+#define FSW_HPP
 
 #include "flight_mode.hpp"
 #include "pico/stdlib.h"
@@ -16,4 +16,4 @@ public:
     void execute();
 };
 
-#endif // FSW_HPP_
+#endif // FSW_HPP

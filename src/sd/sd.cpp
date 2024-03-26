@@ -4,8 +4,6 @@
 #include <cstdio>
 
 bool SD::begin() {
-    time_init();
-
     pSD = sd_get_by_num(0);
     FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
 
@@ -38,7 +36,6 @@ bool SD::begin() {
 #endif
         return false;
     }
-    printf("end of init\n");
 
     return true;
 }
@@ -133,7 +130,6 @@ bool SD::write_mode() {
 #ifdef VERBOSE
         printf("SD boot write: %s (%d)\n", FRESULT_str(fr), fr);
 #endif
-
         return false;
     }
 

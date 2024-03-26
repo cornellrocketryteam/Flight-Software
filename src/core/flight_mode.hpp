@@ -1,5 +1,5 @@
-#ifndef FLIGHT_MODE_HPP_
-#define FLIGHT_MODE_HPP_
+#ifndef FLIGHT_MODE_HPP
+#define FLIGHT_MODE_HPP
 
 #include "modules.hpp"
 #include <string>
@@ -195,4 +195,4 @@ public:
     std::string name() { return "Fault"; };
 };
 
-#endif // FLIGHT_MODE_HPP_
+#endif // FLIGHT_MODE_HPP

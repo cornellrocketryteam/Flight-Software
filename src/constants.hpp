@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_HPP_
-#define CONSTANTS_HPP_
+#ifndef CONSTANTS_HPP
+#define CONSTANTS_HPP
 
 enum class Event : uint8_t {
     key_armed = 0,
@@ -9,23 +9,27 @@ enum class Event : uint8_t {
     alt_read_fail = 3,
     alt_turn_off = 4,
 
-    imu_init_fail = 5,
-    imu_read_fail = 6,
-    imu_turn_off = 7,
+    gps_init_fail = 5,
+    gps_read_fail = 6,
+    gps_turn_off = 7,
 
-    accel_init_fail = 8,
-    accel_read_fail = 9,
-    accel_turn_off = 10,
+    imu_init_fail = 8,
+    imu_read_fail = 9,
+    imu_turn_off = 10,
 
-    therm_init_fail = 11,
-    therm_read_fail = 12,
-    therm_turn_off = 13,
+    accel_init_fail = 11,
+    accel_read_fail = 12,
+    accel_turn_off = 13,
 
-    sd_init_fail = 14,
-    sd_write_fail = 15,
+    therm_init_fail = 14,
+    therm_read_fail = 15,
+    therm_turn_off = 16,
 
-    rfm_init_fail = 16,
-    rfm_tx_fail = 17
+    sd_init_fail = 17,
+    sd_write_fail = 18,
+
+    rfm_init_fail = 19,
+    rfm_tx_fail = 20
 };
 
 /**
@@ -47,4 +51,4 @@ namespace constants {
     constexpr uint8_t packet_size = 86;
 }; // namespace constants
 
-#endif // CONSTANTS_HPP_
+#endif // CONSTANTS_HPP

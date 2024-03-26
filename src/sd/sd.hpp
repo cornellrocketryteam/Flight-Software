@@ -1,10 +1,9 @@
-#ifndef SD_HPP_
-#define SD_HPP_
+#ifndef SD_HPP
+#define SD_HPP
 
 #include "f_util.h"
 #include "ff.h"
 #include "hw_config.h"
-#include "rtc.h"
 
 /**
  * Container for SD card-related functionality.
@@ -44,4 +43,4 @@ struct SD {
     FIL boot_file;
 };
 
-#endif // SD_HPP_
+#endif // SD_HPP
