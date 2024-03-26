@@ -4,13 +4,17 @@
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
-#include <bitset>
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
+    }
+
+    if (!state::gps::status == OFF) {
+        // TODO
+        check_sensor(GPS);
     }
 
     if (!state::imu::status == OFF) {
@@ -82,6 +86,21 @@ void FlightMode::check_sensor(enum Sensor sensor) {
                 state::alt::status = OFF;
                 state::flight::events.emplace_back(Event::alt_turn_off);
                 to_mode(state::flight::fault);
+            }
+        }
+        break;
+    case GPS:
+        if (ret) {
+            if (state::gps::status == INVALID) {
+                state::gps::status = VALID;
+            }
+        } else {
+            state::gps::failed_reads++;
+            state::gps::status = INVALID;
+            state::flight::events.emplace_back(Event::gps_read_fail);
+            if (state::gps::failed_reads >= constants::max_failed_reads) {
+                state::gps::status = OFF;
+                state::flight::events.emplace_back(Event::gps_turn_off);
             }
         }
         break;
@@ -162,6 +181,9 @@ void StartupMode::execute() {
         } else {
             state::flight::events.emplace_back(Event::alt_init_fail);
         }
+    }
+    if (state::gps::status == OFF) {
+        // TODO
     }
     if (state::imu::status == OFF) {
         if (modules::imu.begin()) {
