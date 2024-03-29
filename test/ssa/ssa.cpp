@@ -14,6 +14,12 @@
 int main() {
     stdio_init_all();
 
+    gpio_init(SSA_DROGUE);
+    gpio_init(SSA_MAIN);
+
+    gpio_set_dir(SSA_DROGUE, GPIO_OUT);
+    gpio_set_dir(SSA_MAIN, GPIO_OUT);
+
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }
@@ -24,11 +30,11 @@ int main() {
 
     // Mimic the behavior of FSW - Loop continuously while checking the on-time
     printf("Drogue ematch set HIGH\n");
-    gpio_put(SSA_1, 1);
+    gpio_put(SSA_DROGUE, 1);
     ematch_start = to_ms_since_boot(get_absolute_time());
     while (true) {
         if (to_ms_since_boot(get_absolute_time()) - ematch_start >= constants::ematch_threshold) {
-            gpio_put(SSA_1, 0);
+            gpio_put(SSA_DROGUE, 0);
             break;
         }
     }
@@ -37,11 +43,11 @@ int main() {
     sleep_ms(10000);
 
     printf("Main ematch set HIGH\n");
-    gpio_put(SSA_2, 1);
+    gpio_put(SSA_MAIN, 1);
     ematch_start = to_ms_since_boot(get_absolute_time());
     while (true) {
         if (to_ms_since_boot(get_absolute_time()) - ematch_start >= constants::ematch_threshold) {
-            gpio_put(SSA_2, 0);
+            gpio_put(SSA_MAIN, 0);
             break;
         }
     }

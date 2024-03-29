@@ -23,6 +23,10 @@ int main() {
     sleep_ms(1000);
 #endif
 
+    gpio_init(LED);
+    gpio_set_dir(LED, GPIO_OUT);
+    gpio_put(LED, 1);
+
     i2c_init(I2C_PORT, 400 * 1000);
 
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
@@ -37,11 +41,11 @@ int main() {
     gpio_init(ARMED_OUT);
     gpio_set_dir(ARMED_OUT, GPIO_OUT);
 
-    gpio_init(SSA_1);
-    gpio_set_dir(SSA_1, GPIO_OUT);
+    gpio_init(SSA_DROGUE);
+    gpio_set_dir(SSA_DROGUE, GPIO_OUT);
 
-    gpio_init(SSA_2);
-    gpio_set_dir(SSA_2, GPIO_OUT);
+    gpio_init(SSA_MAIN);
+    gpio_set_dir(SSA_MAIN, GPIO_OUT);
 
     gpio_init(RFM_CS);
     gpio_set_dir(RFM_CS, GPIO_OUT);

@@ -7,6 +7,8 @@
 #define SPI_MOSI 3
 #define SPI_SCK 2
 
+#define LED 25
+
 #define SD_CS 5
 
 #define RFM_CS 26
@@ -16,8 +18,8 @@
 
 #define GPS_RST 28
 
-#define SSA_1 20
-#define SSA_2 21
+#define SSA_DROGUE 20
+#define SSA_MAIN 21
 
 #define ARMED_IN 6
 #define ARMED_OUT 7

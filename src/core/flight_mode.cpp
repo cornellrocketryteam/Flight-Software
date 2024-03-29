@@ -280,7 +280,7 @@ void AscentMode::transition() {
         filter_alt();
 
         if (filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
-            gpio_put(SSA_1, 1);
+            gpio_put(SSA_DROGUE, 1);
             state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
             to_mode(state::flight::drogue_deployed);
         }
@@ -305,7 +305,7 @@ void AscentMode::filter_alt() {
 void DrogueDeployedMode::execute() {
     // Check to see if we have exceeded the threshold for holding the ematch pin high
     if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
-        gpio_put(SSA_1, 0);
+        gpio_put(SSA_DROGUE, 0);
     }
     FlightMode::execute();
 }
@@ -313,7 +313,7 @@ void DrogueDeployedMode::execute() {
 void DrogueDeployedMode::transition() {
     // Proceed to Main Deployed mode if the deployment altitude is reached
     if (state::alt::altitude < constants::main_deploy_altitude) {
-        gpio_put(SSA_2, 1);
+        gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
         to_mode(state::flight::main_deployed);
     }
@@ -324,7 +324,7 @@ void DrogueDeployedMode::transition() {
 void MainDeployedMode::execute() {
     // Check to see if we have exceeded the threshold for holding the ematch pin high
     if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
-        gpio_put(SSA_2, 0);
+        gpio_put(SSA_MAIN, 0);
     }
     FlightMode::execute();
 }
