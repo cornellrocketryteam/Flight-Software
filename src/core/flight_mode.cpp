@@ -224,14 +224,14 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    // Proceed to Standby Mode if the arming key is turned
     if (state::flight::key_armed) {
-        to_mode(state::flight::standby);
-    }
-
-    // Proceed to Fault Mode if either flight-critical sensor is non-operational
-    if (state::alt::status != VALID || state::accel::status != VALID) {
-        to_mode(state::flight::fault);
+        if (state::alt::status != VALID || state::accel::status != VALID) {
+            // Proceed to Fault Mode if either flight-critical sensor is non-operational
+            to_mode(state::flight::fault);
+        } else {
+            // Proceed to Standby Mode otherwise
+            to_mode(state::flight::standby);
+        }
     }
 }
 
