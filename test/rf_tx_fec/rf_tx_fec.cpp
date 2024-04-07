@@ -15,8 +15,8 @@ PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 SX1276 radio = new Module(hal, RFM_CS, RFM_DIO0, RADIOLIB_NC, RFM_DIO1);
 
 //{"long":0.03,"lat":0.07,"glong":0.0,"glat":0.0,"elev":6534.9}
-const int msglen = 61;         //Max message length, and 
-const uint8_t ECC_LENGTH = 50;   //Number of guardian bytes, Max corrected bytes = ECC_LENGTH/2
+const int msglen = 86;         //Max message length, and 
+const uint8_t ECC_LENGTH = 25;   //Number of guardian bytes, Max corrected bytes = ECC_LENGTH/2
 char message_frame[msglen];     //container for shorter messages
 char repaired[msglen];
 char encoded[msglen + ECC_LENGTH];

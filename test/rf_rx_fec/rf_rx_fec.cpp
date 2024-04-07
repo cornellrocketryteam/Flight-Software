@@ -17,7 +17,7 @@ PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
 SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RX_DIO1);
 
-const int msglen = 61;
+const int msglen = 86;
 const uint8_t ECC_LENGTH = 50;
 char encoded[msglen + ECC_LENGTH];
 char repaired[msglen];
