@@ -1,5 +1,5 @@
-#ifndef FLIGHT_MODE_HPP_
-#define FLIGHT_MODE_HPP_
+#ifndef FLIGHT_MODE_HPP
+#define FLIGHT_MODE_HPP
 
 #include "modules.hpp"
 #include <string>
@@ -25,19 +25,31 @@ public:
      * Checks the return result from a sensor reading and updates state on
      * failure, if necessary.
      * @param sensor The enum describing which sensor is being checked
-     * @param ret The return result from the sensor
      */
-    void check_sensor(enum Sensor sensor, bool ret);
+    void check_sensor(enum Sensor sensor);
+
+    /**
+     * Switches to the specified flight mode and updates
+     * the boot file, if able.
+     * @param mode The flight mode to switch to
+     */
+    void to_mode(FlightMode *mode);
 
     /**
      * A short integer ID for storage and transmission purposes.
      */
-    virtual int id() = 0;
+    virtual uint8_t id() = 0;
 
     /**
      * A verbose name for debugging purposes.
      */
     virtual std::string name() = 0;
+
+private:
+    /**
+     * A variable to hold the sensor return statuses.
+     */
+    bool ret;
 };
 
 /**
@@ -55,7 +67,7 @@ public:
      */
     void transition();
 
-    int id() { return 0; }
+    uint8_t id() { return 0; }
     std::string name() { return "Startup"; };
 };
 
@@ -69,8 +81,30 @@ public:
      */
     void transition();
 
-    int id() { return 1; }
+    uint8_t id() { return 1; }
     std::string name() { return "Standby"; };
+
+private:
+    /**
+     * Calculates moving averages of z-axis acceleration readings
+     * and stores them in filtered_accel.
+     */
+    void filter_accel();
+
+    /**
+     * Tracks the number of samples taken for moving averages.
+     */
+    int sample_count;
+
+    /**
+     * Accumulates the z-axis acceleration for moving averages.
+     */
+    float accel_sum;
+
+    /**
+     * Stores moving averages of z-axis accelerations.
+     */
+    float filtered_accel[3] = {0, 0, 0};
 };
 
 /**
@@ -88,25 +122,30 @@ public:
      */
     void transition();
 
-    int id() { return 2; }
+    uint8_t id() { return 2; }
     std::string name() { return "Ascent"; };
 
 private:
     /**
-     * Detects apogee with a moving average filter. Must be above the arming altitude.
-     * @return True if apogee has been detected, false otherwise.
+     * Takes moving averages of altitude readings and stores
+     * them in filtered_alt.
      */
-    bool apogee_detected();
+    void filter_alt();
 
-    void run_filter();
+    /**
+     * Tracks the number of samples taken for moving averages.
+     */
+    int sample_count;
 
-    int next_alt;
+    /**
+     * Accumulates altitude readings for moving averages.
+     */
+    float alt_sum;
 
-    double altitude_sum;
-
-    double filtered_alt1 = 0;
-    double filtered_alt2 = 0;
-    double filtered_alt3 = 0;
+    /**
+     * Stores moving averages of altitudes.
+     */
+    float filtered_alt[3] = {0, 0, 0};
 };
 
 /**
@@ -115,11 +154,16 @@ private:
 class DrogueDeployedMode : public FlightMode {
 public:
     /**
+     * Checks ematch on-time in addition to sensor reading.
+     */
+    void execute() override;
+
+    /**
      * Transition to main deployed mode if the proper altitude has been reached.
      */
     void transition();
 
-    int id() { return 3; }
+    uint8_t id() { return 3; }
     std::string name() { return "Drogue Deployed"; };
 };
 
@@ -129,12 +173,31 @@ public:
 class MainDeployedMode : public FlightMode {
 public:
     /**
+     * Checks e-match on-time in addition to sensor reading.
+     */
+    void execute() override;
+
+    /**
      * Final mode. No transition criteria.
      */
     void transition() {};
 
-    int id() { return 4; }
+    uint8_t id() { return 4; }
     std::string name() { return "Main Deployed"; };
 };
 
-#endif // FLIGHT_MODE_HPP_
+/**
+ * Flight mode representating situations where flight functions are not able to proceed.
+ */
+class FaultMode : public FlightMode {
+public:
+    /**
+     * Flight functionality is disabled. No transition criteria.
+     */
+    void transition() {};
+
+    uint8_t id() { return 5; };
+    std::string name() { return "Fault"; };
+};
+
+#endif // FLIGHT_MODE_HPP

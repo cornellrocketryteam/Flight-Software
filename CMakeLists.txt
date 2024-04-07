@@ -17,7 +17,7 @@ add_compile_options(
     -Wno-unused-function
 )
 
-add_definitions(-DVERBOSE -DDEBUG)
+add_definitions(-DVERBOSE)
 
 # Add source files from src/
 set(SOURCES
@@ -34,6 +34,13 @@ set(SOURCES
 # Add all executables
 add_executable(${PROJECT_NAME}
     ${SOURCES}
+)
+
+# Add a "upload" target that automatically uploads the uf2 to a Pico in boot-select mode
+add_custom_target(upload
+    COMMAND ${CMAKE_COMMAND} --build . --target all
+    COMMAND cp -X ${PROJECT_NAME}.uf2 /Volumes/RPI-RP2/
+    DEPENDS ${PROJECT_NAME}
 )
 
 # Add external libraries

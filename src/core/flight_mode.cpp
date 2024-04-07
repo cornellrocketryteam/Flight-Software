@@ -6,12 +6,15 @@
 #include "state.hpp"
 
 void FlightMode::execute() {
-    bool ret;
-
     if (!state::alt::status == OFF) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
-        check_sensor(ALT, ret);
+        check_sensor(ALT);
+    }
+
+    if (!state::gps::status == OFF) {
+        // TODO
+        check_sensor(GPS);
     }
 
     if (!state::imu::status == OFF) {
@@ -20,12 +23,25 @@ void FlightMode::execute() {
             &state::imu::gyro_y,
             &state::imu::gyro_z
         );
-        ret = modules::imu.read_mag(
-            &state::imu::mag_x,
-            &state::imu::mag_y,
-            &state::imu::mag_z
+        check_sensor(IMU);
+        ret = modules::imu.read_accel(
+            &state::imu::accel_x,
+            &state::imu::accel_y,
+            &state::imu::accel_z
         );
-        check_sensor(IMU, ret);
+        check_sensor(IMU);
+        ret = modules::imu.read_orientation(
+            &state::imu::orientation_x,
+            &state::imu::orientation_y,
+            &state::imu::orientation_z
+        );
+        check_sensor(IMU);
+        ret = modules::imu.read_gravity(
+            &state::imu::gravity_x,
+            &state::imu::gravity_y,
+            &state::imu::gravity_z
+        );
+        check_sensor(IMU);
     }
 
     if (!state::accel::status == OFF) {
@@ -34,13 +50,16 @@ void FlightMode::execute() {
             &state::accel::accel_y,
             &state::accel::accel_z
         );
-        check_sensor(ACCEL, ret);
+        check_sensor(ACCEL);
     }
 
-    if (!state::imu::status == OFF) {
+    if (!state::therm::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
-        ret = modules::therm.read_humidity(&state::therm::humidity);
-        check_sensor(THERM, ret);
+        check_sensor(THERM);
+    }
+
+    if (state::rfm::init) {
+        modules::rfm.transmit();
     }
 
     if (state::sd::init) {
@@ -50,13 +69,9 @@ void FlightMode::execute() {
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
     }
-
-    if (state::rfm::init) {
-        modules::rfm.transmit();
-    }
 }
 
-void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
+void FlightMode::check_sensor(enum Sensor sensor) {
     switch (sensor) {
     case ALT:
         if (ret) {
@@ -66,10 +81,26 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
         } else {
             state::alt::failed_reads++;
             state::alt::status = INVALID;
-            state::flight::events.emplace_back("Alt reading failed");
-            if (state::alt::failed_reads == constants::flight::max_failed_reads) {
+            state::flight::events.emplace_back(Event::alt_read_fail);
+            if (state::alt::failed_reads >= constants::max_failed_reads) {
                 state::alt::status = OFF;
-                state::flight::events.emplace_back("Alt turned off");
+                state::flight::events.emplace_back(Event::alt_turn_off);
+                to_mode(state::flight::fault);
+            }
+        }
+        break;
+    case GPS:
+        if (ret) {
+            if (state::gps::status == INVALID) {
+                state::gps::status = VALID;
+            }
+        } else {
+            state::gps::failed_reads++;
+            state::gps::status = INVALID;
+            state::flight::events.emplace_back(Event::gps_read_fail);
+            if (state::gps::failed_reads >= constants::max_failed_reads) {
+                state::gps::status = OFF;
+                state::flight::events.emplace_back(Event::gps_turn_off);
             }
         }
         break;
@@ -81,10 +112,10 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
         } else {
             state::imu::failed_reads++;
             state::imu::status = INVALID;
-            state::flight::events.emplace_back("IMU reading failed");
-            if (state::imu::failed_reads == constants::flight::max_failed_reads) {
+            state::flight::events.emplace_back(Event::imu_read_fail);
+            if (state::imu::failed_reads >= constants::max_failed_reads) {
                 state::imu::status = OFF;
-                state::flight::events.emplace_back("IMU turned off");
+                state::flight::events.emplace_back(Event::imu_turn_off);
             }
         }
         break;
@@ -96,10 +127,11 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
         } else {
             state::accel::failed_reads++;
             state::accel::status = INVALID;
-            state::flight::events.emplace_back("Accel reading failed");
-            if (state::accel::failed_reads == constants::flight::max_failed_reads) {
+            state::flight::events.emplace_back(Event::accel_read_fail);
+            if (state::accel::failed_reads >= constants::max_failed_reads) {
                 state::accel::status = OFF;
-                state::flight::events.emplace_back("Accel turned off");
+                state::flight::events.emplace_back(Event::accel_turn_off);
+                to_mode(state::flight::fault);
             }
         }
         break;
@@ -111,86 +143,123 @@ void FlightMode::check_sensor(enum Sensor sensor, bool ret) {
         } else {
             state::therm::failed_reads++;
             state::therm::status = INVALID;
-            state::flight::events.emplace_back("Therm reading failed");
-            if (state::therm::failed_reads == constants::flight::max_failed_reads) {
+            state::flight::events.emplace_back(Event::therm_read_fail);
+            if (state::therm::failed_reads >= constants::max_failed_reads) {
                 state::therm::status = OFF;
-                state::flight::events.emplace_back("Therm turned off");
+                state::flight::events.emplace_back(Event::therm_turn_off);
             }
         }
         break;
     }
 }
 
+void FlightMode::to_mode(FlightMode *mode) {
+    state::flight::mode = mode;
+    if (state::sd::init) {
+        modules::sd.write_mode();
+    }
+}
+
 // Startup Mode
 
 void StartupMode::execute() {
-
+    // Check to see if the arming key has been turned
     if (gpio_get(ARMED_IN)) {
         state::flight::key_armed = true;
         gpio_put(ARMED_OUT, 1);
-        state::flight::events.emplace_back("Key armed");
+        state::flight::events.emplace_back(Event::key_armed);
     }
+
+    // Attempt to initialize all modules
     if (state::alt::status == OFF) {
         if (modules::altimeter.begin()) {
             state::alt::status = VALID;
-            // TODO: Investigate the cause of the first reading always being bad
+            // The first reading of the BMP388 is always garbage
             modules::altimeter.read_pressure(&state::alt::ref_pressure);
             sleep_ms(10);
-
             modules::altimeter.read_pressure(&state::alt::ref_pressure);
         } else {
-            state::flight::events.emplace_back("Alt init failed");
+            state::flight::events.emplace_back(Event::alt_init_fail);
         }
+    }
+    if (state::gps::status == OFF) {
+        // TODO
     }
     if (state::imu::status == OFF) {
         if (modules::imu.begin()) {
             state::imu::status = VALID;
         } else {
-            state::flight::events.emplace_back("IMU init failed");
+            state::flight::events.emplace_back(Event::imu_init_fail);
         }
     }
     if (state::accel::status == OFF) {
         if (modules::accel.begin()) {
             state::accel::status = VALID;
         } else {
-            state::flight::events.emplace_back("Accel init failed");
+            state::flight::events.emplace_back(Event::accel_init_fail);
         }
     }
     if (state::therm::status == OFF) {
         if (modules::therm.begin()) {
             state::therm::status = VALID;
         } else {
-            state::flight::events.emplace_back("Therm init failed");
+            state::flight::events.emplace_back(Event::therm_init_fail);
+        }
+    }
+    if (!state::rfm::attempted_init) {
+        state::rfm::attempted_init = true;
+        if (modules::rfm.begin()) {
+            state::rfm::init = true;
+        } else {
+            state::flight::events.emplace_back(Event::rfm_init_fail);
         }
     }
     if (!state::sd::init) {
         if (modules::sd.begin()) {
             state::sd::init = true;
         } else {
-            state::flight::events.emplace_back("SD init failed");
-        }
-    }
-    if (!state::rfm::init) {
-        if (modules::rfm.begin()) {
-            state::rfm::init = true;
-        } else {
-            state::flight::events.emplace_back("RFM init failed");
+            state::flight::events.emplace_back(Event::sd_init_fail);
         }
     }
 }
 
 void StartupMode::transition() {
     if (state::flight::key_armed) {
-        state::flight::mode = state::flight::standby;
+        if (state::alt::status != VALID || state::accel::status != VALID) {
+            // Proceed to Fault Mode if either flight-critical sensor is non-operational
+            to_mode(state::flight::fault);
+        } else {
+            // Proceed to Standby Mode otherwise
+            to_mode(state::flight::standby);
+        }
     }
 }
 
 // Standby Mode
 
 void StandbyMode::transition() {
-    // TODO: Detect acceleration of liftoff
+    if (state::accel::status == VALID) {
+        filter_accel();
 
-    state::flight::mode = state::flight::ascent;
+        if (filtered_accel[0] > constants::accel_threshold &&
+            filtered_accel[1] > constants::accel_threshold &&
+            filtered_accel[2] > constants::accel_threshold) {
+            to_mode(state::flight::ascent);
+        }
+    }
+}
+
+void StandbyMode::filter_accel() {
+    accel_sum += state::accel::accel_z;
+    sample_count++;
+
+    if (sample_count == 10) {
+        filtered_accel[2] = filtered_accel[1];
+        filtered_accel[1] = filtered_accel[0];
+        filtered_accel[0] = accel_sum / 10;
+        accel_sum = 0;
+        sample_count = 0;
+    }
 }
 
 // Ascent Mode
@@ -198,50 +267,64 @@ void StandbyMode::transition() {
 void AscentMode::execute() {
     FlightMode::execute();
 
-    // TODO: Change to take in multiple values for arming
-    if (state::alt::status == VALID && !state::flight::altitude_armed && state::alt::altitude > constants::flight::arming_altitude) {
-        state::flight::altitude_armed = true;
-        state::flight::events.emplace_back("Alt armed");
-    }
-    if (state::flight::altitude_armed && !state::alt::status == OFF) {
-        altitude_sum += state::alt::altitude;
-        next_alt++;
+    // Check for arming altitude
+    if (state::alt::status == VALID && !state::flight::alt_armed && state::alt::altitude > constants::arming_altitude) {
+        state::flight::alt_armed = true;
+        state::flight::events.emplace_back(Event::alt_armed);
     }
 }
 
 void AscentMode::transition() {
-    if (state::flight::altitude_armed && !state::alt::status == OFF && next_alt % 10 == 0) {
-        run_filter();
-        if (apogee_detected()) {
-            gpio_put(SSA_1, 1);
-            state::flight::events.emplace_back("Drogue triggered");
-            state::flight::mode = state::flight::drogue_deployed;
+    // If we're armed and the altimeter is valid, check for apogee
+    if (state::flight::alt_armed && state::alt::status == VALID) {
+        filter_alt();
+
+        if (filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
+            gpio_put(SSA_DROGUE, 1);
+            state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+            to_mode(state::flight::drogue_deployed);
         }
     }
 }
 
-bool AscentMode::apogee_detected() {
-    // TODO: Change to an array of filtered alts to support different filtering lengths
-    if (filtered_alt1 > filtered_alt2 && filtered_alt2 > filtered_alt3) {
-        return true;
-    }
-    return false;
-}
+void AscentMode::filter_alt() {
+    alt_sum += state::alt::altitude;
+    sample_count++;
 
-void AscentMode::run_filter() {
-    // TODO: Probably refactor
-    filtered_alt1 = filtered_alt2;
-    filtered_alt2 = filtered_alt3;
-    filtered_alt3 = altitude_sum / 10.0;
-    altitude_sum = 0;
+    if (sample_count == 10) {
+        filtered_alt[2] = filtered_alt[1];
+        filtered_alt[1] = filtered_alt[0];
+        filtered_alt[0] = alt_sum / 10;
+        alt_sum = 0;
+        sample_count = 0;
+    }
 }
 
 // Drogue Deployed Mode
 
-void DrogueDeployedMode::transition() {
-    if (state::alt::altitude < constants::flight::main_deploy_altitude) {
-        gpio_put(SSA_2, 1);
-        state::flight::events.emplace_back("Main triggered");
-        state::flight::mode = state::flight::main_deployed;
+void DrogueDeployedMode::execute() {
+    // Check to see if we have exceeded the threshold for holding the ematch pin high
+    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
+        gpio_put(SSA_DROGUE, 0);
     }
+    FlightMode::execute();
+}
+
+void DrogueDeployedMode::transition() {
+    // Proceed to Main Deployed mode if the deployment altitude is reached
+    if (state::alt::altitude < constants::main_deploy_altitude) {
+        gpio_put(SSA_MAIN, 1);
+        state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+        to_mode(state::flight::main_deployed);
+    }
+}
+
+// Main Deployed Mode
+
+void MainDeployedMode::execute() {
+    // Check to see if we have exceeded the threshold for holding the ematch pin high
+    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
+        gpio_put(SSA_MAIN, 0);
+    }
+    FlightMode::execute();
 }

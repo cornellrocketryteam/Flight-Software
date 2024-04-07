@@ -1,5 +1,5 @@
-#ifndef RFM_HPP_
-#define RFM_HPP_
+#ifndef RFM_HPP
+#define RFM_HPP
 
 #include "../pins.hpp"
 #include "RadioLib.h"
@@ -42,4 +42,4 @@ struct RFM {
     int state = RADIOLIB_ERR_NONE;
 };
 
-#endif // RFM_HPP_
+#endif // RFM_HPP

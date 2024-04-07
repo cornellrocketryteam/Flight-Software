@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 # Pull in SDK (must be before project)
 include(../../lib/pico-sdk/pico_sdk_init.cmake)
 
-project(sd_write C CXX ASM)
+project(ssa C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -16,19 +16,15 @@ add_compile_options(
     -Wno-unused-function
 )
 
-add_executable(sd_write
-    sd_write.cpp
-    ../../src/sd/hw_config.c
+add_executable(${PROJECT_NAME}
+    ssa.cpp
 )
 
-add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
-
-
 # Pull in common dependencies
-target_link_libraries(sd_write pico_stdlib hardware_gpio FatFs_SPI)
+target_link_libraries(${PROJECT_NAME} pico_stdlib hardware_gpio)
 
-pico_enable_stdio_usb(sd_write 1)
-pico_enable_stdio_uart(sd_write 0)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
 # Create map/bin/hex file etc.
-pico_add_extra_outputs(sd_write)
+pico_add_extra_outputs(${PROJECT_NAME})

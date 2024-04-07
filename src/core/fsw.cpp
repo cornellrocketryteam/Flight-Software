@@ -1,40 +1,43 @@
 #include "fsw.hpp"
 
 void Flight::execute() {
-#ifdef DEBUG
-    // sleep_ms(1000);
-#endif
 
 #ifdef VERBOSE
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
     printf("Time: %d ms\n", state::flight::timestamp);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
-    printf("Altitude armed: %d\n\n", state::flight::altitude_armed);
+    printf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     printf("ALTIMETER: %d\n", state::alt::status);
-    printf("Altitude: %.3f\n", state::alt::altitude);
-    printf("Pressure: %.3f\n\n", state::alt::pressure);
+    printf("Altitude (m): %.3f\n", state::alt::altitude);
+    printf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
     printf("IMU: %d\n", state::imu::status);
-    printf("Gyro X: %.3f\n", state::imu::gyro_x);
-    printf("Gyro Y: %.3f\n", state::imu::gyro_y);
-    printf("Gyro Z: %.3f\n\n", state::imu::gyro_z);
+    printf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
+    printf("Gyro Y (deg/s): %.3f\n", state::imu::gyro_y);
+    printf("Gyro Z (deg/s): %.3f\n\n", state::imu::gyro_z);
 
-    printf("Mag X: %.3f\n", state::imu::mag_x);
-    printf("Mag Y: %.3f\n", state::imu::mag_y);
-    printf("Mag Z: %.3f\n\n", state::imu::mag_z);
+    printf("Accel X (m/s^2): %.3f\n", state::imu::accel_x);
+    printf("Accel Y (m/s^2): %.3f\n", state::imu::accel_y);
+    printf("Accel Z (m/s^2): %.3f\n\n", state::imu::accel_z);
+
+    printf("Orientation X (deg): %.3f\n", state::imu::orientation_x);
+    printf("Orientation Y (deg): %.3f\n", state::imu::orientation_y);
+    printf("Orientation Z (deg): %.3f\n\n", state::imu::orientation_z);
+
+    printf("Gravity X (m/s^2): %.3f\n", state::imu::gravity_x);
+    printf("Gravity Y (m/s^2): %.3f\n", state::imu::gravity_y);
+    printf("Gravity Z (m/s^2): %.3f\n\n", state::imu::gravity_z);
 
     printf("ACCELEROMETER: %d\n", state::accel::status);
-    printf("Accel X: %.3f\n", state::accel::accel_x);
-    printf("Accel Y: %.3f\n", state::accel::accel_y);
-    printf("Accel Z: %.3f\n\n", state::accel::accel_z);
+    printf("Accel X (G): %.3f\n", state::accel::accel_x);
+    printf("Accel Y (G): %.3f\n", state::accel::accel_y);
+    printf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
     printf("THERMOMETER: %d\n", state::therm::status);
-    printf("Temperature: %.3f\n", state::therm::temp);
-    printf("Humidity: %.3f\n\n", state::therm::humidity);
+    printf("Temperature (C): %.3f\n\n", state::therm::temp);
 
-    printf("SD: %d\n\n", state::sd::init);
-
+    printf("SD: %d\n", state::sd::init);
     printf("RFM: %d\n\n", state::rfm::init);
 
 #endif

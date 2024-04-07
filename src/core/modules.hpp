@@ -1,5 +1,5 @@
-#ifndef MODULES_HPP_
-#define MODULES_HPP_
+#ifndef MODULES_HPP
+#define MODULES_HPP
 
 #include "bmp388.hpp"
 #include "bno055.hpp"
@@ -11,6 +11,7 @@
 
 enum Sensor {
     ALT,
+    GPS,
     IMU,
     ACCEL,
     THERM
@@ -29,4 +30,4 @@ namespace modules {
     extern RFM rfm;
 }; // namespace modules
 
-#endif // MODULES_HPP_
+#endif // MODULES_HPP

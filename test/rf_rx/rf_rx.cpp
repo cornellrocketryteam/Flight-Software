@@ -12,7 +12,7 @@
 
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
-SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RX_DIO1);
+SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RADIOLIB_NC);
 
 int main() {
     stdio_init_all();
@@ -41,6 +41,12 @@ int main() {
     }
     printf("success!\n");
 
+    state = radio.setFrequency(900);
+    if (state != RADIOLIB_ERR_NONE) {
+        printf("Set Frequency failed, code %d\n", state);
+        return 1;
+    }
+
     uint8_t str[4];
 
     while (true) {
@@ -48,7 +54,7 @@ int main() {
         printf("[SX1276] Waiting for incoming transmission ... ");
 
         int state = radio.receive(str, 4);
-
+        //printf("after state\n");
         if (state == RADIOLIB_ERR_NONE) {
             // packet was successfully received
             printf("success!");

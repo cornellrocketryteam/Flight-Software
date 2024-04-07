@@ -1,14 +1,17 @@
-#ifndef STATE_HPP_
-#define STATE_HPP_
+#ifndef STATE_HPP
+#define STATE_HPP
 
+// clang-format off
 #include "flight_mode.hpp"
+#include "../constants.hpp"
 #include <stdint.h>
 #include <vector>
+// clang-format on
 
 #include "../sd/sd.hpp"
 
 enum SensorState {
-    OFF,
+    OFF = 0,
     VALID,
     INVALID
 };
@@ -24,12 +27,14 @@ namespace state {
         extern AscentMode ascent_class;
         extern DrogueDeployedMode drogue_deployed_class;
         extern MainDeployedMode main_deployed_class;
+        extern FaultMode fault_class;
 
         extern FlightMode *startup;
         extern FlightMode *standby;
         extern FlightMode *ascent;
         extern FlightMode *drogue_deployed;
         extern FlightMode *main_deployed;
+        extern FlightMode *fault;
 
         extern FlightMode *mode;
 
@@ -37,55 +42,66 @@ namespace state {
         extern uint32_t timestamp;
 
         extern bool key_armed;
-        extern bool altitude_armed;
+        extern bool alt_armed;
 
-        extern std::vector<std::string> events;
+        extern uint32_t ematch_start;
+
+        extern std::vector<Event> events;
     } // namespace flight
     namespace alt {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double pressure;
-        extern double altitude;
+        extern float pressure;
+        extern float altitude;
 
-        extern double ref_pressure;
+        extern float ref_pressure;
     } // namespace alt
     namespace gps {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern float latitude;
-        extern float longitude;
-        extern float altitude;
+        extern bool valid;
+        extern int32_t latitude;
+        extern int32_t longitude;
+        extern int32_t altitude;
         extern uint8_t siv;
     } // namespace gps
     namespace imu {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double mag_x;
-        extern double mag_y;
-        extern double mag_z;
-        extern double gyro_x;
-        extern double gyro_y;
-        extern double gyro_z;
+        extern float accel_x;
+        extern float accel_y;
+        extern float accel_z;
+
+        extern float gyro_x;
+        extern float gyro_y;
+        extern float gyro_z;
+
+        extern float orientation_x;
+        extern float orientation_y;
+        extern float orientation_z;
+
+        extern float gravity_x;
+        extern float gravity_y;
+        extern float gravity_z;
 
     } // namespace imu
     namespace accel {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double accel_x;
-        extern double accel_y;
-        extern double accel_z;
+        extern float accel_x;
+        extern float accel_y;
+        extern float accel_z;
 
     } // namespace accel
     namespace therm {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern double temp;
-        extern double humidity;
+        extern float temp;
 
     } // namespace therm
     namespace sd {
@@ -94,8 +110,9 @@ namespace state {
     } // namespace sd
     namespace rfm {
         extern bool init;
+        extern bool attempted_init;
 
     } // namespace rfm
 }; // namespace state
 
-#endif // STATE_HPP_
+#endif // STATE_HPP

@@ -1,5 +1,5 @@
-#ifndef PICO_HAL_H_
-#define PICO_HAL_H_
+#ifndef PICO_HAL_H
+#define PICO_HAL_H
 
 #include "RadioLib.h"
 
@@ -131,4 +131,4 @@ private:
     uint32_t _sckPin;
 };
 
-#endif // PICO_HAL_H_
+#endif // PICO_HAL_H

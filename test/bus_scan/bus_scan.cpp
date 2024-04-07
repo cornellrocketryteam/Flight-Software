@@ -38,7 +38,6 @@ bool reserved_addr(uint8_t addr) {
 int main() {
     stdio_init_all();
 
-    // This example will use I2C0 on the default SDA and SCL pins (GP4, GP5 on a Pico)
     i2c_init(I2C_PORT, 100*1000);
     
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
@@ -71,7 +70,7 @@ int main() {
         if (reserved_addr(addr))
             ret = PICO_ERROR_GENERIC;
         else
-            ret = i2c_read_blocking(i2c_default, addr, &rxdata, 1, false);
+            ret = i2c_read_blocking(I2C_PORT, addr, &rxdata, 1, false);
 
         printf(ret < 0 ? "." : "@");
         printf(addr % 16 == 15 ? "\n" : "  ");
