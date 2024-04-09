@@ -51,12 +51,12 @@ int main() {
     radio.setPacketSentAction(setFlag);
 
     printf("[SX1278] Sending first packet ... ");
-    transmissionState = radio.startTransmit("test");
+    transmissionState = radio.startTransmit("0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcd");
 
     while (true) {
         if (transmittedFlag) {
             transmittedFlag = false;
-            sleep_ms(125);
+            sleep_ms(750);
 
             if (transmissionState == RADIOLIB_ERR_NONE) {
                 printf("transmission finished!\n");
@@ -68,7 +68,7 @@ int main() {
             sleep_ms(150);
 
             printf("[SX1278] Sending another packet ... ");
-            transmissionState = radio.startTransmit("test");
+            transmissionState = radio.startTransmit("0123456789abcdefghijklmnopqrstuvwxyz0123456789abcdefghijklmnopqrstuvwxyz0123456789abcd");
         }
     }
 
