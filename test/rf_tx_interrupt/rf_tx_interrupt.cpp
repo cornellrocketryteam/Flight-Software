@@ -41,7 +41,12 @@ int main() {
         return 1;
     }
     printf("success!\n");
-
+    
+    state = radio.setFrequency(900);
+    if (state != RADIOLIB_ERR_NONE) {
+        printf("Set Frequency failed, code %d\n", state);
+        return 1;
+    }
 
     radio.setPacketSentAction(setFlag);
 
@@ -54,7 +59,7 @@ int main() {
             sleep_ms(125);
 
             if (transmissionState == RADIOLIB_ERR_NONE) {
-                printf("transmission finished!");
+                printf("transmission finished!\n");
             } else {
                 printf("failed, code %d\n", transmissionState);
             }
