@@ -10,6 +10,8 @@
 #define RX_DIO0 13
 #define RX_DIO1 14
 
+#define MSG_LEN 86
+
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
 SX1276 radio = new Module(hal, RX_CS, RX_DIO0, RADIOLIB_NC, RX_DIO1);
@@ -47,13 +49,13 @@ int main() {
         return 1;
     }
 
-    uint8_t str[4];
+    uint8_t str[MSG_LEN];
 
     while (true) {
         // receive a packet
         printf("[SX1276] Waiting for incoming transmission ... ");
 
-        int state = radio.receive(str, 4);
+        int state = radio.receive(str, MSG_LEN);
         //printf("after state\n");
         if (state == RADIOLIB_ERR_NONE) {
             // packet was successfully received
@@ -61,7 +63,7 @@ int main() {
 
             // print the data of the packet
             printf("[SX1276] Data: ");
-            for (int i=0; i<4; i++) {
+            for (int i=0; i<MSG_LEN; i++) {
                 printf("%c", str[i]);
             }
             printf("\n");
