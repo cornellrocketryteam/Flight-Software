@@ -51,6 +51,7 @@ int main() {
     while (true) {
         if (transmittedFlag) {
             transmittedFlag = false;
+            sleep_ms(125);
 
             if (transmissionState == RADIOLIB_ERR_NONE) {
                 printf("transmission finished!");
