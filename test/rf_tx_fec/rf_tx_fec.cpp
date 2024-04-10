@@ -50,6 +50,11 @@ int main() {
     }
     printf("success!\n");
 
+    state = radio.setFrequency(900);
+    if (state != RADIOLIB_ERR_NONE) {
+        printf("Set Frequency failed, code %d\n", state);
+        return 1;
+    }
 
     while (true) {
         printf("Enter message to send:\n");
