@@ -47,9 +47,8 @@ bool RFM::begin() {
 }
 
 bool RFM::transmit() {
-    if (awaiting && to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + state::rfm::interrupt_delay) {
-        awaiting = false;
-
+    if (to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + state::rfm::interrupt_delay) {
+        state::rfm::start_time = UINT32_MAX - state::rfm::interrupt_delay;
         if (state == RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
             printf("RFM: Transmit success\n");
@@ -119,10 +118,17 @@ bool RFM::transmit() {
 
         memcpy(&packet[82], &state::therm::temp, sizeof(float));
 
+#ifdef VERBOSE
+        printf("Transmitting: ");
+        for(uint i=0; i<constants::packet_size; i++) {printf("%c", packet[i]);}
+        printf("\n");
+#endif
+
         state = radio.startTransmit(packet, constants::packet_size);
         return true;
     } else if (awaiting) {
         state::rfm::start_time = to_ms_since_boot(get_absolute_time());
+        awaiting = false;
     }
     return false;
 }
