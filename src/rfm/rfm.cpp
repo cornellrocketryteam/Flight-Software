@@ -120,7 +120,9 @@ bool RFM::transmit() {
 
 #ifdef VERBOSE
         printf("Transmitting: ");
-        for(uint i=0; i<constants::packet_size; i++) {printf("%c", packet[i]);}
+        for (uint i = 0; i < constants::packet_size; i++) {
+            printf("%c", packet[i]);
+        }
         printf("\n");
 #endif
 
