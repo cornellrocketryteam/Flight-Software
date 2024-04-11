@@ -97,6 +97,8 @@ namespace state {
     namespace rfm {
         bool init = false;
         bool attempted_init = false;
+        uint32_t start_time = UINT32_MAX;
+        uint32_t interrupt_delay = 750;
 
     } // namespace rfm
 }; // namespace state

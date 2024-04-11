@@ -47,7 +47,7 @@ bool RFM::begin() {
 }
 
 bool RFM::transmit() {
-    if (awaiting) {
+    if (awaiting && to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + state::rfm::interrupt_delay) {
         awaiting = false;
 
         if (state == RADIOLIB_ERR_NONE) {
@@ -121,6 +121,8 @@ bool RFM::transmit() {
 
         state = radio.startTransmit(packet, constants::packet_size);
         return true;
+    } else if (awaiting) {
+        state::rfm::start_time = to_ms_since_boot(get_absolute_time());
     }
     return false;
 }
