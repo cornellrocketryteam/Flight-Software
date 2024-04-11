@@ -33,6 +33,14 @@ bool RFM::begin() {
         return false;
     }
 
+    state = radio.setFrequency(900);
+    if (state != RADIOLIB_ERR_NONE) {
+#ifdef VERBOSE
+        printf("Set Frequency failed, code %d\n", state);
+#endif
+        return false;
+    }
+
     radio.setPacketSentAction(set_flag);
 
     return true;
