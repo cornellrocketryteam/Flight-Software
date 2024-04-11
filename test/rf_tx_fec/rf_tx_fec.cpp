@@ -1,3 +1,5 @@
+#define TESTERROR
+
 #include <cstring>
 #include <string>
 #include <iostream>
@@ -81,7 +83,11 @@ int main() {
             rs.Encode(message_frame, encoded);
             printf("Original: "); printf("%s\n", message_frame);
             printf("Encoded:  ");        for(uint i = 0; i < sizeof(encoded); i++) {    printf("%c", encoded[i]);    }    printf("\n");
-
+#ifdef TESTERROR
+            printf("Overwriting 10 Bytes");
+            for(uint i = msglen; i > msglen - 10; i--) {encoded[i] = '$';}
+            printf("Corrupted Message: "); for(uint i = 0; i < sizeof(encoded); i++) {    printf("%c", encoded[i]);    }    printf("\n");
+#endif
             printf("Transmitting: ");    for(uint i = 0; i < sizeof(encoded); i++) {    printf("%c", encoded[i]);    }    printf("\n");
             rs.Decode(encoded, repaired);
             std::string result;
