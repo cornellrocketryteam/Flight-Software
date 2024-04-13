@@ -179,7 +179,10 @@ void StartupMode::execute() {
             sleep_ms(10);
             modules::altimeter.read_pressure(&state::alt::ref_pressure);
         } else {
-            state::flight::events.emplace_back(Event::alt_init_fail);
+            if (!state::alt::failed_init) {
+                state::flight::events.emplace_back(Event::alt_init_fail);
+                state::alt::failed_init = true;
+            }
         }
     }
     if (state::gps::status == OFF) {
@@ -189,21 +192,30 @@ void StartupMode::execute() {
         if (modules::imu.begin()) {
             state::imu::status = VALID;
         } else {
-            state::flight::events.emplace_back(Event::imu_init_fail);
+            if (!state::imu::failed_init) {
+                state::flight::events.emplace_back(Event::imu_init_fail);
+                state::imu::failed_init = true;
+            }
         }
     }
     if (state::accel::status == OFF) {
         if (modules::accel.begin()) {
             state::accel::status = VALID;
         } else {
-            state::flight::events.emplace_back(Event::accel_init_fail);
+            if (!state::accel::failed_init) {
+                state::flight::events.emplace_back(Event::accel_init_fail);
+                state::accel::failed_init = true;
+            }
         }
     }
     if (state::therm::status == OFF) {
         if (modules::therm.begin()) {
             state::therm::status = VALID;
         } else {
-            state::flight::events.emplace_back(Event::therm_init_fail);
+            if (!state::therm::failed_init) {
+                state::flight::events.emplace_back(Event::therm_init_fail);
+                state::therm::failed_init = true;
+            }
         }
     }
     if (!state::rfm::attempted_init) {
@@ -218,7 +230,10 @@ void StartupMode::execute() {
         if (modules::sd.begin()) {
             state::sd::init = true;
         } else {
-            state::flight::events.emplace_back(Event::sd_init_fail);
+            if (!state::sd::failed_init) {
+                state::flight::events.emplace_back(Event::sd_init_fail);
+                state::sd::failed_init = true;
+            }
         }
     }
 }

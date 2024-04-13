@@ -35,6 +35,7 @@ namespace state {
     } // namespace flight
     namespace alt {
         enum SensorState status = OFF;
+        bool failed_init = false;
         uint8_t failed_reads = 0;
 
         float pressure = -1;
@@ -44,6 +45,7 @@ namespace state {
     } // namespace alt
     namespace gps {
         enum SensorState status = OFF;
+        bool failed_init = false;
         uint8_t failed_reads = 0;
 
         bool valid = false;
@@ -54,6 +56,7 @@ namespace state {
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;
+        bool failed_init = false;
         uint8_t failed_reads = 0;
 
         float accel_x = -1;
@@ -75,6 +78,7 @@ namespace state {
     } // namespace imu
     namespace accel {
         enum SensorState status = OFF;
+        bool failed_init = false;
         uint8_t failed_reads = 0;
 
         float accel_x = -1;
@@ -84,6 +88,7 @@ namespace state {
     } // namespace accel
     namespace therm {
         enum SensorState status = OFF;
+        bool failed_init = false;
         uint8_t failed_reads = 0;
 
         float temp = -1;
@@ -91,6 +96,7 @@ namespace state {
     } // namespace therm
     namespace sd {
         bool init = false;
+        bool failed_init = false;
         FIL file;
 
     } // namespace sd
