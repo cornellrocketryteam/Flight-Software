@@ -28,6 +28,12 @@ struct SD {
     bool write_mode();
 
     /**
+     * Tracks the number of writes made to the current log file. Resets upon hitting
+     * the file writes threshold.
+     */
+    uint16_t writes_count = 0;
+
+    /**
      * SD card representation.
      */
     sd_card_t *pSD;

@@ -41,6 +41,8 @@ namespace state {
         extern int cycle_count;
         extern uint32_t timestamp;
 
+        extern int boot_count;
+
         extern bool key_armed;
         extern bool alt_armed;
 
@@ -112,6 +114,8 @@ namespace state {
     namespace sd {
         extern bool init;
         extern bool failed_init;
+
+        extern int current_file;
 
     } // namespace sd
     namespace rfm {

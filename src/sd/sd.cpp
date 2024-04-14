@@ -2,6 +2,7 @@
 #include "../constants.hpp"
 #include "../core/state.hpp"
 #include <cstdio>
+#include <sstream>
 
 bool SD::begin() {
     pSD = sd_get_by_num(0);
@@ -21,12 +22,24 @@ bool SD::begin() {
         char buffer[8];
         (void)f_gets(buffer, sizeof(buffer), &boot_file);
 
+        std::string buffer_str(buffer);
+        std::stringstream ss(buffer_str);
+
+        printf("buffer: '%s'\n", buffer);
+
+        int old_mode;
+
+        ss >> state::flight::boot_count;
+        state::flight::boot_count++;
+        ss.ignore();
+        ss >> old_mode;
+
+        printf("BOOT COUNT: %d\n", state::flight::boot_count);
+
         // if (atoi(buffer[0])) {
         //     printf("Previous flight mode: %d")
         // }
         // printf("'%s'\n", f_gets(buffer, sizeof(buffer), &boot_file));
-
-        printf("buffer: '%s'\n", buffer);
     }
 
     fr = f_close(&boot_file);
@@ -41,6 +54,12 @@ bool SD::begin() {
 }
 
 bool SD::log() {
+
+    if (writes_count == constants::file_writes_threshold) {
+        state::sd::current_file++;
+        writes_count = 0;
+    }
+
     std::string log;
 
     // clang-format off
@@ -85,7 +104,10 @@ bool SD::log() {
         log += std::to_string(static_cast<uint8_t>(event)) + ",";
     }
 
-    FRESULT fr = f_open(&log_file, constants::log_filename, FA_OPEN_APPEND | FA_WRITE);
+    char filename[10];
+    sprintf(filename, "%d_%d.csv", state::flight::boot_count, state::sd::current_file);
+
+    FRESULT fr = f_open(&log_file, (const char *)filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
 #ifdef VERBOSE
@@ -109,6 +131,8 @@ bool SD::log() {
         return false;
     }
 
+    writes_count++;
+
 #ifdef VERBOSE
     printf("SD: Log success\n");
 #endif
@@ -126,7 +150,8 @@ bool SD::write_mode() {
         return false;
     }
 
-    if (f_putc(state::flight::mode->id() + '0', &boot_file) < 0) {
+    std::string boot_str = std::to_string(state::flight::boot_count) + "," + std::to_string(state::flight::mode->id());
+    if (f_puts(boot_str.c_str(), &boot_file) < 0) {
 #ifdef VERBOSE
         printf("SD boot write: %s (%d)\n", FRESULT_str(fr), fr);
 #endif

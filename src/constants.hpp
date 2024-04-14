@@ -46,7 +46,7 @@ namespace constants {
     constexpr uint8_t ematch_threshold = 200;       // ms
 
     const char *const boot_filename = "boot.txt";
-    const char *const log_filename = "log.csv";
+    const uint16_t file_writes_threshold = 50000;
 
     constexpr uint8_t packet_size = 86;
 }; // namespace constants

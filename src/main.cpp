@@ -19,7 +19,7 @@ int main() {
     sleep_ms(3000);
     printf("Unplug from computer\n");
     sleep_ms(5000);
-    printf("ERROR: Too late. Restart process\n");
+    printf("WARNING: Too late. Boot file has been modified\n");
     sleep_ms(1000);
 #endif
 

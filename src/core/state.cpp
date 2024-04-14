@@ -26,6 +26,8 @@ namespace state {
         int cycle_count = 0;
         uint32_t timestamp = 0;
 
+        int boot_count = 0;
+
         bool key_armed = false;
         bool alt_armed = false;
 
@@ -97,7 +99,8 @@ namespace state {
     namespace sd {
         bool init = false;
         bool failed_init = false;
-        FIL file;
+
+        int current_file = 0;
 
     } // namespace sd
     namespace rfm {
