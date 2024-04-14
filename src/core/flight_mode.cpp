@@ -176,7 +176,7 @@ void StartupMode::execute() {
             state::alt::status = VALID;
             // The first reading of the BMP388 is always garbage
             modules::altimeter.read_pressure(&state::alt::ref_pressure);
-            sleep_ms(10);
+            sleep_ms(100);
             modules::altimeter.read_pressure(&state::alt::ref_pressure);
         } else {
             if (!state::alt::failed_init) {
