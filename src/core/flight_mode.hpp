@@ -63,7 +63,8 @@ public:
     void execute();
 
     /**
-     * Transition to standby mode if the arming key has been armed.
+     * Transition to standby mode if the arming key has been armed, or
+     * if the old flight mode from a past boot was in-flight or fault.
      */
     void transition();
 

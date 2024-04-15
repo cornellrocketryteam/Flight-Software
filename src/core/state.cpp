@@ -27,6 +27,7 @@ namespace state {
         uint32_t timestamp = 0;
 
         int boot_count = 0;
+        int old_mode = -1;
 
         bool key_armed = false;
         bool alt_armed = false;

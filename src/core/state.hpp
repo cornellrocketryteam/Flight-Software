@@ -42,6 +42,7 @@ namespace state {
         extern uint32_t timestamp;
 
         extern int boot_count;
+        extern int old_mode;
 
         extern bool key_armed;
         extern bool alt_armed;

@@ -25,21 +25,10 @@ bool SD::begin() {
         std::string buffer_str(buffer);
         std::stringstream ss(buffer_str);
 
-        printf("buffer: '%s'\n", buffer);
-
-        int old_mode;
-
         ss >> state::flight::boot_count;
         state::flight::boot_count++;
         ss.ignore();
-        ss >> old_mode;
-
-        printf("BOOT COUNT: %d\n", state::flight::boot_count);
-
-        // if (atoi(buffer[0])) {
-        //     printf("Previous flight mode: %d")
-        // }
-        // printf("'%s'\n", f_gets(buffer, sizeof(buffer), &boot_file));
+        ss >> state::flight::old_mode;
     }
 
     fr = f_close(&boot_file);

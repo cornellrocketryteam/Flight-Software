@@ -239,7 +239,9 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    if (state::flight::key_armed) {
+    if (state::flight::old_mode > 1) {
+        to_mode(state::flight::fault);
+    } else if (state::flight::key_armed) {
         if (state::alt::status != VALID || state::accel::status != VALID) {
             // Proceed to Fault Mode if either flight-critical sensor is non-operational
             to_mode(state::flight::fault);
