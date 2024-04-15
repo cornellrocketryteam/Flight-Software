@@ -5,6 +5,14 @@
 
 volatile bool awaiting = true;
 
+// Radio settings
+float freq = 900;  // MHz
+float bw = 125;    // kHz
+uint8_t sf = 7;    // Between 7 and 12
+uint8_t cr = 8;    // Between 5 and 8. 4/8 coding ration - one redundancy bit for every data bit
+uint8_t sw = 0x12; // Sync-word (defines network) Default is 18
+int8_t pwr = 17;   // Between 2 and 17
+
 void RFM::set_flag() {
     awaiting = true;
 }
@@ -21,7 +29,7 @@ bool RFM::begin() {
     sleep_ms(10);
     gpio_put(RFM_RST, 1);
 
-    state = radio.begin();
+    state = radio.begin(freq, bw, sf, cr, sw, pwr);
     if (state != RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
         printf("RFM Error: Init failed, code %d\n", state);
@@ -30,14 +38,6 @@ bool RFM::begin() {
 
         // spi_deinit(spi0);
         // spi_init(spi0, 100 * 1000);
-        return false;
-    }
-
-    state = radio.setFrequency(900);
-    if (state != RADIOLIB_ERR_NONE) {
-#ifdef VERBOSE
-        printf("Set Frequency failed, code %d\n", state);
-#endif
         return false;
     }
 
