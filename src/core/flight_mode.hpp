@@ -86,7 +86,14 @@ public:
     std::string name() { return "Standby"; };
 
 private:
+    /**
+     * Exponential weighted moving average for acceleration data.
+     */
     float accel_ema = 0.0;
+
+    /**
+     * Alpha value for EWMA calculation.
+     */
     float alpha = 0.1;
 };
 
@@ -109,9 +116,24 @@ public:
     std::string name() { return "Ascent"; };
 
 private:
+    /**
+     * Exponential weighted moving average for altitude data.
+     */
     float alt_ema = -1.0;
+
+    /**
+     * Alpha value for EWMA calculation.
+     */
     float alpha = 0.1;
+
+    /**
+     * The interval over which to record sampled averaged data for apogee detection.
+     */
     int interval = 5;
+
+    /**
+     * The current counter of data points in a sample.
+     */
     int count = 0;
 
     /**
