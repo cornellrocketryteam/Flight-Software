@@ -240,6 +240,7 @@ void StartupMode::execute() {
 
 void StartupMode::transition() {
     if (state::flight::old_mode > 1) {
+        // Proceed to Fault Mode if we were mid-flight or faulted in the last boot
         to_mode(state::flight::fault);
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID || state::accel::status != VALID) {
@@ -256,26 +257,10 @@ void StartupMode::transition() {
 
 void StandbyMode::transition() {
     if (state::accel::status == VALID) {
-        filter_accel();
-
-        if (filtered_accel[0] > constants::accel_threshold &&
-            filtered_accel[1] > constants::accel_threshold &&
-            filtered_accel[2] > constants::accel_threshold) {
+        accel_ema = alpha * state::accel::accel_z + (1 - alpha) * accel_ema;
+        if (accel_ema > constants::accel_threshold) {
             to_mode(state::flight::ascent);
         }
-    }
-}
-
-void StandbyMode::filter_accel() {
-    accel_sum += state::accel::accel_z;
-    sample_count++;
-
-    if (sample_count == 10) {
-        filtered_accel[2] = filtered_accel[1];
-        filtered_accel[1] = filtered_accel[0];
-        filtered_accel[0] = accel_sum / 10;
-        accel_sum = 0;
-        sample_count = 0;
     }
 }
 
@@ -292,28 +277,28 @@ void AscentMode::execute() {
 }
 
 void AscentMode::transition() {
-    // If we're armed and the altimeter is valid, check for apogee
-    if (state::flight::alt_armed && state::alt::status == VALID) {
-        filter_alt();
+    if (state::alt::status == VALID && state::flight::alt_armed) {
+        // If we're armed and the altimeter is valid, start checking for apogee
+        if (alt_ema == -1) {
+            alt_ema = state::alt::altitude;
+        }
 
-        if (filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
+        alt_ema = alpha * state::alt::altitude + (1 - alpha) * alt_ema;
+
+        if (count == interval) {
+            filtered_alt[2] = filtered_alt[1];
+            filtered_alt[1] = filtered_alt[0];
+            filtered_alt[0] = alt_ema;
+            count = 0;
+        }
+        count++;
+
+        if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
+            filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             gpio_put(SSA_DROGUE, 1);
             state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
             to_mode(state::flight::drogue_deployed);
         }
-    }
-}
-
-void AscentMode::filter_alt() {
-    alt_sum += state::alt::altitude;
-    sample_count++;
-
-    if (sample_count == 10) {
-        filtered_alt[2] = filtered_alt[1];
-        filtered_alt[1] = filtered_alt[0];
-        filtered_alt[0] = alt_sum / 10;
-        alt_sum = 0;
-        sample_count = 0;
     }
 }
 

@@ -86,26 +86,8 @@ public:
     std::string name() { return "Standby"; };
 
 private:
-    /**
-     * Calculates moving averages of z-axis acceleration readings
-     * and stores them in filtered_accel.
-     */
-    void filter_accel();
-
-    /**
-     * Tracks the number of samples taken for moving averages.
-     */
-    int sample_count;
-
-    /**
-     * Accumulates the z-axis acceleration for moving averages.
-     */
-    float accel_sum;
-
-    /**
-     * Stores moving averages of z-axis accelerations.
-     */
-    float filtered_accel[3] = {0, 0, 0};
+    float accel_ema = 0.0;
+    float alpha = 0.1;
 };
 
 /**
@@ -127,26 +109,15 @@ public:
     std::string name() { return "Ascent"; };
 
 private:
-    /**
-     * Takes moving averages of altitude readings and stores
-     * them in filtered_alt.
-     */
-    void filter_alt();
+    float alt_ema = -1.0;
+    float alpha = 0.1;
+    int interval = 5;
+    int count = 0;
 
     /**
-     * Tracks the number of samples taken for moving averages.
+     * Stores points of moving averages of altitudes.
      */
-    int sample_count;
-
-    /**
-     * Accumulates altitude readings for moving averages.
-     */
-    float alt_sum;
-
-    /**
-     * Stores moving averages of altitudes.
-     */
-    float filtered_alt[3] = {0, 0, 0};
+    float filtered_alt[3] = {-1, -1, -1};
 };
 
 /**
