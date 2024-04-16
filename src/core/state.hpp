@@ -123,7 +123,6 @@ namespace state {
         extern bool init;
         extern bool attempted_init;
         extern uint32_t start_time;
-        extern uint32_t interrupt_delay;
 
     } // namespace rfm
 }; // namespace state

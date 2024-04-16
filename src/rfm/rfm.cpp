@@ -5,14 +5,6 @@
 
 volatile bool awaiting = true;
 
-// Radio settings
-float freq = 900;  // MHz
-float bw = 125;    // kHz
-uint8_t sf = 7;    // Between 7 and 12
-uint8_t cr = 8;    // Between 5 and 8. 4/8 coding ration - one redundancy bit for every data bit
-uint8_t sw = 0x12; // Sync-word (defines network) Default is 18
-int8_t pwr = 17;   // Between 2 and 17
-
 void RFM::set_flag() {
     awaiting = true;
 }
@@ -29,15 +21,11 @@ bool RFM::begin() {
     sleep_ms(10);
     gpio_put(RFM_RST, 1);
 
-    state = radio.begin(freq, bw, sf, cr, sw, pwr);
+    state = radio.begin(constants::frequency, constants::bandwidth, constants::sf, constants::cr, constants::sw, constants::power);
     if (state != RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
         printf("RFM Error: Init failed, code %d\n", state);
 #endif
-        // printf("spi is writable AFTER BEGIN: %d\n", spi_is_writable(spi0));
-
-        // spi_deinit(spi0);
-        // spi_init(spi0, 100 * 1000);
         return false;
     }
 
@@ -47,8 +35,8 @@ bool RFM::begin() {
 }
 
 bool RFM::transmit() {
-    if (to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + state::rfm::interrupt_delay) {
-        state::rfm::start_time = UINT32_MAX - state::rfm::interrupt_delay;
+    if (to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + constants::interrupt_delay) {
+        state::rfm::start_time = UINT32_MAX - constants::interrupt_delay;
         if (state == RADIOLIB_ERR_NONE) {
 #ifdef VERBOSE
             printf("RFM: Transmit success\n");
