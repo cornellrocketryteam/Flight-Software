@@ -1,5 +1,5 @@
 /**
- * @file liftoff.cpp
+ * @file detect_liftoff.cpp
  * @author csg83
  * 
  * @brief Unit test of the algorithm to detect liftoff via an exponential weighted moving average (EWMA)
