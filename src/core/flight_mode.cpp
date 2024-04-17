@@ -185,6 +185,10 @@ void StartupMode::execute() {
             }
         }
     }
+    if (state::alt::status == VALID) {
+        modules::altimeter.read_pressure(&pressure);
+        state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
+    }
     if (state::gps::status == OFF) {
         // TODO
     }

@@ -70,6 +70,10 @@ public:
 
     uint8_t id() { return 0; }
     std::string name() { return "Startup"; };
+
+private:
+    float alpha = 0.1;
+    float pressure = 1000;
 };
 
 /**
