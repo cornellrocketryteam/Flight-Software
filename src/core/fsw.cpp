@@ -2,7 +2,7 @@
 
 void Flight::execute() {
 
-#ifdef VERBOSE
+// #ifdef VERBOSE
     printf("---------------BEGIN LOOP %d---------------\n", state::flight::cycle_count);
     printf("Time: %d ms\n", state::flight::timestamp);
     printf("Mode: %s\n", state::flight::mode->name().c_str());
@@ -40,14 +40,14 @@ void Flight::execute() {
     printf("SD: %d\n", state::sd::init);
     printf("RFM: %d\n\n", state::rfm::init);
 
-#endif
+// #endif
 
     state::flight::mode->execute();
     state::flight::mode->transition();
 
-#ifdef VERBOSE
+// #ifdef VERBOSE
     printf("----------------END LOOP----------------\n\n");
-#endif
+// #endif
     state::flight::cycle_count++;
     state::flight::timestamp = to_ms_since_boot(get_absolute_time());
 }

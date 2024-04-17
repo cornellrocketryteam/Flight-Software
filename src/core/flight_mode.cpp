@@ -257,8 +257,15 @@ void StartupMode::transition() {
 
 void StandbyMode::transition() {
     if (state::accel::status == VALID) {
-        accel_ema = alpha * state::accel::accel_z + (1 - alpha) * accel_ema;
-        if (accel_ema > constants::accel_threshold) {
+        accel_sum -= accel_buffer[index];
+        accel_buffer[index] = state::accel::accel_z;
+        accel_sum += state::accel::accel_z;
+        index++;
+        if (index == 10) {
+            index = 0;
+        }
+
+        if (accel_sum * 0.1 > constants::accel_threshold) {
             to_mode(state::flight::ascent);
         }
     }
@@ -279,16 +286,18 @@ void AscentMode::execute() {
 void AscentMode::transition() {
     if (state::alt::status == VALID && state::flight::alt_armed) {
         // If we're armed and the altimeter is valid, start checking for apogee
-        if (alt_ema == -1) {
-            alt_ema = state::alt::altitude;
+        alt_sum -= alt_buffer[index];
+        alt_buffer[index] = state::alt::altitude;
+        alt_sum += state::alt::altitude;
+        index++;
+        if (index == 10) {
+            index = 0;
         }
-
-        alt_ema = alpha * state::alt::altitude + (1 - alpha) * alt_ema;
 
         if (count == interval) {
             filtered_alt[2] = filtered_alt[1];
             filtered_alt[1] = filtered_alt[0];
-            filtered_alt[0] = alt_ema;
+            filtered_alt[0] = alt_sum * 0.1;
             count = 0;
         }
         count++;

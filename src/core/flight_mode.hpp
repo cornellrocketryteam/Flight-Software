@@ -87,14 +87,19 @@ public:
 
 private:
     /**
-     * Exponential weighted moving average for acceleration data.
+     * Stores values for calculating the moving average.
      */
-    float accel_ema = 0.0;
+    float accel_buffer[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     /**
-     * Alpha value for EWMA calculation.
+     * Stores the sum of the current values in accel_buffer.
      */
-    float alpha = 0.1;
+    float accel_sum = 0;
+
+    /**
+     * The current index of accel_buffer.
+     */
+    int index = 0;
 };
 
 /**
@@ -117,14 +122,19 @@ public:
 
 private:
     /**
-     * Exponential weighted moving average for altitude data.
+     * Stores values for calculating the moving average.
      */
-    float alt_ema = -1.0;
+    float alt_buffer[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
     /**
-     * Alpha value for EWMA calculation.
+     * Stores the sum of the current values in alt_buffer.
      */
-    float alpha = 0.1;
+    float alt_sum = 0;
+
+    /**
+     * The current index of accel_buffer.
+     */
+    int index = 0;
 
     /**
      * The interval over which to record sampled averaged data for apogee detection.
