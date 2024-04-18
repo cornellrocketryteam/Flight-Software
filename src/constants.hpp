@@ -45,6 +45,8 @@ namespace constants {
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
+    constexpr uint8_t cycle_time = 40;              // ms
+
     const char *const boot_filename = "boot.txt";
     const uint16_t file_writes_threshold = 50000;
 
