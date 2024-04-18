@@ -37,18 +37,18 @@ enum class Event : uint8_t {
  */
 namespace constants {
 
-    constexpr uint16_t arming_altitude = 1526;        // meters           TODO: CHANGE TO 305 FOR LAUNCH
-    constexpr uint16_t main_deploy_altitude = 244;   // meters           TODO: CHANGE FOR LAUNCH
+    constexpr uint8_t cycle_time = 50;              // ms
+
+    constexpr uint16_t arming_altitude = 1526;      // meters
+    constexpr uint16_t main_deploy_altitude = 244;  // meters
     constexpr uint8_t max_failed_reads = 10;
 
-    constexpr uint8_t accel_threshold = 2;          // G            TODO: CHANGE TO 4 FOR LAUNCH
+    constexpr uint8_t accel_threshold = 4;          // G
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
-    constexpr uint8_t cycle_time = 50;              // ms
-
     const char *const boot_filename = "boot.txt";
-    const uint16_t file_writes_threshold = 50000;
+    const uint16_t file_writes_threshold = 50000;   // cycles
 
     constexpr float frequency = 915;                // MHz
     constexpr float bandwidth = 125;                // kHz
@@ -57,8 +57,8 @@ namespace constants {
     constexpr uint8_t sw = 0x12;                    // Sync-word (defines network) Default is 18
     constexpr int8_t power = 20;                    // Between 2 and 17 or 20 for max power
 
-    constexpr uint32_t interrupt_delay = 750;
-    constexpr uint8_t packet_size = 86;
+    constexpr uint32_t interrupt_delay = 750;       // ms
+    constexpr uint8_t packet_size = 86;             // bytes
 }; // namespace constants
 
 #endif // CONSTANTS_HPP
