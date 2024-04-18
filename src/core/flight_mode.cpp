@@ -341,5 +341,9 @@ void MainDeployedMode::execute() {
     if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
         gpio_put(SSA_MAIN, 0);
     }
+    // Turn off data logging if we are at a very low altitude
+    if (state::alt::status == VALID && state::alt::altitude < constants::log_threshold) {
+        state::sd::init = false;
+    }
     FlightMode::execute();
 }

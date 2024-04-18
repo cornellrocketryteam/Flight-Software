@@ -49,6 +49,7 @@ namespace constants {
 
     const char *const boot_filename = "boot.txt";
     const uint16_t file_writes_threshold = 50000;   // cycles
+    constexpr float log_threshold = 50;             // meters
 
     constexpr float frequency = 915;                // MHz
     constexpr float bandwidth = 125;                // kHz

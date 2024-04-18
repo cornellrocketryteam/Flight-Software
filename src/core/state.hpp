@@ -38,7 +38,7 @@ namespace state {
 
         extern FlightMode *mode;
 
-        extern int cycle_count;
+        extern uint32_t cycle_count;
         extern uint32_t timestamp;
 
         extern int boot_count;

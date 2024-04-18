@@ -23,7 +23,7 @@ namespace state {
 
         FlightMode *mode = startup;
 
-        int cycle_count = 0;
+        uint32_t cycle_count = 0;
         uint32_t timestamp = 0;
 
         int boot_count = 0;
