@@ -4,6 +4,9 @@
 # Doxygen output directory
 docs/
 
+# Data files in the tools directory
+tools/*.csv
+
 # macOS
 **/.DS_Store
 
