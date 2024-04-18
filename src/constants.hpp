@@ -37,15 +37,15 @@ enum class Event : uint8_t {
  */
 namespace constants {
 
-    constexpr uint16_t arming_altitude = 10;        // meters           TODO: CHANGE TO 305 FOR LAUNCH
-    constexpr uint16_t main_deploy_altitude = 25;   // meters           TODO: CHANGE FOR LAUNCH
+    constexpr uint16_t arming_altitude = 1526;        // meters           TODO: CHANGE TO 305 FOR LAUNCH
+    constexpr uint16_t main_deploy_altitude = 244;   // meters           TODO: CHANGE FOR LAUNCH
     constexpr uint8_t max_failed_reads = 10;
 
     constexpr uint8_t accel_threshold = 2;          // G            TODO: CHANGE TO 4 FOR LAUNCH
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
-    constexpr uint8_t cycle_time = 40;              // ms
+    constexpr uint8_t cycle_time = 50;              // ms
 
     const char *const boot_filename = "boot.txt";
     const uint16_t file_writes_threshold = 50000;
