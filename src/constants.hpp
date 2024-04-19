@@ -51,6 +51,8 @@ namespace constants {
     const uint16_t file_writes_threshold = 50000;   // cycles
     constexpr float log_threshold = 50;             // meters
 
+    constexpr uint16_t main_deploy_wait = 1200;     // cycles
+
     constexpr float frequency = 915;                // MHz
     constexpr float bandwidth = 125;                // kHz
     constexpr uint8_t sf = 7;                       // Between 7 and 12

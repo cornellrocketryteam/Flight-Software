@@ -173,6 +173,12 @@ public:
 
     uint8_t id() { return 3; }
     std::string name() { return "Drogue Deployed"; };
+
+private:
+    /**
+     * Tracks the number of cycles after drogue deployment.
+     */
+    uint16_t main_cycle_count = 0;
 };
 
 /**

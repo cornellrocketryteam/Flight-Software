@@ -330,8 +330,10 @@ void DrogueDeployedMode::execute() {
 }
 
 void DrogueDeployedMode::transition() {
-    // Proceed to Main Deployed mode if the deployment altitude is reached
-    if (state::alt::altitude < constants::main_deploy_altitude) {
+    // Proceed to Main Deployed mode if the deployment altitude is reached and we have waited for main_deploy_wait
+    if (main_cycle_count <= constants::main_deploy_wait) {
+        main_cycle_count++;
+    } else if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
         to_mode(state::flight::main_deployed);
