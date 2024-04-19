@@ -18,6 +18,7 @@ add_compile_options(
 )
 
 add_definitions(-DVERBOSE)
+add_definitions(-DLAUNCH)
 
 # Add source files from src/
 set(SOURCES
@@ -31,9 +32,15 @@ set(SOURCES
     src/sd/hw_config.c
 )
 
+# Add source files from sim/
+set(SIM
+    sim/sim_data.cpp
+)
+
 # Add all executables
 add_executable(${PROJECT_NAME}
     ${SOURCES}
+    ${SIM}
 )
 
 # Add a "upload" target that automatically uploads the uf2 to a Pico in boot-select mode
