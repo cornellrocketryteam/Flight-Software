@@ -198,6 +198,12 @@ public:
 
     uint8_t id() { return 4; }
     std::string name() { return "Main Deployed"; };
+
+private:
+    /**
+     * Tracks the number of cycles over which to log data in this mode.
+     */
+    uint16_t log_cycle_count = 0;
 };
 
 /**

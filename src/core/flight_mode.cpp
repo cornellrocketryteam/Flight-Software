@@ -1,11 +1,11 @@
 #include "flight_mode.hpp"
+#include "../../sim/sim_data.hpp"
 #include "../constants.hpp"
 #include "../pins.hpp"
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
-// #include "../../sim/sim_data.hpp"
-// SimData sim_data;
+SimData sim_data;
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
@@ -13,7 +13,7 @@ void FlightMode::execute() {
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
     }
-    // state::alt::altitude = sim_data.get_alt();
+    state::alt::altitude = sim_data.get_alt();
 
     if (!state::gps::status == OFF) {
         // TODO
@@ -55,7 +55,7 @@ void FlightMode::execute() {
         );
         check_sensor(ACCEL);
     }
-    // state::accel::accel_z = sim_data.get_accel();
+    state::accel::accel_z = sim_data.get_accel();
 
     if (!state::therm::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
@@ -331,7 +331,10 @@ void DrogueDeployedMode::execute() {
 
 void DrogueDeployedMode::transition() {
     // Proceed to Main Deployed mode if the deployment altitude is reached and we have waited for main_deploy_wait
-    if (main_cycle_count <= constants::main_deploy_wait) {
+    if (main_cycle_count < constants::main_deploy_wait) {
+        main_cycle_count++;
+    } else if (main_cycle_count == constants::main_deploy_wait) {
+        state::flight::events.emplace_back(Event::main_deploy_wait_end);
         main_cycle_count++;
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_MAIN, 1);
@@ -347,9 +350,14 @@ void MainDeployedMode::execute() {
     if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
         gpio_put(SSA_MAIN, 0);
     }
-    // Turn off data logging if we are at a very low altitude
-    if (state::alt::status == VALID && state::alt::altitude < constants::log_threshold) {
+    if (log_cycle_count < constants::main_log_shutoff) {
+        log_cycle_count++;
+    }
+    // Turn off data logging after a certain period of time to not overwrite data after landing
+    if (log_cycle_count == constants::main_log_shutoff) {
         state::sd::init = false;
+        state::flight::events.emplace_back(Event::main_log_shutoff);
+        log_cycle_count++;
     }
     FlightMode::execute();
 }

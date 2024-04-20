@@ -29,7 +29,10 @@ enum class Event : uint8_t {
     sd_write_fail = 18,
 
     rfm_init_fail = 19,
-    rfm_tx_fail = 20
+    rfm_tx_fail = 20,
+
+    main_deploy_wait_end = 21,
+    main_log_shutoff = 22
 };
 
 /**
@@ -51,7 +54,8 @@ namespace constants {
     const uint16_t file_writes_threshold = 50000;   // cycles
     constexpr float log_threshold = 50;             // meters
 
-    constexpr uint16_t main_deploy_wait = 1200;     // cycles
+    constexpr uint16_t main_deploy_wait = 160;      // cycles
+    constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
     constexpr float frequency = 915;                // MHz
     constexpr float bandwidth = 125;                // kHz
