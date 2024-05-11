@@ -143,7 +143,7 @@ private:
     /**
      * The interval over which to record sampled averaged data for apogee detection.
      */
-    int interval = 30;
+    int interval = 10;
 
     /**
      * The current counter of data points in a sample.
