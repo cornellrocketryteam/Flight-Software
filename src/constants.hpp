@@ -57,7 +57,7 @@ namespace constants {
     constexpr uint16_t main_deploy_wait = 160;      // cycles
     constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
-    constexpr float frequency = 915;                // MHz
+    constexpr float frequency = 922.2;              // MHz
     constexpr float bandwidth = 125;                // kHz
     constexpr uint8_t sf = 7;                       // Between 7 and 12
     constexpr uint8_t cr = 8;                       // Between 5 and 8. 4/8 coding ratio - one redundancy bit for every data bit
