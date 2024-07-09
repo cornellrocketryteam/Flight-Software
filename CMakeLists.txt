@@ -93,5 +93,5 @@ target_link_libraries(${PROJECT_NAME}
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
-# Create map/bin/hex file etc.
-pico_add_extra_outputs(${PROJECT_NAME})
+# Create uf2 file
+pico_add_uf2_output(${PROJECT_NAME})
