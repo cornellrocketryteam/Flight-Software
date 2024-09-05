@@ -23,9 +23,7 @@ bool RFM::begin() {
 
     state = radio.begin(constants::frequency, constants::bandwidth, constants::sf, constants::cr, constants::sw, constants::power);
     if (state != RADIOLIB_ERR_NONE) {
-#ifdef VERBOSE
-        printf("RFM Error: Init failed, code %d\n", state);
-#endif
+        logf("RFM Error: Init failed, code %d\n", state);
         return false;
     }
 
@@ -38,13 +36,9 @@ bool RFM::transmit() {
     if (to_ms_since_boot(get_absolute_time()) > state::rfm::start_time + constants::interrupt_delay) {
         state::rfm::start_time = UINT32_MAX - constants::interrupt_delay;
         if (state == RADIOLIB_ERR_NONE) {
-#ifdef VERBOSE
-            printf("RFM: Transmit success\n");
-#endif
+            logf("RFM: Transmit success\n");
         } else {
-#ifdef VERBOSE
-            printf("RFM Error: Transmit failed, code %d\n", state);
-#endif
+            logf("RFM Error: Transmit failed, code %d\n", state);
             return false;
         }
 

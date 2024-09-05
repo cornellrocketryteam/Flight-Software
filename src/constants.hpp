@@ -1,6 +1,12 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#ifdef VERBOSE
+    #define logf(...) printf(__VA_ARGS__)
+#else
+    #define logf(...)
+#endif
+
 enum class Event : uint8_t {
     key_armed = 0,
     alt_armed = 1,

@@ -9,9 +9,7 @@ bool SD::begin() {
     FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
 
     if (fr != FR_OK) {
-#ifdef VERBOSE
-        printf("SD mount: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD mount: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
@@ -33,9 +31,7 @@ bool SD::begin() {
 
     fr = f_close(&boot_file);
     if (FR_OK != fr) {
-#ifdef VERBOSE
-        printf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
@@ -99,32 +95,24 @@ bool SD::log() {
     FRESULT fr = f_open(&log_file, (const char *)filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
-#ifdef VERBOSE
-        printf("SD log open: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD log open: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     if (f_printf(&log_file, "%s\n", log.c_str()) < 0) {
-#ifdef VERBOSE
-        printf("SD log print: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD log print: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     fr = f_close(&log_file);
     if (FR_OK != fr) {
-#ifdef VERBOSE
-        printf("SD log close: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD log close: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     writes_count++;
 
-#ifdef VERBOSE
-    printf("SD: Log success\n");
-#endif
+    logf("SD: Log success\n");
 
     return true;
 }
@@ -133,25 +121,19 @@ bool SD::write_mode() {
     FRESULT fr = f_open(&boot_file, constants::boot_filename, FA_OPEN_ALWAYS | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
-#ifdef VERBOSE
-        printf("SD boot open: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD boot open: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     std::string boot_str = std::to_string(state::flight::boot_count) + "," + std::to_string(state::flight::mode->id());
     if (f_puts(boot_str.c_str(), &boot_file) < 0) {
-#ifdef VERBOSE
-        printf("SD boot write: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD boot write: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     fr = f_close(&boot_file);
     if (FR_OK != fr) {
-#ifdef VERBOSE
-        printf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
-#endif
+        logf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
