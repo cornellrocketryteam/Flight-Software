@@ -50,7 +50,7 @@ void Flight::execute() {
     }
 
     logf("----------------END LOOP----------------\n\n");
-    
+
     state::flight::cycle_count++;
     state::flight::timestamp = to_ms_since_boot(get_absolute_time());
 }

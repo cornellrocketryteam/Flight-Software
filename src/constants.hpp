@@ -2,9 +2,9 @@
 #define CONSTANTS_HPP
 
 #ifdef VERBOSE
-    #define logf(...) printf(__VA_ARGS__)
+#define logf(...) printf(__VA_ARGS__)
 #else
-    #define logf(...)
+#define logf(...)
 #endif
 
 enum class Event : uint8_t {
