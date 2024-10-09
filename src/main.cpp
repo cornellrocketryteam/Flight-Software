@@ -2,7 +2,6 @@
 
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
-#include "hardware/rtc.h"
 #include "pico/stdlib.h"
 #ifndef LAUNCH
 #include "tusb.h"

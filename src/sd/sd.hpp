@@ -39,6 +39,11 @@ struct SD {
     sd_card_t *pSD;
 
     /**
+     * File system representation.
+     */
+    FATFS fs;
+
+    /**
      * Log file object representation.
      */
     FIL log_file;

@@ -5,8 +5,7 @@
 #include <sstream>
 
 bool SD::begin() {
-    pSD = sd_get_by_num(0);
-    FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
+    FRESULT fr = f_mount(&fs, "", 1);
 
     if (fr != FR_OK) {
         logf("SD mount: %s (%d)\n", FRESULT_str(fr), fr);

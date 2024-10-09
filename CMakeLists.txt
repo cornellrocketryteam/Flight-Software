@@ -82,7 +82,7 @@ target_link_libraries(${PROJECT_NAME}
     hardware_i2c 
     hardware_gpio
     RadioLib
-    FatFs_SPI 
+    no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 
     BMP388-Pico
     BNO055-Pico
     LIS3DH-Pico 
