@@ -58,6 +58,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
 
+# Ignore warnings from RadioLib
+target_compile_options(RadioLib PRIVATE -w)
+
 # Link library directories
 target_link_directories(${PROJECT_NAME} 
     PRIVATE
