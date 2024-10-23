@@ -88,7 +88,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             state::flight::events.emplace_back(Event::alt_read_fail);
             if (state::alt::failed_reads >= constants::max_failed_reads) {
                 state::alt::status = OFF;
-                state::flight::events.emplace_back(Event::alt_turn_off);
                 to_mode(state::flight::fault);
             }
         }
@@ -104,7 +103,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             state::flight::events.emplace_back(Event::gps_read_fail);
             if (state::gps::failed_reads >= constants::max_failed_reads) {
                 state::gps::status = OFF;
-                state::flight::events.emplace_back(Event::gps_turn_off);
             }
         }
         break;
@@ -119,7 +117,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             state::flight::events.emplace_back(Event::imu_read_fail);
             if (state::imu::failed_reads >= constants::max_failed_reads) {
                 state::imu::status = OFF;
-                state::flight::events.emplace_back(Event::imu_turn_off);
             }
         }
         break;
@@ -134,7 +131,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             state::flight::events.emplace_back(Event::accel_read_fail);
             if (state::accel::failed_reads >= constants::max_failed_reads) {
                 state::accel::status = OFF;
-                state::flight::events.emplace_back(Event::accel_turn_off);
                 to_mode(state::flight::fault);
             }
         }
@@ -150,7 +146,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             state::flight::events.emplace_back(Event::therm_read_fail);
             if (state::therm::failed_reads >= constants::max_failed_reads) {
                 state::therm::status = OFF;
-                state::flight::events.emplace_back(Event::therm_turn_off);
             }
         }
         break;
@@ -171,7 +166,6 @@ void StartupMode::execute() {
     if (gpio_get(ARMED_IN)) {
         state::flight::key_armed = true;
         gpio_put(ARMED_OUT, 1);
-        state::flight::events.emplace_back(Event::key_armed);
     }
 
     // Attempt to initialize all modules

@@ -49,8 +49,13 @@ void Flight::execute() {
         sleep_ms(constants::cycle_time - current_cycle_time);
     }
 
-    logf("----------------END LOOP----------------\n\n");
-
     state::flight::cycle_count++;
     state::flight::timestamp = to_ms_since_boot(get_absolute_time());
+
+    // Check for any cycle overflows
+    if (state::flight::timestamp - current_cycle_start > constants::cycle_time) {
+        state::flight::events.emplace_back(Event::cycle_overflow);
+    }
+
+    logf("----------------END LOOP----------------\n\n");
 }

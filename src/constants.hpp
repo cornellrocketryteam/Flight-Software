@@ -8,37 +8,44 @@
 #endif
 
 enum class Event : uint8_t {
-    key_armed = 0,
-    alt_armed = 1,
+    alt_armed = 0,
 
-    alt_init_fail = 2,
-    alt_read_fail = 3,
-    alt_turn_off = 4,
+    alt_init_fail = 1,
+    alt_read_fail = 2,
 
-    gps_init_fail = 5,
-    gps_read_fail = 6,
-    gps_turn_off = 7,
+    gps_init_fail = 3,
+    gps_read_fail = 4,
 
-    imu_init_fail = 8,
-    imu_read_fail = 9,
-    imu_turn_off = 10,
+    imu_init_fail = 5,
+    imu_read_fail = 6,
 
-    accel_init_fail = 11,
-    accel_read_fail = 12,
-    accel_turn_off = 13,
+    accel_init_fail = 7,
+    accel_read_fail = 8,
 
-    therm_init_fail = 14,
-    therm_read_fail = 15,
-    therm_turn_off = 16,
+    therm_init_fail = 9,
+    therm_read_fail = 10,
+
+    voltage_init_fail = 11,
+    voltage_read_fail = 12,
+
+    adc_init_fail = 13,
+    adc_read_fail = 14,
+
+    fram_init_fail = 15,
+    fram_write_fail = 16,
 
     sd_init_fail = 17,
     sd_write_fail = 18,
 
-    rfm_init_fail = 19,
-    rfm_tx_fail = 20,
+    mav_actuated = 19,
+    sv_actuated = 20,
 
     main_deploy_wait_end = 21,
-    main_log_shutoff = 22
+    main_log_shutoff = 22,
+    cycle_overflow = 23,
+
+    rfm_init_fail = 24,
+    rfm_tx_fail = 25,
 };
 
 /**
