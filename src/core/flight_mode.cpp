@@ -10,7 +10,6 @@
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
         ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
-        ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
     }
     // state::alt::altitude = sim_data.get_alt();

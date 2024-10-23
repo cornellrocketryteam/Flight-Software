@@ -56,9 +56,7 @@ namespace state {
         extern bool failed_init;
         extern uint8_t failed_reads;
 
-        extern float pressure;
         extern float altitude;
-
         extern float ref_pressure;
     } // namespace alt
     namespace gps {

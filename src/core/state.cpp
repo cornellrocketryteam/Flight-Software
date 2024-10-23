@@ -41,9 +41,7 @@ namespace state {
         bool failed_init = false;
         uint8_t failed_reads = 0;
 
-        float pressure = -1;
         float altitude = -1;
-
         float ref_pressure = -1;
     } // namespace alt
     namespace gps {
