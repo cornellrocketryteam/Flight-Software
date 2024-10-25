@@ -23,3 +23,7 @@
 
 #define ARMED_IN 6
 #define ARMED_OUT 7
+
+#define BLIMS_STEP 19
+#define BLIMS_DIR 18
+#define BLIMS_ENABLE 17
