@@ -359,5 +359,9 @@ void MainDeployedMode::execute() {
         state::flight::events.emplace_back(Event::main_log_shutoff);
         log_cycle_count++;
     }
-    FlightMode::execute();
+
+    FlightMode::execute(); // updates state of rocket with curr sensor readings, every 50ms
+
+    ////////////////////// WRITE BLIMS CODE HERE
+    // everything is being logged already
 }
