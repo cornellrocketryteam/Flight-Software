@@ -82,6 +82,10 @@ private:
 class StandbyMode : public FlightMode {
 public:
     /**
+     * Reads commands and sends telemetry over umbilical.
+     */
+    void execute();
+    /**
      * Transitions to ascent mode upon acceleration of liftoff.
      */
     void transition();

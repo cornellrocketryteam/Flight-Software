@@ -256,6 +256,34 @@ void StartupMode::transition() {
 
 // Standby Mode
 
+void StandbyMode::execute() {
+    FlightMode::execute();
+
+    int c = getchar_timeout_us(0);
+
+    if (c != PICO_ERROR_TIMEOUT) {
+        switch ((char)c)
+        {
+        case static_cast<char>(Command::launch):
+            logf("Command: Launch\n");
+            break;
+        case static_cast<char>(Command::toggle_mav):
+            logf("Command: Toggle MAV\n");
+            break;
+        case static_cast<char>(Command::toggle_sv):
+            logf("Command: Toggle SV\n");
+            break;
+        case static_cast<char>(Command::toggle_sv):
+            logf("Command: Clear card\n");
+            break;
+        default:
+            break;
+        }
+    }
+
+
+}
+
 void StandbyMode::transition() {
     if (state::accel::status == VALID) {
         accel_sum -= accel_buffer[index];

@@ -9,7 +9,6 @@ void Flight::execute() {
 
     logf("ALTIMETER: %d\n", state::alt::status);
     logf("Altitude (m): %.3f\n", state::alt::altitude);
-    logf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
     logf("IMU: %d\n", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
