@@ -3,6 +3,7 @@
 #include "tusb.h"
 #include "../../src/rfm/pico_hal.h"
 #include "../../src/pins.hpp"
+#include "../../src/constants.hpp"
 
 PicoHal* hal = new PicoHal(SPI_PORT, SPI_MISO, SPI_MOSI, SPI_SCK, 8000000);
 
@@ -21,6 +22,10 @@ int main() {
     gpio_init(RFM_RST);
     gpio_set_dir(RFM_RST, GPIO_OUT);
 
+    gpio_init(TX_EN);
+    gpio_set_dir(RFM_CS, TX_EN);
+    gpio_put(TX_EN, 1);
+
     sleep_ms(10);
     gpio_put(RFM_RST, 0);
     sleep_ms(10);
@@ -28,7 +33,7 @@ int main() {
 
     printf("[SX1276] Initializing ... ");
 
-    int state = radio.begin();
+    int state = radio.begin(constants::frequency, constants::bandwidth, constants::sf, constants::cr, constants::sw, constants::power);
     if (state != RADIOLIB_ERR_NONE) {
         printf("failed, code %d\n", state);
         return 1;
