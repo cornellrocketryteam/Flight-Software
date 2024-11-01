@@ -273,7 +273,7 @@ void StandbyMode::execute() {
         case static_cast<char>(Command::toggle_sv):
             logf("Command: Toggle SV\n");
             break;
-        case static_cast<char>(Command::toggle_sv):
+        case static_cast<char>(Command::clear_card):
             logf("Command: Clear card\n");
             break;
         default:

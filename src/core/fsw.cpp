@@ -8,7 +8,7 @@ void Flight::execute() {
     logf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     logf("ALTIMETER: %d\n", state::alt::status);
-    logf("Altitude (m): %.3f\n", state::alt::altitude);
+    logf("Altitude (m): %.3f\n\n", state::alt::altitude);
 
     logf("IMU: %d\n", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
