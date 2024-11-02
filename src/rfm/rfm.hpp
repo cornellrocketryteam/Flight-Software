@@ -1,14 +1,15 @@
 #ifndef RFM_HPP
 #define RFM_HPP
 
-#include "../pins.hpp"
 #include "RadioLib.h"
 #include "pico_hal.h"
+#include "pins.hpp"
 
 /**
  * Container for radio module-related functionality.
  */
-struct RFM {
+class RFM {
+public:
     /**
      * Begins the radio interface by initializing the RadioLib radio object.
      * @return True on successful initialization, false on failure.
@@ -21,6 +22,7 @@ struct RFM {
      */
     bool transmit();
 
+private:
     /**
      * Callback function for when a transmission is finished.
      */

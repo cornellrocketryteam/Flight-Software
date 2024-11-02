@@ -1,0 +1,158 @@
+#include "sensor.hpp"
+
+#include "../core/state.hpp"
+
+Altimeter::Altimeter() : alt(I2C_PORT) {}
+
+bool Altimeter::begin() {
+    if (alt.begin()) {
+        state::alt::status = VALID;
+        // The first reading of the BMP388 is always garbage
+        alt.read_pressure(&state::alt::ref_pressure);
+        sleep_ms(100);
+        alt.read_pressure(&state::alt::ref_pressure);
+        return true;
+    } else {
+        state::flight::events.emplace_back(Event::alt_init_fail);
+        return false;
+    }
+}
+
+void Altimeter::update_ref_pressure() {
+    if (alt.read_pressure(&pressure)) {
+        state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
+        if (state::alt::status == INVALID) {
+            state::alt::status = VALID;
+        }
+    } else {
+        state::alt::failed_reads++;
+        state::alt::status = INVALID;
+        state::flight::events.emplace_back(Event::alt_read_fail);
+        if (state::alt::failed_reads >= constants::max_failed_reads) {
+            state::alt::status = OFF;
+            // to_mode(state::flight::fault);
+        }
+    }
+}
+
+void Altimeter::read_altitude() {
+    if (alt.read_altitude(&state::alt::altitude, state::alt::ref_pressure)) {
+        if (state::alt::status == INVALID) {
+            state::alt::status = VALID;
+        }
+    } else {
+        state::alt::failed_reads++;
+        state::alt::status = INVALID;
+        state::flight::events.emplace_back(Event::alt_read_fail);
+        if (state::alt::failed_reads >= constants::max_failed_reads) {
+            state::alt::status = OFF;
+            // to_mode(state::flight::fault);
+        }
+    }
+}
+
+Accel::Accel() : accel(I2C_PORT) {}
+
+bool Accel::begin() {
+    if (accel.begin()) {
+        state::accel::status = VALID;
+        return true;
+    } else {
+        state::flight::events.emplace_back(Event::accel_init_fail);
+        return false;
+    }
+}
+
+void Accel::read_accel() {
+    if (accel.read_accel(
+            &state::accel::accel_x,
+            &state::accel::accel_y,
+            &state::accel::accel_z
+        )) {
+        if (state::accel::status == INVALID) {
+            state::accel::status = VALID;
+        }
+    } else {
+        state::accel::failed_reads++;
+        state::accel::status = INVALID;
+        state::flight::events.emplace_back(Event::accel_read_fail);
+        if (state::accel::failed_reads >= constants::max_failed_reads) {
+            state::accel::status = OFF;
+        }
+    }
+}
+
+IMU::IMU() : imu(I2C_PORT) {}
+
+bool IMU::begin() {
+    if (imu.begin()) {
+        state::imu::status = VALID;
+        return true;
+    } else {
+        state::flight::events.emplace_back(Event::imu_init_fail);
+        return false;
+    }
+}
+
+void IMU::read_gyro() {
+    if (imu.read_gyro(
+            &state::imu::gyro_x,
+            &state::imu::gyro_y,
+            &state::imu::gyro_z
+        )) {
+    }
+}
+
+void IMU::read_accel() {
+    if (imu.read_accel(
+            &state::imu::accel_x,
+            &state::imu::accel_y,
+            &state::imu::accel_z
+        )) {
+    }
+}
+
+void IMU::read_orientation() {
+    if (imu.read_orientation(
+            &state::imu::orientation_x,
+            &state::imu::orientation_y,
+            &state::imu::orientation_z
+        )) {
+    }
+}
+
+void IMU::read_gravity() {
+    if (imu.read_gravity(
+            &state::imu::gravity_x,
+            &state::imu::gravity_y,
+            &state::imu::gravity_z
+        )) {
+    }
+}
+
+Therm::Therm() : therm(I2C_PORT) {}
+
+bool Therm::begin() {
+    if (therm.begin()) {
+        state::therm::status = VALID;
+        return true;
+    } else {
+        state::flight::events.emplace_back(Event::therm_init_fail);
+        return false;
+    }
+}
+
+void Therm::read_temperature() {
+    if (therm.read_temperature(&state::therm::temp)) {
+        if (state::therm::status == INVALID) {
+            state::therm::status = VALID;
+        }
+    } else {
+        state::therm::failed_reads++;
+        state::therm::status = INVALID;
+        state::flight::events.emplace_back(Event::therm_read_fail);
+        if (state::therm::failed_reads >= constants::max_failed_reads) {
+            state::therm::status = OFF;
+        }
+    }
+}

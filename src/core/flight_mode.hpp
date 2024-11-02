@@ -1,7 +1,10 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
-#include "modules.hpp"
+#include "rfm.hpp"
+#include "sd.hpp"
+#include "sensor.hpp"
+
 #include <string>
 
 /**
@@ -22,13 +25,6 @@ public:
     virtual void transition() = 0;
 
     /**
-     * Checks the return result from a sensor reading and updates state on
-     * failure, if necessary.
-     * @param sensor The enum describing which sensor is being checked
-     */
-    void check_sensor(enum Sensor sensor);
-
-    /**
      * Switches to the specified flight mode and updates
      * the boot file, if able.
      * @param mode The flight mode to switch to
@@ -45,11 +41,14 @@ public:
      */
     virtual std::string name() = 0;
 
-private:
-    /**
-     * A variable to hold the sensor return statuses.
-     */
-    bool ret;
+protected:
+    Altimeter altimeter;
+    Accel accel;
+    IMU imu;
+    Therm therm;
+
+    SD sd;
+    RFM rfm;
 };
 
 /**
@@ -70,10 +69,6 @@ public:
 
     uint8_t id() { return 0; }
     std::string name() { return "Startup"; };
-
-private:
-    float alpha = 0.1;
-    float pressure = 1000;
 };
 
 /**
@@ -92,22 +87,6 @@ public:
 
     uint8_t id() { return 1; }
     std::string name() { return "Standby"; };
-
-private:
-    /**
-     * Stores values for calculating the moving average.
-     */
-    float accel_buffer[10] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-
-    /**
-     * Stores the sum of the current values in accel_buffer.
-     */
-    float accel_sum = 0;
-
-    /**
-     * The current index of accel_buffer.
-     */
-    int index = 0;
 };
 
 /**

@@ -1,6 +1,6 @@
 #include "sd.hpp"
-#include "../constants.hpp"
-#include "../core/state.hpp"
+#include "constants.hpp"
+#include "state.hpp"
 #include <cstdio>
 #include <sstream>
 
@@ -9,6 +9,10 @@ bool SD::begin() {
 
     if (fr != FR_OK) {
         logf("SD mount: %s (%d)\n", FRESULT_str(fr), fr);
+        if (!state::sd::failed_init) {
+            state::flight::events.emplace_back(Event::sd_init_fail);
+            state::sd::failed_init = true;
+        }
         return false;
     }
 
@@ -34,6 +38,7 @@ bool SD::begin() {
         return false;
     }
 
+    state::sd::init = true;
     return true;
 }
 

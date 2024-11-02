@@ -5,7 +5,7 @@
 #include "flight_mode.hpp"
 #include "pico/stdlib.h"
 #include "state.hpp"
-#include "../constants.hpp"
+#include "constants.hpp"
 // clang-format on
 
 /**

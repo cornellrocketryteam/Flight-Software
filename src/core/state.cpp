@@ -1,5 +1,5 @@
 #include "state.hpp"
-#include "../pins.hpp"
+#include "pins.hpp"
 
 #include <stdint.h>
 

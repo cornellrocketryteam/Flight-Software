@@ -15,9 +15,10 @@ add_compile_options(
     -Wall
     -Wno-format          
     -Wno-unused-function
+    # -O3
 )
 
-# add_definitions(-DVERBOSE)
+add_definitions(-DVERBOSE)
 add_definitions(-DLAUNCH)
 
 # Add source files from src/
@@ -26,10 +27,10 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
-    src/core/modules.cpp
     src/rfm/rfm.cpp
     src/sd/sd.cpp
     src/sd/hw_config.c
+    src/sensor/sensor.cpp
 )
 
 # Add source files from sim/
@@ -70,9 +71,16 @@ target_link_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
 )
 
-# Include library headers
+# Include project and library headers
 target_include_directories(${PROJECT_NAME}
     PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/core
+    ${PROJECT_SOURCE_DIR}/src/rfm
+    ${PROJECT_SOURCE_DIR}/src/sd
+    ${PROJECT_SOURCE_DIR}/src/sensor
+
+    # External library include directories
     ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico

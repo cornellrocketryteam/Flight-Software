@@ -1,6 +1,6 @@
 #include "rfm.hpp"
-#include "../constants.hpp"
-#include "../core/state.hpp"
+#include "constants.hpp"
+#include "state.hpp"
 #include <bitset>
 
 volatile bool awaiting = true;
@@ -10,11 +10,7 @@ void RFM::set_flag() {
 }
 
 bool RFM::begin() {
-    gpio_init(RFM_CS);
-    gpio_init(RFM_RST);
-
-    gpio_set_dir(RFM_CS, GPIO_OUT);
-    gpio_set_dir(RFM_RST, GPIO_OUT);
+    state::rfm::attempted_init = true;
 
     sleep_ms(10);
     gpio_put(RFM_RST, 0);
@@ -24,11 +20,12 @@ bool RFM::begin() {
     state = radio.begin(constants::frequency, constants::bandwidth, constants::sf, constants::cr, constants::sw, constants::power);
     if (state != RADIOLIB_ERR_NONE) {
         logf("RFM Error: Init failed, code %d\n", state);
+        state::flight::events.emplace_back(Event::rfm_init_fail);
         return false;
     }
-
     radio.setPacketSentAction(set_flag);
 
+    state::rfm::init = true;
     return true;
 }
 

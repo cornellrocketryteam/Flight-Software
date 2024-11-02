@@ -1,72 +1,40 @@
 #include "flight_mode.hpp"
 // #include "../../sim/sim_data.hpp"
-#include "../constants.hpp"
-#include "../pins.hpp"
+#include "constants.hpp"
 #include "hardware/gpio.h"
-#include "modules.hpp"
+#include "pins.hpp"
 #include "state.hpp"
 // SimData sim_data;
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
-        ret = modules::altimeter.read_altitude(&state::alt::altitude, state::alt::ref_pressure);
-        check_sensor(ALT);
+        altimeter.read_altitude();
     }
-    // state::alt::altitude = sim_data.get_alt();
 
     if (!state::gps::status == OFF) {
-        // TODO
-        check_sensor(GPS);
     }
 
     if (!state::imu::status == OFF) {
-        ret = modules::imu.read_gyro(
-            &state::imu::gyro_x,
-            &state::imu::gyro_y,
-            &state::imu::gyro_z
-        );
-        check_sensor(IMU);
-        ret = modules::imu.read_accel(
-            &state::imu::accel_x,
-            &state::imu::accel_y,
-            &state::imu::accel_z
-        );
-        check_sensor(IMU);
-        ret = modules::imu.read_orientation(
-            &state::imu::orientation_x,
-            &state::imu::orientation_y,
-            &state::imu::orientation_z
-        );
-        check_sensor(IMU);
-        ret = modules::imu.read_gravity(
-            &state::imu::gravity_x,
-            &state::imu::gravity_y,
-            &state::imu::gravity_z
-        );
-        check_sensor(IMU);
+        imu.read_gyro();
+        imu.read_accel();
+        imu.read_orientation();
+        imu.read_gravity();
     }
 
     if (!state::accel::status == OFF) {
-        ret = modules::accel.read_accel(
-            &state::accel::accel_x,
-            &state::accel::accel_y,
-            &state::accel::accel_z
-        );
-        check_sensor(ACCEL);
+        accel.read_accel();
     }
-    // state::accel::accel_z = sim_data.get_accel();
 
     if (!state::therm::status == OFF) {
-        ret = modules::therm.read_temperature(&state::therm::temp);
-        check_sensor(THERM);
+        therm.read_temperature();
     }
 
     if (state::rfm::init) {
-        modules::rfm.transmit();
+        rfm.transmit();
     }
 
     if (state::sd::init) {
-        modules::sd.log();
+        sd.log();
     }
 
     if (!state::flight::events.empty()) {
@@ -74,87 +42,10 @@ void FlightMode::execute() {
     }
 }
 
-void FlightMode::check_sensor(enum Sensor sensor) {
-    switch (sensor) {
-    case ALT:
-        if (ret) {
-            if (state::alt::status == INVALID) {
-                state::alt::status = VALID;
-            }
-        } else {
-            state::alt::failed_reads++;
-            state::alt::status = INVALID;
-            state::flight::events.emplace_back(Event::alt_read_fail);
-            if (state::alt::failed_reads >= constants::max_failed_reads) {
-                state::alt::status = OFF;
-                to_mode(state::flight::fault);
-            }
-        }
-        break;
-    case GPS:
-        if (ret) {
-            if (state::gps::status == INVALID) {
-                state::gps::status = VALID;
-            }
-        } else {
-            state::gps::failed_reads++;
-            state::gps::status = INVALID;
-            state::flight::events.emplace_back(Event::gps_read_fail);
-            if (state::gps::failed_reads >= constants::max_failed_reads) {
-                state::gps::status = OFF;
-            }
-        }
-        break;
-    case IMU:
-        if (ret) {
-            if (state::imu::status == INVALID) {
-                state::imu::status = VALID;
-            }
-        } else {
-            state::imu::failed_reads++;
-            state::imu::status = INVALID;
-            state::flight::events.emplace_back(Event::imu_read_fail);
-            if (state::imu::failed_reads >= constants::max_failed_reads) {
-                state::imu::status = OFF;
-            }
-        }
-        break;
-    case ACCEL:
-        if (ret) {
-            if (state::accel::status == INVALID) {
-                state::accel::status = VALID;
-            }
-        } else {
-            state::accel::failed_reads++;
-            state::accel::status = INVALID;
-            state::flight::events.emplace_back(Event::accel_read_fail);
-            if (state::accel::failed_reads >= constants::max_failed_reads) {
-                state::accel::status = OFF;
-                to_mode(state::flight::fault);
-            }
-        }
-        break;
-    case THERM:
-        if (ret) {
-            if (state::therm::status == INVALID) {
-                state::therm::status = VALID;
-            }
-        } else {
-            state::therm::failed_reads++;
-            state::therm::status = INVALID;
-            state::flight::events.emplace_back(Event::therm_read_fail);
-            if (state::therm::failed_reads >= constants::max_failed_reads) {
-                state::therm::status = OFF;
-            }
-        }
-        break;
-    }
-}
-
 void FlightMode::to_mode(FlightMode *mode) {
     state::flight::mode = mode;
     if (state::sd::init) {
-        modules::sd.write_mode();
+        sd.write_mode();
     }
 }
 
@@ -169,73 +60,27 @@ void StartupMode::execute() {
 
     // Attempt to initialize all modules
     if (state::alt::status == OFF) {
-        if (modules::altimeter.begin()) {
-            state::alt::status = VALID;
-            // The first reading of the BMP388 is always garbage
-            modules::altimeter.read_pressure(&state::alt::ref_pressure);
-            sleep_ms(100);
-            modules::altimeter.read_pressure(&state::alt::ref_pressure);
-        } else {
-            if (!state::alt::failed_init) {
-                state::flight::events.emplace_back(Event::alt_init_fail);
-                state::alt::failed_init = true;
-            }
-        }
+        altimeter.begin();
     }
     if (state::alt::status == VALID) {
-        modules::altimeter.read_pressure(&pressure);
-        state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
+        altimeter.update_ref_pressure();
     }
     if (state::gps::status == OFF) {
-        // TODO
     }
     if (state::imu::status == OFF) {
-        if (modules::imu.begin()) {
-            state::imu::status = VALID;
-        } else {
-            if (!state::imu::failed_init) {
-                state::flight::events.emplace_back(Event::imu_init_fail);
-                state::imu::failed_init = true;
-            }
-        }
+        imu.begin();
     }
     if (state::accel::status == OFF) {
-        if (modules::accel.begin()) {
-            state::accel::status = VALID;
-        } else {
-            if (!state::accel::failed_init) {
-                state::flight::events.emplace_back(Event::accel_init_fail);
-                state::accel::failed_init = true;
-            }
-        }
+        accel.begin();
     }
     if (state::therm::status == OFF) {
-        if (modules::therm.begin()) {
-            state::therm::status = VALID;
-        } else {
-            if (!state::therm::failed_init) {
-                state::flight::events.emplace_back(Event::therm_init_fail);
-                state::therm::failed_init = true;
-            }
-        }
+        therm.begin();
     }
     if (!state::rfm::attempted_init) {
-        state::rfm::attempted_init = true;
-        if (modules::rfm.begin()) {
-            state::rfm::init = true;
-        } else {
-            state::flight::events.emplace_back(Event::rfm_init_fail);
-        }
+        rfm.begin();
     }
     if (!state::sd::init) {
-        if (modules::sd.begin()) {
-            state::sd::init = true;
-        } else {
-            if (!state::sd::failed_init) {
-                state::flight::events.emplace_back(Event::sd_init_fail);
-                state::sd::failed_init = true;
-            }
-        }
+        sd.begin();
     }
 }
 
@@ -262,8 +107,7 @@ void StandbyMode::execute() {
     int c = getchar_timeout_us(0);
 
     if (c != PICO_ERROR_TIMEOUT) {
-        switch ((char)c)
-        {
+        switch ((char)c) {
         case static_cast<char>(Command::launch):
             logf("Command: Launch\n");
             break;
@@ -277,27 +121,13 @@ void StandbyMode::execute() {
             logf("Command: Clear card\n");
             break;
         default:
-            break;
+            state::flight::events.emplace_back(Event::unknown_command);
         }
     }
-
-
 }
 
 void StandbyMode::transition() {
-    if (state::accel::status == VALID) {
-        accel_sum -= accel_buffer[index];
-        accel_buffer[index] = state::accel::accel_z;
-        accel_sum += state::accel::accel_z;
-        index++;
-        if (index == 10) {
-            index = 0;
-        }
-
-        if (accel_sum * 0.1 > constants::accel_threshold) {
-            to_mode(state::flight::ascent);
-        }
-    }
+    to_mode(state::flight::ascent);
 }
 
 // Ascent Mode

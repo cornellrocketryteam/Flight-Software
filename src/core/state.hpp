@@ -3,7 +3,7 @@
 
 // clang-format off
 #include "flight_mode.hpp"
-#include "../constants.hpp"
+#include "constants.hpp"
 #include <stdint.h>
 #include <vector>
 // clang-format on

@@ -8,7 +8,8 @@
 /**
  * Container for SD card-related functionality.
  */
-struct SD {
+class SD {
+public:
     /**
      * Begins the SD card interface by mounting the SD card.
      * @return True on successful mount, false on mount failure.
@@ -27,6 +28,7 @@ struct SD {
      */
     bool write_mode();
 
+private:
     /**
      * Tracks the number of writes made to the current log file. Resets upon hitting
      * the file writes threshold.

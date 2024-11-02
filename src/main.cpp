@@ -7,21 +7,12 @@
 #include "tusb.h"
 #endif
 
-#include "core/fsw.hpp"
+#include "fsw.hpp"
 #include "pins.hpp"
 
 Flight flight;
 
-int main() {
-    stdio_init_all();
-#ifdef LAUNCH
-    sleep_ms(3000);
-    printf("Unplug from computer\n");
-    sleep_ms(5000);
-    printf("WARNING: Boot file has been modified\n");
-    sleep_ms(1000);
-#endif
-
+void init_pins() {
     gpio_init(LED);
     gpio_set_dir(LED, GPIO_OUT);
     gpio_put(LED, 1);
@@ -49,6 +40,22 @@ int main() {
     gpio_init(RFM_CS);
     gpio_set_dir(RFM_CS, GPIO_OUT);
     gpio_put(RFM_CS, 1);
+
+    gpio_init(RFM_RST);
+    gpio_set_dir(RFM_RST, GPIO_OUT);
+}
+
+int main() {
+    stdio_init_all();
+#ifdef LAUNCH
+    sleep_ms(3000);
+    printf("Unplug from computer\n");
+    sleep_ms(5000);
+    printf("WARNING: Boot file has been modified\n");
+    sleep_ms(1000);
+#endif
+
+    init_pins();
 
 #ifndef LAUNCH
     while (!tud_cdc_connected()) {

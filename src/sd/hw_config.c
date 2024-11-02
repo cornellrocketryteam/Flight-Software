@@ -1,5 +1,5 @@
 #include "hw_config.h"
-#include "../pins.hpp"
+#include "pins.hpp"
 
 /* Configuration of RP2040 hardware SPI object */
 static spi_t spi = {
