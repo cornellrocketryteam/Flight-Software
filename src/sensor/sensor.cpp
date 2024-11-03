@@ -1,6 +1,7 @@
 #include "sensor.hpp"
 
-#include "../core/state.hpp"
+#include "state.hpp"
+#include "pins.hpp"
 
 Altimeter::Altimeter() : alt(I2C_PORT) {}
 

@@ -7,36 +7,29 @@
 // SimData sim_data;
 
 void FlightMode::execute() {
-    if (!state::alt::status == OFF) {
+    if (state::alt::status != OFF) {
         altimeter.read_altitude();
     }
-
-    if (!state::gps::status == OFF) {
+    if (state::gps::status != OFF) {
     }
-
-    if (!state::imu::status == OFF) {
+    if (state::imu::status != OFF) {
         imu.read_gyro();
         imu.read_accel();
         imu.read_orientation();
         imu.read_gravity();
     }
-
-    if (!state::accel::status == OFF) {
+    if (state::accel::status != OFF) {
         accel.read_accel();
     }
-
-    if (!state::therm::status == OFF) {
+    if (state::therm::status != OFF) {
         therm.read_temperature();
     }
-
     if (state::rfm::init) {
         rfm.transmit();
     }
-
     if (state::sd::init) {
         sd.log();
     }
-
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
     }
@@ -62,9 +55,6 @@ void StartupMode::execute() {
     if (state::alt::status == OFF) {
         altimeter.begin();
     }
-    if (state::alt::status == VALID) {
-        altimeter.update_ref_pressure();
-    }
     if (state::gps::status == OFF) {
     }
     if (state::imu::status == OFF) {
@@ -81,6 +71,11 @@ void StartupMode::execute() {
     }
     if (!state::sd::init) {
         sd.begin();
+    }
+
+    // Continuously update reference pressure before launch
+    if (state::alt::status == VALID) {
+        altimeter.update_ref_pressure();
     }
 }
 

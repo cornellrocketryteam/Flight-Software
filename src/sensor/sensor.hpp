@@ -6,8 +6,6 @@
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
-#include "../pins.hpp"
-
 class Sensor {
 public:
     virtual bool begin() = 0;
