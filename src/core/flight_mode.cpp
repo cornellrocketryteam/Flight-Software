@@ -5,6 +5,37 @@
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
+
+////////////
+/*
+This function checks to see if we are below braking altitude
+If we are, return True. This will initiate a braking sequence.
+Otherwise, return False and continue with our main loop
+*/
+bool brakeAlt() {
+    return state::alt::altitude >= constants::brake_alt;
+}
+
+/*
+This function turns our motor to neutral position (lines are even on each side)
+*/
+void neutralPosition() {
+    while (true)
+        ;
+}
+
+/*
+Turns motor to position pos
+Main contribution of this function: convert intended position to motor commands
+*/
+void turnMotor(float pos) {
+        // Need to work more with motor to determine what this conversion is
+    while (true)
+        ;
+}
+
+////////////
+
 // SimData sim_data;
 
 void FlightMode::execute() {
@@ -364,4 +395,62 @@ void MainDeployedMode::execute() {
 
     ////////////////////// WRITE BLIMS CODE HERE
     // everything is being logged already
-}
+    // What we assume:
+    // - 2 sec to go from neutral to full turn
+    // - 1ft 1 side limit
+
+    /////set up
+    // #include "pico/stdlib.h"
+    // #include "hardware/pwm.h"
+
+    // gpio_set_function(26, GPIO_FUNC_PWM);
+    // uint slice_num = pwm_gpio_to_slice_num(26); ?
+
+    // Commands
+
+    int hold_start = to_ms_since_boot(get_absolute_time());
+    if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::initial_hold_threshold) {
+        if (brakeAlt()) {
+            neutralPosition();
+        }
+    }
+    while (brakeAlt() == false) {
+    // Flight loop
+        turnMotor(-6);// Turn -6 in (<2seconds)
+        // if <= alt break
+        if (brakeAlt()) {
+            break;
+        }
+        // Hold (5 seconds)
+        // if <= alt break
+        // Turn 0 in (<2 seconds)
+        // if <= alt break
+        // Hold (2 seconds)
+        // if <= alt break
+        // Turn +8 in (<2seconds)
+        // Hold (5 seconds)
+        // if <= alt break
+        // Turn 0 in (<2 seconds)
+        // if <= alt break
+        // Hold (2 seconds)
+        // Turn -12 in (<2 seconds)
+        // Hold (5 seconds)
+        // if <= alt break
+        // Turn 0 in (<2 seconds)
+        // if <= alt break
+        hold_start = to_ms_since_boot(get_absolute_time());
+        if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::neutral_hold_threshold) {
+            if (brakeAlt()) {
+                neutralPosition();
+            }
+        }
+        // Hold (2 seconds)
+        //  if <= alt break
+        // Turn 2 in (<2 seconds)
+        //  if <= alt break
+        //  Turn 0 in (<2 seconds)
+        //  if <= alt break
+    }
+
+    // Brake
+        // Turn 0 in (<2 seconds)

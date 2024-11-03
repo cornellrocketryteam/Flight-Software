@@ -72,6 +72,13 @@ namespace constants {
 
     constexpr uint32_t interrupt_delay = 750;       // ms
     constexpr uint8_t packet_size = 86;             // bytes
+
+    // BLIMS Constants
+    constexpr float brake_alt = 10; // To be updated for when we want BLiMS to brake
+    constexpr float initial_hold_threshold = 10000;
+    constexpr float turn_hold_threshold = 5000;
+    constexpr float neutral_hold_threshold = 2000;
+
 }; // namespace constants
 
 #endif // CONSTANTS_HPP
