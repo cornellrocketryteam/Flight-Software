@@ -43,6 +43,7 @@ void Flight::execute() {
     state::flight::mode->execute();
     state::flight::mode->transition();
 
+    // Sleep until the fixed cycle time is reached
     cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;
     if (cycle_duration < constants::cycle_time) {
         sleep_ms(constants::cycle_time - cycle_duration);

@@ -41,6 +41,8 @@ namespace state {
         extern uint32_t cycle_count;
         extern uint32_t timestamp;
 
+        extern bool launch_commanded;
+
         extern int boot_count;
         extern int old_mode;
 

@@ -81,14 +81,14 @@ void StartupMode::execute() {
 
 void StartupMode::transition() {
     if (state::flight::old_mode > 1) {
-        // Proceed to Fault Mode if we were mid-flight or faulted in the last boot
+        // Transition to Fault Mode if we were mid-flight or faulted in the last boot
         to_mode(state::flight::fault);
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID || state::accel::status != VALID) {
-            // Proceed to Fault Mode if either flight-critical sensor is non-operational
+            // Transition to Fault Mode if either flight-critical sensor is non-operational
             to_mode(state::flight::fault);
         } else {
-            // Proceed to Standby Mode otherwise
+            // Transition to Standby Mode otherwise
             to_mode(state::flight::standby);
         }
     }
@@ -99,25 +99,28 @@ void StartupMode::transition() {
 void StandbyMode::execute() {
     FlightMode::execute();
 
+    // Check to see if the arming key has been turned off
+    if (!gpio_get(ARM_IN)) {
+        state::flight::key_armed = false;
+        gpio_put(ARM_OUT, 0);
+    }
+
     int c = getchar_timeout_us(0);
 
     if (c != PICO_ERROR_TIMEOUT) {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
+            state::flight::launch_commanded = true;
             state::flight::events.emplace_back(Event::launch_command_received);
-            logf("Command: Launch\n");
             break;
         case static_cast<char>(Command::toggle_mav):
             state::flight::events.emplace_back(Event::mav_command_received);
-            logf("Command: Toggle MAV\n");
             break;
         case static_cast<char>(Command::toggle_sv):
             state::flight::events.emplace_back(Event::sv_command_received);
-            logf("Command: Toggle SV\n");
             break;
         case static_cast<char>(Command::clear_card):
             state::flight::events.emplace_back(Event::clear_card_command_received);
-            logf("Command: Clear card\n");
             break;
         default:
             state::flight::events.emplace_back(Event::unknown_command_received);
@@ -126,7 +129,14 @@ void StandbyMode::execute() {
 }
 
 void StandbyMode::transition() {
-    to_mode(state::flight::ascent);
+    // Transition back to armed if the arming key was turned off
+    if (!state::flight::key_armed) {
+        to_mode(state::flight::startup);
+    }
+    // Transition to Ascent Mode if launch was commanded through the umbilical
+    if (state::flight::launch_commanded) {
+        to_mode(state::flight::ascent);
+    }
 }
 
 // Ascent Mode

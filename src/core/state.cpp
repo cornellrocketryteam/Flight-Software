@@ -26,6 +26,8 @@ namespace state {
         uint32_t cycle_count = 0;
         uint32_t timestamp = 0;
 
+        bool launch_commanded = false;
+
         int boot_count = 0;
         int old_mode = -1;
 
