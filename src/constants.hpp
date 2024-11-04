@@ -47,7 +47,13 @@ enum class Event : uint8_t {
     rfm_init_fail = 24,
     rfm_tx_fail = 25,
 
-    unknown_command = 26
+    launch_command_received = 26,
+    mav_command_received = 27,
+    sv_command_received = 28,
+    clear_card_command_received = 29,
+    unknown_command_received = 30,
+
+    umbilical_disconnected = 31,
 };
 
 enum class Command : char {
@@ -62,6 +68,10 @@ enum class Command : char {
  * Container for flight-related constants.
  */
 namespace constants {
+
+    constexpr uint i2c_baudrate = 400 * 1000;       // baud
+    constexpr uint spi_baudrate = 20000000;         // baud
+    constexpr uint rfm_baudrate = 57600;            // baud
 
     constexpr uint8_t cycle_time = 50;              // ms
 
@@ -80,6 +90,7 @@ namespace constants {
     constexpr uint16_t main_deploy_wait = 160;      // cycles
     constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
+    // TODO: Remove
     constexpr float frequency = 922.2;              // MHz
     constexpr float bandwidth = 500;                // kHz
     constexpr uint8_t sf = 6;                       // Between 7 and 12

@@ -7,6 +7,10 @@
 #define SPI_MOSI 19
 #define SPI_SCK 18
 
+#define UART_PORT uart0
+#define RFM_TX 8
+#define RFM_RX 9
+
 #define SD_SCK 2
 #define SD_CMD 3
 #define SD_D0 4
@@ -14,7 +18,7 @@
 #define SD_D2 6
 #define SD_D3 7
 
-// TODO: Change for new RFM
+// TODO: Remove old RFM pins
 #define RFM_CS 1
 #define RFM_TX_EN 14
 #define RFM_RST 15

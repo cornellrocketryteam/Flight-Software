@@ -38,21 +38,21 @@ void Flight::execute() {
     logf("SD: %d\n", state::sd::init);
     logf("RFM: %d\n\n", state::rfm::init);
 
-    current_cycle_start = to_ms_since_boot(get_absolute_time());
+    cycle_start = to_ms_since_boot(get_absolute_time());
 
     state::flight::mode->execute();
     state::flight::mode->transition();
 
-    current_cycle_time = to_ms_since_boot(get_absolute_time()) - current_cycle_start;
-    if (current_cycle_time < constants::cycle_time) {
-        sleep_ms(constants::cycle_time - current_cycle_time);
+    cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;
+    if (cycle_duration < constants::cycle_time) {
+        sleep_ms(constants::cycle_time - cycle_duration);
     }
 
     state::flight::cycle_count++;
     state::flight::timestamp = to_ms_since_boot(get_absolute_time());
 
     // Check for any cycle overflows
-    if (state::flight::timestamp - current_cycle_start > constants::cycle_time) {
+    if (state::flight::timestamp - cycle_start > constants::cycle_time) {
         state::flight::events.emplace_back(Event::cycle_overflow);
     }
 

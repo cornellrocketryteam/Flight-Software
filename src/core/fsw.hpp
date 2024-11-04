@@ -22,12 +22,12 @@ private:
     /**
      * The timestamp of the start of the current cycle.
      */
-    uint32_t current_cycle_start;
+    uint32_t cycle_start;
 
      /**
      * The total dynamic time of the current cycle.
      */
-    uint32_t current_cycle_time;
+    uint32_t cycle_duration;
 };
 
 #endif // FSW_HPP

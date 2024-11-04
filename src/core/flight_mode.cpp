@@ -104,19 +104,23 @@ void StandbyMode::execute() {
     if (c != PICO_ERROR_TIMEOUT) {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
+            state::flight::events.emplace_back(Event::launch_command_received);
             logf("Command: Launch\n");
             break;
         case static_cast<char>(Command::toggle_mav):
+            state::flight::events.emplace_back(Event::mav_command_received);
             logf("Command: Toggle MAV\n");
             break;
         case static_cast<char>(Command::toggle_sv):
+            state::flight::events.emplace_back(Event::sv_command_received);
             logf("Command: Toggle SV\n");
             break;
         case static_cast<char>(Command::clear_card):
+            state::flight::events.emplace_back(Event::clear_card_command_received);
             logf("Command: Clear card\n");
             break;
         default:
-            state::flight::events.emplace_back(Event::unknown_command);
+            state::flight::events.emplace_back(Event::unknown_command_received);
         }
     }
 }
