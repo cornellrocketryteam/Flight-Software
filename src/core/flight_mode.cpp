@@ -46,9 +46,9 @@ void FlightMode::to_mode(FlightMode *mode) {
 
 void StartupMode::execute() {
     // Check to see if the arming key has been turned
-    if (gpio_get(ARMED_IN)) {
+    if (gpio_get(ARM_IN)) {
         state::flight::key_armed = true;
-        gpio_put(ARMED_OUT, 1);
+        gpio_put(ARM_OUT, 1);
     }
 
     // Attempt to initialize all modules

@@ -13,7 +13,7 @@ static spi_t spi = {
 /* SPI Interface */
 static sd_spi_if_t spi_if = {
     .spi = &spi,  // Pointer to the SPI driving this card
-    .ss_gpio = SD_CS      // The SPI slave select GPIO for this SD card
+    .ss_gpio = SD_CMD      // The SPI slave select GPIO for this SD card TODO change to SDIO
 };
 
 /* Configuration of the SD Card socket object */
