@@ -46,6 +46,8 @@ namespace state {
         extern int boot_count;
         extern int old_mode;
 
+        extern int usb_failed_reads;
+
         extern bool key_armed;
         extern bool alt_armed;
 

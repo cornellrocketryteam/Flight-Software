@@ -31,6 +31,8 @@ namespace state {
         int boot_count = 0;
         int old_mode = -1;
 
+        int usb_failed_reads = 0;
+
         bool key_armed = false;
         bool alt_armed = false;
 

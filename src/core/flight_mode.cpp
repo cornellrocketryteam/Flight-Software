@@ -105,6 +105,12 @@ void StandbyMode::execute() {
         gpio_put(ARM_OUT, 0);
     }
 
+    // Check the umbilical connection
+    if (!stdio_usb_connected()) {
+        state::flight::usb_failed_reads++;
+    }
+
+    // Check for any incoming commands
     int c = getchar_timeout_us(0);
 
     if (c != PICO_ERROR_TIMEOUT) {
@@ -129,7 +135,12 @@ void StandbyMode::execute() {
 }
 
 void StandbyMode::transition() {
-    // Transition back to armed if the arming key was turned off
+    // Transition to Fault Mode if the umbilical is disconnected
+    if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
+        to_mode(state::flight::fault);
+        // TODO: Vent oxidizer tank
+    }
+    // Transition back to Startup Mode if the arming key was turned off
     if (!state::flight::key_armed) {
         to_mode(state::flight::startup);
     }
