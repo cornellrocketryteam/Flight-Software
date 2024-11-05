@@ -1,3 +1,10 @@
+/**
+ * @file pins.hpp
+ * @author csg83
+ *
+ * @brief Pin definitions
+ */
+
 #define I2C_PORT i2c0
 #define I2C_SDA 12
 #define I2C_SCL 13

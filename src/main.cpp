@@ -1,3 +1,10 @@
+/**
+ * @file main.cpp
+ * @author csg83
+ *
+ * @brief The entry point for FSW
+ */
+
 #include <cstdio>
 
 #include "hardware/gpio.h"

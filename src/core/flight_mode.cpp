@@ -1,12 +1,18 @@
+/**
+ * @file flight_mode.cpp
+ * @author csg83
+ *
+ * @brief Flight mode logic and transitions
+ */
+
 #include "flight_mode.hpp"
-// #include "../../sim/sim_data.hpp"
 #include "constants.hpp"
 #include "hardware/gpio.h"
 #include "pins.hpp"
 #include "state.hpp"
-// SimData sim_data;
 
 void FlightMode::execute() {
+    // Execute the primary functionality of every module
     if (state::alt::status != OFF) {
         altimeter.read_altitude();
     }
@@ -30,6 +36,8 @@ void FlightMode::execute() {
     if (state::sd::init) {
         sd.log();
     }
+
+    // Clear this cycle's events
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
     }
@@ -140,7 +148,7 @@ void StandbyMode::transition() {
         to_mode(state::flight::fault);
         // TODO: Vent oxidizer tank
     }
-    // Transition back to Startup Mode if the arming key was turned off
+    // Transition to Startup Mode if the arming key was turned off
     if (!state::flight::key_armed) {
         to_mode(state::flight::startup);
     }

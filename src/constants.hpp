@@ -1,3 +1,10 @@
+/**
+ * @file constants.hpp
+ * @author csg83
+ *
+ * @brief Constants and other definitions
+ */
+
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
