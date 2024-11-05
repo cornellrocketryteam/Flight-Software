@@ -16,15 +16,18 @@ add_compile_options(
     -Wno-unused-function
 )
 
-add_executable(bus_scan
-    bus_scan.cpp
+add_executable(${PROJECT_NAME}
+    ${PROJECT_NAME}.cpp
 )
 
 # Pull in common dependencies
-target_link_libraries(bus_scan pico_stdlib hardware_i2c)
+target_link_libraries(${PROJECT_NAME}
+    pico_stdlib
+    hardware_i2c
+)
 
-pico_enable_stdio_usb(bus_scan 1)
-pico_enable_stdio_uart(bus_scan 0)
+pico_enable_stdio_usb(${PROJECT_NAME} 1)
+pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
-# Create map/bin/hex file etc.
-pico_add_extra_outputs(bus_scan)
+# Create uf2 file
+pico_add_uf2_output(${PROJECT_NAME})

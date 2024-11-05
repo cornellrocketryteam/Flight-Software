@@ -38,7 +38,7 @@ bool reserved_addr(uint8_t addr) {
 int main() {
     stdio_init_all();
 
-    i2c_init(I2C_PORT, 100*1000);
+    i2c_init(I2C_PORT, 100 * 1000);
     
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
     gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);

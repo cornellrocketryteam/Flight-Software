@@ -2,7 +2,7 @@
  * @file ssa.cpp
  * @author csg83
  * 
- * @brief Unit test of SSA actuation for both main and drogue deployment.
+ * @brief Unit test of SSA actuation for both main and drogue deployment
  */
 
 #include "pico/stdlib.h"

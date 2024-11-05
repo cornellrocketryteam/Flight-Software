@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 # Pull in SDK (must be before project)
 include(../../lib/pico-sdk/pico_sdk_init.cmake)
 
-project(detect_armed C CXX ASM)
+project(sd_write_sdio C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -18,12 +18,16 @@ add_compile_options(
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_NAME}.cpp
+    hw_config.c
 )
 
+add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
+
+
 # Pull in common dependencies
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} 
     pico_stdlib 
-    hardware_gpio
+    no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 
 )
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
