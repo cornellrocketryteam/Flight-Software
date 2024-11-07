@@ -14,7 +14,7 @@
 #define SPI_MOSI 19
 #define SPI_SCK 18
 
-#define UART_PORT uart0
+#define UART_PORT uart1
 #define RFM_TX 8
 #define RFM_RX 9
 
@@ -32,6 +32,8 @@
 #define RFM_DIO0 0
 #define RFM_DIO1 20
 
+#define FRAM_CS 17
+
 #define SSA_DROGUE 14
 #define SSA_MAIN 15
 
@@ -41,6 +43,6 @@
 #define RELAY 21
 #define MAV 22
 
-#define BLIMS_MOTOR 26
+#define BLIMS_MOTOR 28
 
 #define LED 25
