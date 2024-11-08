@@ -1,3 +1,10 @@
+/**
+ * @file fsw.hpp
+ * @author csg83
+ * 
+ * @brief The main flight loop
+ */
+
 #ifndef FSW_HPP
 #define FSW_HPP
 

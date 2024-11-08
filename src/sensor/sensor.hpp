@@ -1,3 +1,10 @@
+/**
+ * @file sensor.hpp
+ * @author csg83
+ * 
+ * @brief Sensor-related functionality
+ */
+
 #ifndef SENSOR_HPP
 #define SENSOR_HPP
 
@@ -59,4 +66,4 @@ private:
     Si7021 therm;
 };
 
-#endif
+#endif // SENSOR_HPP

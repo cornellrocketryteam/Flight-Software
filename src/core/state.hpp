@@ -1,3 +1,10 @@
+/**
+ * @file state.hpp
+ * @author csg83
+ * 
+ * @brief Rocket state variables
+ */
+
 #ifndef STATE_HPP
 #define STATE_HPP
 
@@ -8,7 +15,7 @@
 #include <vector>
 // clang-format on
 
-#include "../sd/sd.hpp"
+#include "sd.hpp"
 
 enum SensorState {
     OFF = 0,

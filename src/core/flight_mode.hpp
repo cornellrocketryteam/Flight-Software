@@ -1,3 +1,10 @@
+/**
+ * @file flight_mode.hpp
+ * @author csg83
+ *
+ * @brief Flight mode logic and transitions
+ */
+
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 

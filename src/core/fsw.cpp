@@ -1,3 +1,10 @@
+/**
+ * @file fsw.cpp
+ * @author csg83
+ * 
+ * @brief The main flight loop
+ */
+
 #include "fsw.hpp"
 
 void Flight::execute() {
@@ -40,6 +47,7 @@ void Flight::execute() {
 
     cycle_start = to_ms_since_boot(get_absolute_time());
 
+    // Execute the current flight mode
     state::flight::mode->execute();
     state::flight::mode->transition();
 

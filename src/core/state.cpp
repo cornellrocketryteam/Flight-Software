@@ -1,7 +1,12 @@
+/**
+ * @file state.cpp
+ * @author csg83
+ * 
+ * @brief Rocket state variables
+ */
+
 #include "state.hpp"
 #include "pins.hpp"
-
-#include <stdint.h>
 
 class FlightMode;
 

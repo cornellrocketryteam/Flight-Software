@@ -1,3 +1,10 @@
+/**
+ * @file sd.hpp
+ * @author csg83
+ * 
+ * @brief SD card-related functionality
+ */
+
 #ifndef SD_HPP
 #define SD_HPP
 

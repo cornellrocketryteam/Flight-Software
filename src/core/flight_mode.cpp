@@ -155,6 +155,7 @@ void StandbyMode::transition() {
     // Transition to Ascent Mode if launch was commanded through the umbilical
     if (state::flight::launch_commanded) {
         to_mode(state::flight::ascent);
+        // TODO: Set timers for MAV and SV actuation
     }
 }
 

@@ -1,3 +1,10 @@
+/**
+ * @file sensor.cpp
+ * @author csg83
+ * 
+ * @brief Sensor-related functionality
+ */
+
 #include "sensor.hpp"
 #include "pins.hpp"
 #include "state.hpp"
