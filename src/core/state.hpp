@@ -1,7 +1,7 @@
 /**
  * @file state.hpp
  * @author csg83
- * 
+ *
  * @brief Rocket state variables
  */
 
@@ -128,6 +128,10 @@ namespace state {
         extern int current_file;
 
     } // namespace sd
+    namespace fram {
+        extern bool init;
+
+    } // namespace fram
     namespace rfm {
         extern bool init;
         extern bool attempted_init;

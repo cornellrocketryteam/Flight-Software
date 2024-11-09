@@ -1,7 +1,7 @@
 /**
  * @file sensor.hpp
  * @author csg83
- * 
+ *
  * @brief Sensor-related functionality
  */
 

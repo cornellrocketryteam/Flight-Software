@@ -1,7 +1,7 @@
 /**
  * @file state.cpp
  * @author csg83
- * 
+ *
  * @brief Rocket state variables
  */
 
@@ -111,6 +111,10 @@ namespace state {
         int current_file = 0;
 
     } // namespace sd
+    namespace fram {
+        bool init = false;
+
+    } // namespace fram
     namespace rfm {
         bool init = false;
         bool attempted_init = false;

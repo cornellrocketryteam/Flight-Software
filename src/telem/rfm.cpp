@@ -10,6 +10,7 @@ void RFM::set_flag() {
 }
 
 bool RFM::begin() {
+    return true;
     state::rfm::attempted_init = true;
 
     sleep_ms(10);

@@ -1,7 +1,7 @@
 /**
  * @file fsw.cpp
  * @author csg83
- * 
+ *
  * @brief The main flight loop
  */
 
@@ -43,6 +43,8 @@ void Flight::execute() {
     logf("Temperature (C): %.3f\n\n", state::therm::temp);
 
     logf("SD: %d\n", state::sd::init);
+    logf("FRAM: %d\n\n", state::fram::init);
+
     logf("RFM: %d\n\n", state::rfm::init);
 
     cycle_start = to_ms_since_boot(get_absolute_time());

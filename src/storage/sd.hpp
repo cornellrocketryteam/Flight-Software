@@ -1,7 +1,7 @@
 /**
  * @file sd.hpp
  * @author csg83
- * 
+ *
  * @brief SD card-related functionality
  */
 

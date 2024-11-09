@@ -1,7 +1,7 @@
 /**
  * @file sensor.cpp
  * @author csg83
- * 
+ *
  * @brief Sensor-related functionality
  */
 

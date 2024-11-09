@@ -8,6 +8,7 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
+#include "fram.hpp"
 #include "rfm.hpp"
 #include "sd.hpp"
 #include "sensor.hpp"
@@ -55,6 +56,7 @@ protected:
     Therm therm;
 
     SD sd;
+    FRAM fram;
     RFM rfm;
 };
 

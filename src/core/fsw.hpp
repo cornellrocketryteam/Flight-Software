@@ -1,7 +1,7 @@
 /**
  * @file fsw.hpp
  * @author csg83
- * 
+ *
  * @brief The main flight loop
  */
 

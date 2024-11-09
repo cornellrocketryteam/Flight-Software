@@ -27,6 +27,19 @@ void init_pins() {
     gpio_set_dir(LED, GPIO_OUT);
     gpio_put(LED, 1);
 
+    // Init GPIO pins
+    gpio_init(ARM_IN);
+    gpio_init(ARM_OUT);
+    gpio_init(SSA_DROGUE);
+    gpio_init(SSA_MAIN);
+    gpio_init(FRAM_CS);
+
+    gpio_set_dir(ARM_IN, GPIO_IN);
+    gpio_set_dir(ARM_OUT, GPIO_OUT);
+    gpio_set_dir(SSA_DROGUE, GPIO_OUT);
+    gpio_set_dir(SSA_MAIN, GPIO_OUT);
+    gpio_set_dir(FRAM_CS, GPIO_OUT);
+
     // Init I2C bus
     i2c_init(I2C_PORT, constants::i2c_baudrate);
     gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
@@ -40,17 +53,7 @@ void init_pins() {
     gpio_set_function(SPI_MISO, GPIO_FUNC_SPI);
     gpio_set_function(SPI_MOSI, GPIO_FUNC_SPI);
     gpio_set_function(SPI_SCK, GPIO_FUNC_SPI);
-
-    // Init GPIO pins
-    gpio_init(ARM_IN);
-    gpio_init(ARM_OUT);
-    gpio_init(SSA_DROGUE);
-    gpio_init(SSA_MAIN);
-
-    gpio_set_dir(ARM_IN, GPIO_IN);
-    gpio_set_dir(ARM_OUT, GPIO_OUT);
-    gpio_set_dir(SSA_DROGUE, GPIO_OUT);
-    gpio_set_dir(SSA_MAIN, GPIO_OUT);
+    gpio_put(FRAM_CS, 1);
 
     // Init UART pins
     uart_init(UART_PORT, constants::rfm_baudrate);

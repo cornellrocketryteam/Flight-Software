@@ -27,9 +27,10 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
-    src/rfm/rfm.cpp
-    src/sd/sd.cpp
-    src/sd/hw_config.c
+    src/telem/rfm.cpp
+    src/storage/sd.cpp
+    src/storage/fram.cpp
+    src/storage/hw_config.c
     src/sensor/sensor.cpp
 )
 
@@ -58,6 +59,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
 
 # Ignore warnings from RadioLib
 target_compile_options(RadioLib PRIVATE -w)
@@ -76,15 +78,16 @@ target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/core
-    ${PROJECT_SOURCE_DIR}/src/rfm
-    ${PROJECT_SOURCE_DIR}/src/sd
     ${PROJECT_SOURCE_DIR}/src/sensor
+    ${PROJECT_SOURCE_DIR}/src/storage
+    ${PROJECT_SOURCE_DIR}/src/telem
 
     # External library include directories
     ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
+    ${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico
 )
 
 # Pull in common dependencies
@@ -100,6 +103,7 @@ target_link_libraries(${PROJECT_NAME}
     BNO055-Pico
     LIS3DH-Pico 
     Si7021-Pico
+    MB85RS-Pico
 )
 
 # Enable serial over USB

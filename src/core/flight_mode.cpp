@@ -77,6 +77,9 @@ void StartupMode::execute() {
     if (!state::rfm::attempted_init) {
         rfm.begin();
     }
+    if (!state::fram::init) {
+        fram.begin();
+    }
     if (!state::sd::init) {
         sd.begin();
     }
