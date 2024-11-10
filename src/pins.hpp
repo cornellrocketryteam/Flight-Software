@@ -26,4 +26,4 @@
 
 #define BLIMS_STEP 19
 #define BLIMS_DIR 18
-#define BLIMS_ENABLE 17
+#define BLIMS_ENABLE 28

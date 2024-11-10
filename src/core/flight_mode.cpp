@@ -370,6 +370,9 @@ void DrogueDeployedMode::transition() {
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+        ////////
+        int hold_start = to_ms_since_boot(get_absolute_time());
+        ////////
         to_mode(state::flight::main_deployed);
     }
 }
@@ -408,12 +411,13 @@ void MainDeployedMode::execute() {
 
     // Commands
 
-    int hold_start = to_ms_since_boot(get_absolute_time());
-    if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::initial_hold_threshold) {
-        if (brakeAlt()) {
-            neutralPosition();
-        }
-    }
+    // want to move to end of drogue deployed mode transition
+    // add hold_start to state namespace
+    //  if (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold) {
+    //      if (brakeAlt()) {
+    //          neutralPosition();
+    //      }
+    //  }
     while (brakeAlt() == false) {
     // Flight loop
         turnMotor(-6);// Turn -6 in (<2seconds)
@@ -421,36 +425,38 @@ void MainDeployedMode::execute() {
         if (brakeAlt()) {
             break;
         }
-        // Hold (5 seconds)
-        // if <= alt break
-        // Turn 0 in (<2 seconds)
-        // if <= alt break
-        // Hold (2 seconds)
-        // if <= alt break
-        // Turn +8 in (<2seconds)
-        // Hold (5 seconds)
-        // if <= alt break
-        // Turn 0 in (<2 seconds)
-        // if <= alt break
-        // Hold (2 seconds)
-        // Turn -12 in (<2 seconds)
-        // Hold (5 seconds)
-        // if <= alt break
-        // Turn 0 in (<2 seconds)
-        // if <= alt break
-        hold_start = to_ms_since_boot(get_absolute_time());
-        if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::neutral_hold_threshold) {
-            if (brakeAlt()) {
-                neutralPosition();
-            }
-        }
-        // Hold (2 seconds)
-        //  if <= alt break
-        // Turn 2 in (<2 seconds)
+        // hold_arr = [10,5,2,]
+        //  Hold (5 seconds)
         //  if <= alt break
         //  Turn 0 in (<2 seconds)
         //  if <= alt break
+        //  Hold (2 seconds)
+        //  if <= alt break
+        //  Turn +8 in (<2seconds)
+        //  Hold (5 seconds)
+        //  if <= alt break
+        //  Turn 0 in (<2 seconds)
+        //  if <= alt break
+        //  Hold (2 seconds)
+        //  Turn -12 in (<2 seconds)
+        //  Hold (5 seconds)
+        //  if <= alt break
+        //  Turn 0 in (<2 seconds)
+        //  if <= alt break
+        //  hold_start = to_ms_since_boot(get_absolute_time());
+        //  if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::neutral_hold_threshold) {
+        //      if (brakeAlt()) {
+        //          neutralPosition();
+        //      }
+        //  }
+        //  Hold (2 seconds)
+        //   if <= alt break
+        //  Turn 2 in (<2 seconds)
+        //   if <= alt break
+        //   Turn 0 in (<2 seconds)
+        //   if <= alt break
     }
 
     // Brake
         // Turn 0 in (<2 seconds)
+}
