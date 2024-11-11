@@ -12,36 +12,14 @@
 #include <sstream>
 
 bool SD::begin() {
-    FRESULT fr = f_mount(&fs, "", 1);
+    fr = f_mount(&fs, "", 1);
 
     if (fr != FR_OK) {
-        logf("SD mount: %s (%d)\n", FRESULT_str(fr), fr);
+        logf("SD Mount Error: %s (%d)\n", FRESULT_str(fr), fr);
         if (!state::sd::failed_init) {
             state::flight::events.emplace_back(Event::sd_init_fail);
             state::sd::failed_init = true;
         }
-        return false;
-    }
-
-    FRESULT exists = f_stat(constants::boot_filename, NULL);
-    fr = f_open(&boot_file, constants::boot_filename, FA_OPEN_ALWAYS | FA_READ);
-
-    if (exists == FR_OK) {
-        char buffer[8];
-        (void)f_gets(buffer, sizeof(buffer), &boot_file);
-
-        std::string buffer_str(buffer);
-        std::stringstream ss(buffer_str);
-
-        ss >> state::flight::boot_count;
-        state::flight::boot_count++;
-        ss.ignore();
-        ss >> state::flight::old_mode;
-    }
-
-    fr = f_close(&boot_file);
-    if (FR_OK != fr) {
-        logf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
@@ -50,7 +28,6 @@ bool SD::begin() {
 }
 
 bool SD::log() {
-
     if (writes_count == constants::file_writes_threshold) {
         state::sd::current_file++;
         writes_count = 0;
@@ -92,6 +69,8 @@ bool SD::log() {
         + std::to_string(state::therm::status) + ","
         + std::to_string(state::therm::temp) + ","
 
+        + std::to_string(state::fram::init) = ","
+
         + std::to_string(state::rfm::init) + ",";
     // clang-format on
 
@@ -102,21 +81,21 @@ bool SD::log() {
     char filename[10];
     sprintf(filename, "%d_%d.csv", state::flight::boot_count, state::sd::current_file);
 
-    FRESULT fr = f_open(&log_file, (const char *)filename, FA_OPEN_APPEND | FA_WRITE);
+    fr = f_open(&log_file, (const char *)filename, FA_OPEN_APPEND | FA_WRITE);
 
     if (fr != FR_OK && fr != FR_EXIST) {
-        logf("SD log open: %s (%d)\n", FRESULT_str(fr), fr);
+        logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     if (f_printf(&log_file, "%s\n", log.c_str()) < 0) {
-        logf("SD log print: %s (%d)\n", FRESULT_str(fr), fr);
+        logf("SD Print Error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
     fr = f_close(&log_file);
     if (FR_OK != fr) {
-        logf("SD log close: %s (%d)\n", FRESULT_str(fr), fr);
+        logf("SD Close Error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
@@ -127,24 +106,26 @@ bool SD::log() {
     return true;
 }
 
-bool SD::write_mode() {
-    FRESULT fr = f_open(&boot_file, constants::boot_filename, FA_OPEN_ALWAYS | FA_WRITE);
+bool SD::clear_card() {
+    DIR dir;
+    FILINFO fno;
 
+    fr = f_opendir(&dir, "/");
     if (fr != FR_OK && fr != FR_EXIST) {
-        logf("SD boot open: %s (%d)\n", FRESULT_str(fr), fr);
+        logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
         return false;
     }
 
-    std::string boot_str = std::to_string(state::flight::boot_count) + "," + std::to_string(state::flight::mode->id());
-    if (f_puts(boot_str.c_str(), &boot_file) < 0) {
-        logf("SD boot write: %s (%d)\n", FRESULT_str(fr), fr);
-        return false;
-    }
+    while (true) {
+        fr = f_readdir(&dir, &fno);
+        if (fr != FR_OK || fno.fname[0] == 0) break;
+        if (fno.fname[0] == '.') continue;
 
-    fr = f_close(&boot_file);
-    if (FR_OK != fr) {
-        logf("SD boot close: %s (%d)\n", FRESULT_str(fr), fr);
-        return false;
+        fr = f_unlink(fno.fname);
+        if (fr != FR_OK) {
+            logf("SD Delete Error: Failed to delete %s\n", fno.fname);
+            return false;
+        }
     }
 
     return true;

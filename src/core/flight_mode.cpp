@@ -137,6 +137,7 @@ void StandbyMode::execute() {
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::clear_card):
+            sd.clear_card();
             state::flight::events.emplace_back(Event::clear_card_command_received);
             break;
         default:

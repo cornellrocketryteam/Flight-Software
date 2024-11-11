@@ -2,7 +2,7 @@
  * @file sd.hpp
  * @author csg83
  *
- * @brief SD card-related functionality
+ * @brief SD card-related definitions
  */
 
 #ifndef SD_HPP
@@ -19,21 +19,21 @@ class SD {
 public:
     /**
      * Begins the SD card interface by mounting the SD card.
-     * @return True on successful mount, false on mount failure.
+     * @return True on successful mount, false on mount failure
      */
     bool begin();
 
     /**
      * Logs the current state to the SD card.
-     * @return True on successful log, false on file open, write, or close failures.
+     * @return True on successful log, false on file open, write, or close failures
      */
     bool log();
 
     /**
-     * Logs the current flight mode to the boot file.
-     * @return True on successful log, false on file open, write, or close failures.
+     * Clears all data from the SD card.
+     * @return True on successful clear, false on file open or close failures
      */
-    bool write_mode();
+    bool clear_card();
 
 private:
     /**
@@ -43,24 +43,24 @@ private:
     uint16_t writes_count = 0;
 
     /**
-     * SD card representation.
+     * SD card representation
      */
     sd_card_t *pSD;
 
     /**
-     * File system representation.
+     * File system representation
      */
     FATFS fs;
 
     /**
-     * Log file object representation.
+     * Return value for SD operations
      */
-    FIL log_file;
+    FRESULT fr;
 
     /**
-     * Boot file object representation.
+     * Log file object representation
      */
-    FIL boot_file;
+    FIL log_file;
 };
 
 #endif // SD_HPP
