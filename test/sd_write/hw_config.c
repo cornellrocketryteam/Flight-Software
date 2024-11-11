@@ -1,19 +1,38 @@
 #include "hw_config.h"
 #include "../../src/pins.hpp"
 
-
+#ifdef SDIO
 /* SDIO Interface */
 static sd_sdio_if_t sdio_if = {
-    .CMD_gpio = SD_CMD,
-    .D0_gpio = SD_D0,
-    .D1_gpio = SD_D1,
-    .D2_gpio = SD_D2,
-    .D3_gpio = SD_D3,
-    .baud_rate = 125 * 1000 * 1000 / 6  // 20833333 Hz
+    .CMD_gpio = 3,
+    .D0_gpio = 4,
+    // .baud_rate = 125 * 1000 * 1000 / 6  // 20833333 Hz
 };
 
-/* Hardware Configuration of the SD Card socket "object" */
-static sd_card_t sd_card = {.type = SD_IF_SDIO, .sdio_if_p = &sdio_if};
+static sd_card_t sd_card = {
+    .type = SD_IF_SDIO,
+    .sdio_if_p = &sdio_if
+};
+#else
+static spi_t spi = {
+    .hw_inst = SPI_PORT,
+    .sck_gpio = SPI_SCK,
+    .mosi_gpio = SPI_MOSI,
+    .miso_gpio = SPI_MISO,
+    .baud_rate = 12 * 1000 * 1000 // Actual frequency: 10416666.
+};
+
+/* SPI Interface */
+static sd_spi_if_t spi_if = {
+    .spi = &spi,
+    .ss_gpio = 17
+};
+
+static sd_card_t sd_card = {
+    .type = SD_IF_SPI,
+    .spi_if_p = &spi_if
+};
+#endif
 
 /**
  * @brief Get the number of SD cards.

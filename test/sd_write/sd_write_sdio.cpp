@@ -2,7 +2,7 @@
  * @file sd_write_sdio.cpp
  * @author csg83
  * 
- * @brief Unit test of SD writes over SDIO
+ * @brief Unit test of SD writes over SDIO or SPI
  */
 
 #include "pico/stdlib.h"
@@ -11,8 +11,6 @@
 #include "hw_config.h"
 #include "tusb.h"
 #include "hardware/gpio.h"
-
-// TODO: Combine with SPI write?
 
 int main() {
     stdio_init_all();
