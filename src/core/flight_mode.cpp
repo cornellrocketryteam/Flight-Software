@@ -45,8 +45,8 @@ void FlightMode::execute() {
 
 void FlightMode::to_mode(FlightMode *mode) {
     state::flight::mode = mode;
-    if (state::sd::init) {
-        sd.write_mode();
+    if (state::fram::init) {
+        fram.write(Data::flight_mode);
     }
 }
 
@@ -60,20 +60,20 @@ void StartupMode::execute() {
     }
 
     // Attempt to initialize all modules
-    if (state::alt::status == OFF) {
-        altimeter.begin();
-    }
-    if (state::gps::status == OFF) {
-    }
-    if (state::imu::status == OFF) {
-        imu.begin();
-    }
-    if (state::accel::status == OFF) {
-        accel.begin();
-    }
-    if (state::therm::status == OFF) {
-        therm.begin();
-    }
+    // if (state::alt::status == OFF) {
+    //     altimeter.begin();
+    // }
+    // if (state::gps::status == OFF) {
+    // }
+    // if (state::imu::status == OFF) {
+    //     imu.begin();
+    // }
+    // if (state::accel::status == OFF) {
+    //     accel.begin();
+    // }
+    // if (state::therm::status == OFF) {
+    //     therm.begin();
+    // }
     // if (!state::rfm::attempted_init) {
     //     rfm.begin();
     // }
@@ -91,12 +91,12 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    if (state::flight::old_mode > 1) {
-        // Transition to Fault Mode if we were mid-flight or faulted in the last boot
+    if (state::flight::old_mode == 5) {
+        // Transition to Fault Mode if we faulted in the last boot
         to_mode(state::flight::fault);
     } else if (state::flight::key_armed) {
-        if (state::alt::status != VALID || state::accel::status != VALID) {
-            // Transition to Fault Mode if either flight-critical sensor is non-operational
+        if (state::alt::status != VALID) {
+            // Transition to Fault Mode if the altimeter is non-operational
             to_mode(state::flight::fault);
         } else {
             // Transition to Standby Mode otherwise

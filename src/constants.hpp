@@ -81,7 +81,7 @@ namespace constants {
     constexpr uint sd_baudrate = 125 * 1000000 / 6; // baud
     constexpr uint rfm_baudrate = 57600;            // baud
 
-    constexpr uint8_t cycle_time = 50;              // ms
+    constexpr uint8_t cycle_time = 20;              // ms
 
     constexpr uint8_t max_usb_failed_reads = 50;
 
