@@ -74,9 +74,9 @@ void StartupMode::execute() {
     if (state::therm::status == OFF) {
         therm.begin();
     }
-    if (!state::rfm::attempted_init) {
-        rfm.begin();
-    }
+    // if (!state::rfm::attempted_init) {
+    //     rfm.begin();
+    // }
     if (!state::fram::init) {
         fram.begin();
     }

@@ -78,7 +78,8 @@ namespace constants {
 
     constexpr uint i2c_baudrate = 400 * 1000;       // baud
     constexpr uint spi_baudrate = 20000000;         // baud
-    constexpr uint rfm_baudrate = 57600;            // baud
+    constexpr uint sd_baudrate = 125 * 1000000 / 6  // baud
+                                 constexpr uint rfm_baudrate = 57600;            // baud
 
     constexpr uint8_t cycle_time = 50;              // ms
 
