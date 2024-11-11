@@ -50,7 +50,7 @@ namespace state {
 
         extern bool launch_commanded;
 
-        extern int boot_count;
+        extern uint16_t boot_count;
         extern int old_mode;
 
         extern int usb_failed_reads;

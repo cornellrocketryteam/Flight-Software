@@ -46,7 +46,7 @@ void FlightMode::execute() {
 void FlightMode::to_mode(FlightMode *mode) {
     state::flight::mode = mode;
     if (state::fram::init) {
-        fram.write(Data::flight_mode);
+        fram.store(Data::flight_mode);
     }
 }
 

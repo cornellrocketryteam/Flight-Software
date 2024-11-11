@@ -20,12 +20,32 @@ enum class Data : uint8_t {
 
 class FRAM {
 public:
+    /**
+     * Initializes the underlying FRAM object
+     */
     FRAM();
+
+    /**
+     * Begins the FRAM module and loads metadata to state
+     */
     bool begin();
 
-    void write(Data data);
+    /**
+     * Loads data from FRAM into state
+     * @param data The data to load
+     */
+    void load(Data data);
+
+    /**
+     * Stores data from state into FRAM
+     * @param data The data to store
+     */
+    void store(Data data);
 
 private:
+    /**
+     * The FRAM module
+     */
     MB85RS fram;
 };
 

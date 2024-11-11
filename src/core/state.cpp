@@ -33,7 +33,7 @@ namespace state {
 
         bool launch_commanded = false;
 
-        int boot_count = 0;
+        uint16_t boot_count = 0;
         int old_mode = -1;
 
         int usb_failed_reads = 0;
