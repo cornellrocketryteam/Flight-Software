@@ -30,7 +30,7 @@ set(SOURCES
     src/telem/rfm.cpp
     src/storage/sd.cpp
     src/storage/fram.cpp
-    src/storage/hw_config.c
+    src/storage/hw_config.cpp
     src/sensor/sensor.cpp
 )
 

@@ -1,5 +1,5 @@
 /**
- * @file hw_config.c
+ * @file hw_config.cpp
  * @author csg83
  *
  * @brief SD hardware configuration options
