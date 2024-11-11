@@ -6,7 +6,7 @@
 static sd_sdio_if_t sdio_if = {
     .CMD_gpio = 3,
     .D0_gpio = 4,
-    // .baud_rate = 125 * 1000 * 1000 / 6  // 20833333 Hz
+    .baud_rate = 125 * 1000 * 1000 / 6  // 20833333 Hz
 };
 
 static sd_card_t sd_card = {
