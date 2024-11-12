@@ -11,11 +11,10 @@
 // clang-format off
 #include "flight_mode.hpp"
 #include "constants.hpp"
+#include "sd.hpp"
 #include <stdint.h>
 #include <vector>
 // clang-format on
-
-#include "sd.hpp"
 
 enum SensorState {
     OFF = 0,
@@ -138,6 +137,10 @@ namespace state {
         extern uint32_t start_time;
 
     } // namespace rfm
+    namespace mav {
+        extern bool open;
+
+    } // namespace mav
 }; // namespace state
 
 #endif // STATE_HPP

@@ -127,13 +127,24 @@ void StandbyMode::execute() {
     if (c != PICO_ERROR_TIMEOUT) {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
+            mav.open(constants::mav_open_time);
             state::flight::launch_commanded = true;
             state::flight::events.emplace_back(Event::launch_command_received);
             break;
-        case static_cast<char>(Command::toggle_mav):
+        case static_cast<char>(Command::mav_open):
+            mav.open();
             state::flight::events.emplace_back(Event::mav_command_received);
             break;
-        case static_cast<char>(Command::toggle_sv):
+        case static_cast<char>(Command::mav_close):
+            mav.close();
+            state::flight::events.emplace_back(Event::mav_command_received);
+            break;
+        case static_cast<char>(Command::sv_open):
+            sv.open();
+            state::flight::events.emplace_back(Event::sv_command_received);
+            break;
+        case static_cast<char>(Command::sv_close):
+            sv.close();
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::clear_card):
@@ -147,19 +158,18 @@ void StandbyMode::execute() {
 }
 
 void StandbyMode::transition() {
-    // Transition to Fault Mode if the umbilical is disconnected
-    if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
-        to_mode(state::flight::fault);
-        // TODO: Vent oxidizer tank
-    }
-    // Transition to Startup Mode if the arming key was turned off
-    if (!state::flight::key_armed) {
-        to_mode(state::flight::startup);
-    }
     // Transition to Ascent Mode if launch was commanded through the umbilical
     if (state::flight::launch_commanded) {
         to_mode(state::flight::ascent);
-        // TODO: Set timers for MAV and SV actuation
+    }
+    // Transition to Fault Mode if the umbilical is disconnected
+    else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
+        sv.open();
+        to_mode(state::flight::fault);
+    }
+    // Transition to Startup Mode if the arming key was turned off
+    else if (!state::flight::key_armed) {
+        to_mode(state::flight::startup);
     }
 }
 

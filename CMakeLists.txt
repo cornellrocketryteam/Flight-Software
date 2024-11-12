@@ -32,6 +32,7 @@ set(SOURCES
     src/storage/fram.cpp
     src/storage/hw_config.cpp
     src/sensor/sensor.cpp
+    src/actuator/actuator.cpp
 )
 
 # Add source files from sim/
@@ -77,6 +78,7 @@ target_link_directories(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_SOURCE_DIR}/src/actuator
     ${PROJECT_SOURCE_DIR}/src/core
     ${PROJECT_SOURCE_DIR}/src/sensor
     ${PROJECT_SOURCE_DIR}/src/storage

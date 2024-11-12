@@ -12,13 +12,13 @@
 void set_position(float position) {
     uint slice_num = pwm_gpio_to_slice_num(MAV);
     uint16_t dc = (uint16_t)(21845 + position * 21845);
-    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(MAV), dc);
+    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(MAV_SIGNAL), dc);
 }
 
 int main() {
     stdio_init_all();
 
-    gpio_set_function(MAV, GPIO_FUNC_PWM);
+    gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(MAV);
     
     uint8_t divider = 125000000 / 330 / 65535;

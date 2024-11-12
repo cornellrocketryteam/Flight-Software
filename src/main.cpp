@@ -62,12 +62,17 @@ void init_pins() {
 
     // Init PWM pins
     gpio_set_function(RELAY, GPIO_FUNC_PWM);
-    gpio_set_function(MAV, GPIO_FUNC_PWM);
+    gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
 
     uint relay_slice_num = pwm_gpio_to_slice_num(RELAY);
-    uint mav_slice_num = pwm_gpio_to_slice_num(MAV);
+    uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
     uint blims_slice_num = pwm_gpio_to_slice_num(BLIMS_MOTOR);
+
+    uint8_t mav_divider = 125000000 / 330 / 65535;
+    pwm_set_clkdiv_int_frac(mav_slice_num, mav_divider, 12);
+    pwm_set_wrap(mav_slice_num, 65535);
+    pwm_set_enabled(mav_slice_num, true);
 }
 
 int main() {

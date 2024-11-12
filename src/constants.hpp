@@ -66,10 +66,12 @@ enum class Event : uint8_t {
 
 enum class Command : char {
     launch = '0',
-    toggle_mav = '1',
-    toggle_sv = '2',
+    mav_open = '1',
+    mav_close = '2',
+    sv_open = '3',
+    sv_close = '4',
 
-    clear_card = '3'
+    clear_card = '5'
 };
 
 /**
@@ -86,13 +88,14 @@ namespace constants {
 
     constexpr uint8_t max_usb_failed_reads = 50;
 
+    constexpr uint mav_open_time = 15000;           // ms
+
     constexpr float arming_altitude = 1526;         // meters
     constexpr float main_deploy_altitude = 260;     // meters
     constexpr uint8_t max_failed_reads = 10;
 
     constexpr uint8_t ematch_threshold = 200;       // ms
 
-    const char *const boot_filename = "boot.txt";
     const uint16_t file_writes_threshold = 50000;   // cycles
     constexpr float log_threshold = 50;             // meters
 

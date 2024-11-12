@@ -8,6 +8,7 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
+#include "actuator.hpp"
 #include "fram.hpp"
 #include "rfm.hpp"
 #include "sd.hpp"
@@ -58,6 +59,9 @@ protected:
     SD sd;
     FRAM fram;
     RFM rfm;
+
+    MAV mav;
+    SV sv;
 };
 
 /**

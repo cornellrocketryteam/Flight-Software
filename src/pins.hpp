@@ -41,7 +41,7 @@
 #define ARM_OUT 11
 
 #define RELAY 21
-#define MAV 22
+#define MAV_SIGNAL 22
 
 #define BLIMS_MOTOR 28
 

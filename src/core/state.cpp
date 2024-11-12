@@ -121,4 +121,8 @@ namespace state {
         uint32_t start_time = UINT32_MAX - constants::interrupt_delay;
 
     } // namespace rfm
+    namespace mav {
+        bool open = false;
+
+    } // namespace mav
 }; // namespace state
