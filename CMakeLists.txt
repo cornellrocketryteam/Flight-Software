@@ -90,6 +90,12 @@ target_link_libraries(${PROJECT_NAME}
     BNO055-Pico
     LIS3DH-Pico 
     Si7021-Pico
+
+    #BLIMS addons
+    pico_stdlib
+    hardware_pwm
+    hardware_gpio
+    hardware_timer
 )
 
 # Enable serial over USB

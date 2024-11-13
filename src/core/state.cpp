@@ -35,6 +35,9 @@ namespace state {
         uint32_t ematch_start = 0;
 
         std::vector<Event> events = {};
+
+        // blims add
+        uint32_t hold_start = 0;
     } // namespace flight
     namespace alt {
         enum SensorState status = OFF;

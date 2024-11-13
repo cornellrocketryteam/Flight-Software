@@ -6,35 +6,53 @@
 #include "modules.hpp"
 #include "state.hpp"
 
+#include "hardware/clocks.h"
+#include "hardware/pwm.h"
+#include "pico/stdlib.h"
+
+#define PWM_PIN 28
+// want wrap to be as large as possible, increases the amount of steps so that we have as much control as possible
+uint16_t wrap_cycle_count = 65535; // setting to max value for uint16
+
+float action_arr[10][2] = {
+    {0.6, constants::turn_hold_threshold},
+    {0.5, constants::neutral_hold_threshold},
+    {0.3, constants::turn_hold_threshold},
+    {0.5, constants::neutral_hold_threshold},
+    {0.8, constants::turn_hold_threshold},
+    {0.5, constants::neutral_hold_threshold},
+    {0.1, constants::turn_hold_threshold},
+    {0.5, constants::neutral_hold_threshold},
+    {1.0, constants::turn_hold_threshold},
+    {0.5, constants::neutral_hold_threshold},
+};
+// maintains the action duration across iterations
+uint32_t action_duration = 0;
+// increases each iteration
+int action_index = 0;
+// gets beginning time for each motor step
+float action_begin_time = 0;
+// initial hold
+bool run_init_hold = true;
+// reached braking altitude
+bool brake_alt = false;
 ////////////
-/*
-This function checks to see if we are below braking altitude
-If we are, return True. This will initiate a braking sequence.
-Otherwise, return False and continue with our main loop
-*/
-bool brakeAlt() {
-    return state::alt::altitude >= constants::brake_alt;
-}
 
 /*
-This function turns our motor to neutral position (lines are even on each side)
+setup_pwm_50hz configures the pwm signal
+takes in gpio_pin
 */
-void neutralPosition() {
-    while (true)
-        ;
-}
+void set_motor_position(uint gpio_pin, float position) {
+    // Position should be between 0-1
+    // Should map between -17 to 17 turns (configured in web UI)
+    uint slice_num = pwm_gpio_to_slice_num(gpio_pin);
 
-/*
-Turns motor to position pos
-Main contribution of this function: convert intended position to motor commands
-*/
-void turnMotor(float pos) {
-        // Need to work more with motor to determine what this conversion is
-    while (true)
-        ;
+    // Map position to PWM duty cycle (typically 1ms to 2ms pulse width)
+    uint16_t five_percent_duty_cycle = wrap_cycle_count * 0.05;
+    // ranges between 5% and 10% duty cycle; 3276 ~= 5% duty, 6552 ~= 10% duty
+    uint16_t duty = (uint16_t)(five_percent_duty_cycle + position * five_percent_duty_cycle);
+    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(gpio_pin), duty);
 }
-
-////////////
 
 // SimData sim_data;
 
@@ -371,7 +389,7 @@ void DrogueDeployedMode::transition() {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
         ////////
-        int hold_start = to_ms_since_boot(get_absolute_time());
+        state::flight::hold_start = to_ms_since_boot(get_absolute_time());
         ////////
         to_mode(state::flight::main_deployed);
     }
@@ -395,68 +413,24 @@ void MainDeployedMode::execute() {
     }
 
     FlightMode::execute(); // updates state of rocket with curr sensor readings, every 50ms
-
-    ////////////////////// WRITE BLIMS CODE HERE
-    // everything is being logged already
-    // What we assume:
-    // - 2 sec to go from neutral to full turn
-    // - 1ft 1 side limit
-
-    /////set up
-    // #include "pico/stdlib.h"
-    // #include "hardware/pwm.h"
-
-    // gpio_set_function(26, GPIO_FUNC_PWM);
-    // uint slice_num = pwm_gpio_to_slice_num(26); ?
-
-    // Commands
-
-    // want to move to end of drogue deployed mode transition
-    // add hold_start to state namespace
-    //  if (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold) {
-    //      if (brakeAlt()) {
-    //          neutralPosition();
-    //      }
-    //  }
-    while (brakeAlt() == false) {
-    // Flight loop
-        turnMotor(-6);// Turn -6 in (<2seconds)
-        // if <= alt break
-        if (brakeAlt()) {
-            break;
-        }
-        // hold_arr = [10,5,2,]
-        //  Hold (5 seconds)
-        //  if <= alt break
-        //  Turn 0 in (<2 seconds)
-        //  if <= alt break
-        //  Hold (2 seconds)
-        //  if <= alt break
-        //  Turn +8 in (<2seconds)
-        //  Hold (5 seconds)
-        //  if <= alt break
-        //  Turn 0 in (<2 seconds)
-        //  if <= alt break
-        //  Hold (2 seconds)
-        //  Turn -12 in (<2 seconds)
-        //  Hold (5 seconds)
-        //  if <= alt break
-        //  Turn 0 in (<2 seconds)
-        //  if <= alt break
-        //  hold_start = to_ms_since_boot(get_absolute_time());
-        //  if (to_ms_since_boot(get_absolute_time()) - hold_start >= constants::neutral_hold_threshold) {
-        //      if (brakeAlt()) {
-        //          neutralPosition();
-        //      }
-        //  }
-        //  Hold (2 seconds)
-        //   if <= alt break
-        //  Turn 2 in (<2 seconds)
-        //   if <= alt break
-        //   Turn 0 in (<2 seconds)
-        //   if <= alt break
+    // assume motor starts as neutral
+    if (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold) {
+        run_init_hold = false;
     }
+    uint32_t curr_time = to_ms_since_boot(get_absolute_time());
 
-    // Brake
-        // Turn 0 in (<2 seconds)
+    // time at beginning of cycle - curr_time
+    action_duration -= state::flight::timestamp - curr_time;
+
+    // check time
+    if (action_duration < 0 && !run_init_hold && !brake_alt) {
+        action_index = action_index + 1;
+        action_duration = action_arr[action_index][1];
+        set_motor_position(PWM_PIN, action_arr[action_index][0]);
+    }
+    // check altitude
+    if (state::alt::altitude < constants::brake_alt) {
+        set_motor_position(PWM_PIN, constants::neutral_pos);
+        brake_alt = true;
+    }
 }
