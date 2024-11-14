@@ -39,29 +39,28 @@ enum class Event : uint8_t {
     adc_read_fail = 14,
 
     fram_init_fail = 15,
-    fram_read_fail = 16,
-    fram_write_fail = 17,
+    fram_rw_fail = 16,
 
-    sd_init_fail = 18,
-    sd_write_fail = 19,
+    sd_init_fail = 17,
+    sd_write_fail = 18,
 
-    mav_actuated = 20,
-    sv_actuated = 21,
+    mav_actuated = 19,
+    sv_actuated = 20,
 
-    main_deploy_wait_end = 22,
-    main_log_shutoff = 23,
-    cycle_overflow = 24,
+    main_deploy_wait_end = 21,
+    main_log_shutoff = 22,
+    cycle_overflow = 23,
 
-    rfm_init_fail = 25,
-    rfm_tx_fail = 26,
+    rfm_init_fail = 24,
+    rfm_tx_fail = 25,
 
-    launch_command_received = 27,
-    mav_command_received = 28,
-    sv_command_received = 29,
-    clear_card_command_received = 30,
-    unknown_command_received = 31,
+    launch_command_received = 26,
+    mav_command_received = 27,
+    sv_command_received = 28,
+    clear_card_command_received = 29,
+    unknown_command_received = 30,
 
-    umbilical_disconnected = 32,
+    umbilical_disconnected = 31
 };
 
 enum class Command : char {

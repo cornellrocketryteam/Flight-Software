@@ -62,7 +62,7 @@ void FRAM::load(Data data) {
     default:
         break;
     }
-    state::flight::events.emplace_back(Event::fram_read_fail);
+    state::flight::events.emplace_back(Event::fram_rw_fail);
 }
 
 void FRAM::store(Data data) {
@@ -92,5 +92,5 @@ void FRAM::store(Data data) {
     default:
         break;
     }
-    state::flight::events.emplace_back(Event::fram_write_fail);
+    state::flight::events.emplace_back(Event::fram_rw_fail);
 }
