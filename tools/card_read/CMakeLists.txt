@@ -31,7 +31,6 @@ target_include_directories(${PROJECT_NAME}
 # Pull in common dependencies
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib
-    hardware_gpio
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico
 )
 

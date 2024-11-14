@@ -1,5 +1,5 @@
 /**
- * @file read_card.cpp
+ * @file card_read.cpp
  * @author csg83
  * 
  * @brief Reads out the contents of the SD card into a single file
@@ -10,7 +10,6 @@
 #include "ff.h"
 #include "hw_config.h"
 #include "tusb.h"
-#include "hardware/gpio.h"
 #include "../../src/pins.hpp"
 
 int main() {

@@ -1,5 +1,5 @@
 /**
- * @file clear_card.cpp
+ * @file card_clear.cpp
  * @author csg83
  * 
  * @brief Clears the contents of the SD card
@@ -10,7 +10,6 @@
 #include "ff.h"
 #include "hw_config.h"
 #include "tusb.h"
-#include "hardware/gpio.h"
 #include "../../src/pins.hpp"
 
 int main() {
