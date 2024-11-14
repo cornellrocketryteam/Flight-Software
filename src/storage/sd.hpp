@@ -43,11 +43,6 @@ private:
     uint16_t writes_count = 0;
 
     /**
-     * SD card representation
-     */
-    sd_card_t *pSD;
-
-    /**
      * File system representation
      */
     FATFS fs;

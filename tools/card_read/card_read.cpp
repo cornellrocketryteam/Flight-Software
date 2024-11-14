@@ -16,42 +16,38 @@
 int main() {
     stdio_init_all();
 
-    gpio_init(RFM_CS);
-    gpio_set_dir(RFM_CS, GPIO_OUT);
-    gpio_put(RFM_CS, 1);
-
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }
 
-    sd_card_t *pSD = sd_get_by_num(0);
-
-    FRESULT fr = f_mount(&pSD->fatfs, pSD->pcName, 1);
-    if (FR_OK != fr) {
-        panic("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
-    }
-
+    FATFS fs;
     DIR dir;
-    FILINFO fno;
     FIL fil;
-    FRESULT res;
+    FILINFO fno;
     char line[256];
 
-    res = f_opendir(&dir, "/");
-    if (res != FR_OK) {
+    FRESULT fr = f_mount(&fs, "", 1);
+    if (fr != FR_OK) {
+        printf("f_mount error: %s (%d)\n", FRESULT_str(fr), fr);
+        return 1;
+    }
+
+    fr = f_opendir(&dir, "/");
+    if (fr != FR_OK) {
+        printf("f_opendir error: %s (%d)\n", FRESULT_str(fr), fr);
         return 1;
     }
 
     while (true) {
-        res = f_readdir(&dir, &fno);
-        if (res != FR_OK || fno.fname[0] == 0) break;
+        fr = f_readdir(&dir, &fno);
+        if (fr != FR_OK || fno.fname[0] == 0) break;
         if (fno.fname[0] == '.') continue;
 
         if (strcmp(fno.fname, "boot.txt") != 0 && (fno.fattrib & AM_DIR) == 0) {
             printf("Opening %s...\n", fno.fname);
 
-            res = f_open(&fil, fno.fname, FA_READ);
-            if (res == FR_OK) {
+            fr = f_open(&fil, fno.fname, FA_READ);
+            if (fr == FR_OK) {
                 while (f_gets(line, sizeof(line), &fil)) {
                     printf("%s", line);
                 }
@@ -62,9 +58,8 @@ int main() {
         }
     }
 
-    f_unmount(pSD->pcName);
+    f_unmount("");
     printf("Card unmounted\n");
 
     return 0;
-
 }
