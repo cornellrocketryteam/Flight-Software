@@ -133,8 +133,6 @@ namespace state {
     } // namespace fram
     namespace rfm {
         extern bool init;
-        extern bool attempted_init;
-        extern uint32_t start_time;
 
     } // namespace rfm
     namespace mav {

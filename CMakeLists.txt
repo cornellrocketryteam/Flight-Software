@@ -18,7 +18,7 @@ add_compile_options(
     # -O3
 )
 
-add_definitions(-DVERBOSE)
+# add_definitions(-DVERBOSE)
 add_definitions(-DLAUNCH)
 
 # Add source files from src/
@@ -27,7 +27,7 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
-    src/telem/rfm.cpp
+    src/telem/telem.cpp
     src/storage/sd.cpp
     src/storage/fram.cpp
     src/storage/hw_config.cpp
@@ -54,25 +54,12 @@ add_custom_target(upload
 )
 
 # Add external libraries
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/RadioLib)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
-
-# Ignore warnings from RadioLib
-target_compile_options(RadioLib PRIVATE -w)
-
-# Link library directories
-target_link_directories(${PROJECT_NAME} 
-    PRIVATE
-    ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
-    ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
-    ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
-    ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
-)
 
 # Include project and library headers
 target_include_directories(${PROJECT_NAME}
@@ -99,7 +86,6 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pwm
     hardware_gpio
     hardware_uart
-    RadioLib
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 
     BMP388-Pico
     BNO055-Pico

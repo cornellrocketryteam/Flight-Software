@@ -8,6 +8,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include "pico/stdlib.h"
+
 #ifdef VERBOSE
 #define logf(...) printf(__VA_ARGS__)
 #else
@@ -101,16 +103,8 @@ namespace constants {
     constexpr uint16_t main_deploy_wait = 160;      // cycles
     constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
-    // TODO: Remove
-    constexpr float frequency = 922.2;              // MHz
-    constexpr float bandwidth = 500;                // kHz
-    constexpr uint8_t sf = 6;                       // Between 7 and 12
-    constexpr uint8_t cr = 5;                       // Between 5 and 8. 4/8 coding ratio - one redundancy bit for every data bit
-    constexpr uint8_t sw = 0x16;                    // Sync-word (defines network) Default is 0d18
-    constexpr int8_t power = 17;                    // Between 2 and 17 or 20 for max power
-
-    constexpr uint32_t interrupt_delay = 750;       // ms
-    constexpr uint8_t packet_size = 86;             // bytes
+    constexpr uint8_t rfm_packet_size = 107;        // bytes
+    constexpr uint8_t umb_packet_size = 28;         // bytes
 }; // namespace constants
 
 #endif // CONSTANTS_HPP

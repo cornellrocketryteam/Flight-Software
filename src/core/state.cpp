@@ -117,8 +117,6 @@ namespace state {
     } // namespace fram
     namespace rfm {
         bool init = false;
-        bool attempted_init = false;
-        uint32_t start_time = UINT32_MAX - constants::interrupt_delay;
 
     } // namespace rfm
     namespace mav {

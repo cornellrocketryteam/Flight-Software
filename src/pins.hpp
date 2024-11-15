@@ -25,13 +25,6 @@
 #define SD_D2 6
 #define SD_D3 7
 
-// TODO: Remove old RFM pins
-#define RFM_CS 1
-#define RFM_TX_EN 14
-#define RFM_RST 15
-#define RFM_DIO0 0
-#define RFM_DIO1 20
-
 #define FRAM_CS 17
 
 #define SSA_DROGUE 14

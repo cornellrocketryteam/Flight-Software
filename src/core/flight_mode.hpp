@@ -10,9 +10,9 @@
 
 #include "actuator.hpp"
 #include "fram.hpp"
-#include "rfm.hpp"
 #include "sd.hpp"
 #include "sensor.hpp"
+#include "telem.hpp"
 
 #include <string>
 
@@ -58,7 +58,9 @@ protected:
 
     SD sd;
     FRAM fram;
+
     RFM rfm;
+    Umbilical umb;
 
     MAV mav;
     SV sv;

@@ -155,6 +155,8 @@ void StandbyMode::execute() {
             state::flight::events.emplace_back(Event::unknown_command_received);
         }
     }
+
+    umb.transmit();
 }
 
 void StandbyMode::transition() {
