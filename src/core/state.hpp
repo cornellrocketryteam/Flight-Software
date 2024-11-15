@@ -60,6 +60,8 @@ namespace state {
         extern uint32_t ematch_start;
 
         extern std::vector<Event> events;
+        // blims add
+        extern uint32_t hold_start;
     } // namespace flight
     namespace alt {
         extern enum SensorState status;

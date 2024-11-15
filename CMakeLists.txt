@@ -18,8 +18,8 @@ add_compile_options(
     # -O3
 )
 
-# add_definitions(-DVERBOSE)
-add_definitions(-DLAUNCH)
+add_definitions(-DVERBOSE)
+# add_definitions(-DLAUNCH)
 
 # Add source files from src/
 set(SOURCES

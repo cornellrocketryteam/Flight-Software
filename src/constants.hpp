@@ -105,6 +105,14 @@ namespace constants {
 
     constexpr uint8_t rfm_packet_size = 107;        // bytes
     constexpr uint8_t umb_packet_size = 28;         // bytes
+
+    // BLIMS Constants
+    constexpr float brake_alt = 10; // To be updated for when we want BLiMS to brake
+    constexpr uint32_t initial_hold_threshold = 10000;
+    constexpr uint32_t turn_hold_threshold = 5000;
+    constexpr uint32_t neutral_hold_threshold = 2000;
+    constexpr float neutral_pos = 0.5;
+
 }; // namespace constants
 
 #endif // CONSTANTS_HPP
