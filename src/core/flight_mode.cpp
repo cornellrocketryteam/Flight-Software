@@ -8,12 +8,9 @@
 #include "flight_mode.hpp"
 #include "constants.hpp"
 #include "hardware/gpio.h"
+#include "hardware/pwm.h"
 #include "pins.hpp"
 #include "state.hpp"
-
-// #include "hardware/clocks.h"
-#include "hardware/pwm.h"
-// #include "pico/stdlib.h"
 
 // want wrap to be as large as possible, increases the amount of steps so that we have as much control as possible
 uint16_t wrap_cycle_count = 65535; // setting to max value for uint16
