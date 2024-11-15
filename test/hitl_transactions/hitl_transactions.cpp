@@ -102,33 +102,36 @@ int main() {
         printf("transaction failed");
     }
 
-    sleep_ms(1000);
-    printf("Reading command error...");
-    uint8_t cmd_error;
-    if (read_register(CMD_ERROR_ADDR, &cmd_error, 1)) {
-        if (cmd_error == CMD_ERROR_RET) {
-            printf("success!\n");
-        } else {
-            printf("failed, received %d\n", chip_id);
-        }
-    } else {
-        printf("transaction failed");
-    }
+    // sleep_ms(1000);
+    // printf("Reading command error...");
+    // uint8_t cmd_error;
+    // if (read_register(CMD_ERROR_ADDR, &cmd_error, 1)) {
+    //     if (cmd_error == CMD_ERROR_RET) {
+    //         printf("success!\n");
+    //     } else {
+    //         printf("failed, received %d\n", cmd_error);
+    //     }
+    // } else {
+    //     printf("transaction failed");
+    // }
 
     sleep_ms(1000);
 
-    printf("========== BMP388::read_altitude() ==========\n\n");
+    printf("\n========== BMP388::read_altitude() ==========\n\n");
 
-    printf("Reading sensor data...");
     uint8_t sensor_data[6] = {0};
-    if (read_register(REG_DATA, sensor_data, 6)) {
-        printf("success! Data: ");
-        for (int i = 0; i < 6; i++) {
-            printf("%d ", sensor_data[i]);
+    printf("Reading sensor data...");
+    while (true) {
+        if (read_register(REG_DATA, sensor_data, 6)) {
+            printf("success! Data: ");
+            for (int i = 0; i < 6; i++) {
+                printf("%d ", sensor_data[i]);
+            }
+            printf("\n");
+        } else {
+            printf("transaction failed");
         }
-        printf("\n");
-    } else {
-        printf("transaction failed");
+        sleep_ms(1000);
     }
 
     return 0;
