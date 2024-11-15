@@ -1,6 +1,6 @@
 /**
  * @file constants.hpp
- * @author csg83
+ * @author csg83, gb486
  *
  * @brief Constants and other definitions
  */

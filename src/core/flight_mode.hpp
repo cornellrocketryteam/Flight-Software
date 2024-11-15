@@ -1,6 +1,6 @@
 /**
  * @file flight_mode.hpp
- * @author csg83
+ * @author csg83, gb486
  *
  * @brief Flight mode logic and transitions
  */

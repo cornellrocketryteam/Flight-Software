@@ -1,6 +1,6 @@
 /**
  * @file flight_mode.cpp
- * @author csg83
+ * @author csg83, gb486
  *
  * @brief Flight mode logic and transitions
  */
@@ -137,18 +137,19 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    if (state::flight::old_mode == 5) {
-        // Transition to Fault Mode if we faulted in the last boot
-        to_mode(state::flight::fault);
-    } else if (state::flight::key_armed) {
-        if (state::alt::status != VALID) {
-            // Transition to Fault Mode if the altimeter is non-operational
-            to_mode(state::flight::fault);
-        } else {
-            // Transition to Standby Mode otherwise
-            to_mode(state::flight::standby);
-        }
-    }
+    // if (state::flight::old_mode == 5) {
+    //     // Transition to Fault Mode if we faulted in the last boot
+    //     to_mode(state::flight::fault);
+    // } else if (state::flight::key_armed) {
+    //     if (state::alt::status != VALID) {
+    //         // Transition to Fault Mode if the altimeter is non-operational
+    //         to_mode(state::flight::fault);
+    //     } else {
+    //         // Transition to Standby Mode otherwise
+    //         to_mode(state::flight::standby);
+    //     }
+    // }
+    to_mode(state::flight::standby);
 }
 
 // Standby Mode

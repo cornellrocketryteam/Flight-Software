@@ -1,6 +1,6 @@
 /**
  * @file state.cpp
- * @author csg83
+ * @author csg83, gb486
  *
  * @brief Rocket state variables
  */
