@@ -15,20 +15,26 @@
 // want wrap to be as large as possible, increases the amount of steps so that we have as much control as possible
 uint16_t wrap_cycle_count = 65535; // setting to max value for uint16
 
-float action_arr[10][2] = {
-    {0.6, constants::turn_hold_threshold},
-    {0.5, constants::neutral_hold_threshold},
-    {0.3, constants::turn_hold_threshold},
-    {0.5, constants::neutral_hold_threshold},
-    {0.8, constants::turn_hold_threshold},
-    {0.5, constants::neutral_hold_threshold},
-    {0.1, constants::turn_hold_threshold},
-    {0.5, constants::neutral_hold_threshold},
-    {1.0, constants::turn_hold_threshold},
-    {0.5, constants::neutral_hold_threshold},
+struct Action {
+    float position;
+    uint32_t duration;
 };
+
+Action action_arr[10] = {
+    {0.6f, constants::turn_hold_threshold},
+    {0.5f, constants::neutral_hold_threshold},
+    {0.3f, constants::turn_hold_threshold},
+    {0.5f, constants::neutral_hold_threshold},
+    {0.8f, constants::turn_hold_threshold},
+    {0.5f, constants::neutral_hold_threshold},
+    {0.1f, constants::turn_hold_threshold},
+    {0.5f, constants::neutral_hold_threshold},
+    {1.0f, constants::turn_hold_threshold},
+    {0.5f, constants::neutral_hold_threshold},
+};
+uint32_t curr_time = 0;
 // maintains the action duration across iterations
-uint32_t action_duration = 0;
+int32_t action_duration = 0;
 // increases each iteration
 int action_index = 0;
 // gets beginning time for each motor step
@@ -115,6 +121,7 @@ void FlightMode::execute() {
 }
 
 void FlightMode::to_mode(FlightMode *mode) {
+    printf("TO_MODE hold start: %d\n", state::flight::hold_start);
     state::flight::mode = mode;
     if (state::fram::init) {
         fram.store(Data::flight_mode);
@@ -311,7 +318,8 @@ void DrogueDeployedMode::transition() {
     //     state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
     //     ////////
     state::flight::hold_start = to_ms_since_boot(get_absolute_time());
-    action_duration = action_arr[action_index][1];
+    action_duration = action_arr[action_index].duration;
+
     //     ////////
     //     to_mode(state::flight::main_deployed);
     // }
@@ -335,19 +343,20 @@ void MainDeployedMode::execute() {
         log_cycle_count++;
     }
 
-    FlightMode::execute(); // updates state of rocket with curr sensor readings, every 50ms
+    FlightMode::execute();
     // assume motor starts as neutral
-    logf("TEST 1\n");
-    if (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold) {
+    if (run_init_hold && (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold)) {
         run_init_hold = false;
-        logf("TEST 2\n");
+        printf("TEST 2\n\n\n\n\n");
     }
-    uint32_t curr_time = to_ms_since_boot(get_absolute_time());
-    logf("Current Time: %d\n", curr_time);
+
     // time at beginning of cycle - curr_time
+    printf("curr time before: %d\n", curr_time);
+    printf("timestamp: %d\n", state::flight::timestamp);
     action_duration -= (state::flight::timestamp - curr_time);
-    // action_duration -= curr_time;
-    logf("Action Duration: %d\n", action_duration);
+    curr_time = to_ms_since_boot(get_absolute_time());
+    printf("curr time after: %d\n", curr_time);
+    printf("Action Duration: %d\n", action_duration);
 
     // // check time
     // setup_pwm_50hz(BLIMS_MOTOR);
@@ -365,13 +374,13 @@ void MainDeployedMode::execute() {
     // logf("Motor 3 Done");
     // if (action_duration < 0 && !run_init_hold && !brake_alt)
     if (action_duration < 0) {
-        logf("TEST 3\n");
+        printf("TEST 3\n");
         action_index = action_index + 1;
-        action_duration = action_arr[action_index][1];
-        set_motor_position(BLIMS_MOTOR, action_arr[action_index][0]);
-        logf("TEST 4\n");
+        action_duration = action_arr[action_index].duration;
+        set_motor_position(BLIMS_MOTOR, action_arr[action_index].position);
+        printf("TEST 4\n");
     }
-    logf("TEST 5\n");
+    // printf("TEST 5\n");
     // check altitude
     // if (state::alt::altitude < constants::brake_alt) {
     //     set_motor_position(BLIMS_MOTOR, constants::neutral_pos);
