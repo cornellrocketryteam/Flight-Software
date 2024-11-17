@@ -18,8 +18,9 @@ add_compile_options(
     # -O3
 )
 
-add_definitions(-DVERBOSE)
-# add_definitions(-DLAUNCH)
+# add_definitions(-DVERBOSE)
+add_definitions(-DLAUNCH)
+# add_definitions(-DSIM)
 
 # Add source files from src/
 set(SOURCES
@@ -37,7 +38,7 @@ set(SOURCES
 
 # Add source files from sim/
 set(SIM
-    sim/sim_data.cpp
+    sim/hitl.cpp
 )
 
 # Add all executables
@@ -64,6 +65,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
 # Include project and library headers
 target_include_directories(${PROJECT_NAME}
     PRIVATE
+    ${PROJECT_SOURCE_DIR}/sim
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/actuator
     ${PROJECT_SOURCE_DIR}/src/core

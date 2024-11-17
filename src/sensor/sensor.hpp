@@ -12,6 +12,9 @@
 #include "bno055.hpp"
 #include "lis3dh.hpp"
 #include "si7021.hpp"
+#ifdef SIM
+#include "hitl.hpp"
+#endif
 
 class Sensor {
 public:
@@ -28,7 +31,11 @@ public:
     void read_altitude();
 
 private:
+#ifndef SIM
     BMP388 alt;
+#else
+    HITL alt;
+#endif
     float pressure;
     const float alpha = 0.1;
 };
