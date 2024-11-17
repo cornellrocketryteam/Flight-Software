@@ -46,8 +46,7 @@ bool brake_alt = false;
 ////////////
 
 /*
-setup_pwm_50hz configures the pwm signal
-takes in gpio_pin
+sets position of motor on a 0-1 scale
 */
 void set_motor_position(uint gpio_pin, float position) {
     // Position should be between 0-1
@@ -63,7 +62,7 @@ void set_motor_position(uint gpio_pin, float position) {
 
 /*
 setup_pwm_50hz configures the pwm signal
-takes in gpio_pin
+takes in gpio_pin specified in constants
 */
 void setup_pwm_50hz(uint gpio_pin) {
     // Set up the PWM configuration
@@ -351,36 +350,27 @@ void MainDeployedMode::execute() {
     }
 
     // time at beginning of cycle - curr_time
-    printf("curr time before: %d\n", curr_time);
-    printf("timestamp: %d\n", state::flight::timestamp);
+    // printf("curr time before: %d\n", curr_time);
+    // printf("timestamp: %d\n", state::flight::timestamp);
     action_duration -= (state::flight::timestamp - curr_time);
     curr_time = to_ms_since_boot(get_absolute_time());
-    printf("curr time after: %d\n", curr_time);
-    printf("Action Duration: %d\n", action_duration);
+    // printf("curr time after: %d\n", curr_time);
+    // printf("Action Duration: %d\n", action_duration);
 
-    // // check time
-    // setup_pwm_50hz(BLIMS_MOTOR);
-    // ///
-    // set_motor_position(BLIMS_MOTOR, 0.0);
-    // sleep_ms(5000);
-    // logf("Motor 1 Done");
-
-    // set_motor_position(BLIMS_MOTOR, 0.5);
-    // sleep_ms(5000);
-    // logf("Motor 2 Done");
-
-    // set_motor_position(BLIMS_MOTOR, 1.0);
-    // sleep_ms(5000);
-    // logf("Motor 3 Done");
-    // if (action_duration < 0 && !run_init_hold && !brake_alt)
-    if (action_duration < 0) {
-        printf("TEST 3\n");
+    // check time
+    setup_pwm_50hz(BLIMS_MOTOR);
+    if (action_duration < 0 && !run_init_hold && !brake_alt) {
         action_index = action_index + 1;
+        if (action_index >= 10) { // length calculation - need to fix and get size of action_arr
+            action_index = 1;
+            printf("TEST 4\n");
+        }
+        printf("Action Duration: %d\n", action_duration);
+        printf("TEST 3: Action Index: %d\n", action_index);
         action_duration = action_arr[action_index].duration;
         set_motor_position(BLIMS_MOTOR, action_arr[action_index].position);
-        printf("TEST 4\n");
     }
-    // printf("TEST 5\n");
+    printf("TEST 5\n");
     // check altitude
     // if (state::alt::altitude < constants::brake_alt) {
     //     set_motor_position(BLIMS_MOTOR, constants::neutral_pos);
