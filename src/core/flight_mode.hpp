@@ -9,6 +9,7 @@
 #define FLIGHT_MODE_HPP
 
 #include "actuator.hpp"
+#include "blims/blims.hpp"
 #include "fram.hpp"
 #include "sd.hpp"
 #include "sensor.hpp"
@@ -64,6 +65,8 @@ protected:
 
     MAV mav;
     SV sv;
+
+    BLIMS blims;
 };
 
 /**
