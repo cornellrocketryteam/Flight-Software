@@ -12,80 +12,6 @@
 #include "pins.hpp"
 #include "state.hpp"
 
-// want wrap to be as large as possible, increases the amount of steps so that we have as much control as possible
-uint16_t wrap_cycle_count = 65535; // setting to max value for uint16
-
-struct Action {
-    float position;
-    uint32_t duration;
-};
-
-Action action_arr[10] = {
-    {0.6f, constants::turn_hold_threshold},
-    {0.5f, constants::neutral_hold_threshold},
-    {0.3f, constants::turn_hold_threshold},
-    {0.5f, constants::neutral_hold_threshold},
-    {0.8f, constants::turn_hold_threshold},
-    {0.5f, constants::neutral_hold_threshold},
-    {0.1f, constants::turn_hold_threshold},
-    {0.5f, constants::neutral_hold_threshold},
-    {1.0f, constants::turn_hold_threshold},
-    {0.5f, constants::neutral_hold_threshold},
-};
-uint32_t curr_time = 0;
-// maintains the action duration across iterations
-int32_t action_duration = 0;
-// increases each iteration
-int action_index = 0;
-// gets beginning time for each motor step
-float action_begin_time = 0;
-// initial hold
-bool run_init_hold = true;
-// reached braking altitude
-bool brake_alt = false;
-////////////
-
-/*
-setup_pwm_50hz configures the pwm signal
-takes in gpio_pin
-*/
-void set_motor_position(uint gpio_pin, float position) {
-    // Position should be between 0-1
-    // Should map between -17 to 17 turns (configured in web UI)
-    uint slice_num = pwm_gpio_to_slice_num(gpio_pin);
-
-    // Map position to PWM duty cycle (typically 1ms to 2ms pulse width)
-    uint16_t five_percent_duty_cycle = wrap_cycle_count * 0.05;
-    // ranges between 5% and 10% duty cycle; 3276 ~= 5% duty, 6552 ~= 10% duty
-    uint16_t duty = (uint16_t)(five_percent_duty_cycle + position * five_percent_duty_cycle);
-    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(gpio_pin), duty);
-}
-
-/*
-setup_pwm_50hz configures the pwm signal
-takes in gpio_pin
-*/
-void setup_pwm_50hz(uint gpio_pin) {
-    // Set up the PWM configuration
-    gpio_set_function(gpio_pin, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(gpio_pin);
-
-    // What our pico runs - set by the pico hardware itself
-    uint32_t clock = 125000000;
-    // desired pwm frequency Hz - what we want to achieve
-    uint32_t pwm_freq = 50;
-    // div is important to get the frequency we want as we lose float info here
-    uint32_t divider_int = clock / pwm_freq / wrap_cycle_count;
-    // gives us the fractional component of the divider
-    uint32_t divider_frac = (clock % (pwm_freq * wrap_cycle_count)) * 16 / (pwm_freq * wrap_cycle_count);
-    // Clock divider: slows down pwm to get a certain amount of Hz
-    // slice num - depends on what pin we're at, we set pin, pin has set slice num
-    // integer divider - going to be 38
-    pwm_set_clkdiv_int_frac(slice_num, divider_int, divider_frac);
-    pwm_set_wrap(slice_num, wrap_cycle_count);
-    pwm_set_enabled(slice_num, true);
-}
-
 // SimData sim_data;
 
 void FlightMode::execute() {
@@ -318,7 +244,7 @@ void DrogueDeployedMode::transition() {
     //     state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
     //     ////////
     state::flight::hold_start = to_ms_since_boot(get_absolute_time());
-    action_duration = action_arr[action_index].duration;
+    state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
 
     //     ////////
     //     to_mode(state::flight::main_deployed);
@@ -344,46 +270,5 @@ void MainDeployedMode::execute() {
     }
 
     FlightMode::execute();
-    // assume motor starts as neutral
-    if (run_init_hold && (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold)) {
-        run_init_hold = false;
-        printf("TEST 2\n\n\n\n\n");
-    }
-
-    // time at beginning of cycle - curr_time
-    printf("curr time before: %d\n", curr_time);
-    printf("timestamp: %d\n", state::flight::timestamp);
-    action_duration -= (state::flight::timestamp - curr_time);
-    curr_time = to_ms_since_boot(get_absolute_time());
-    printf("curr time after: %d\n", curr_time);
-    printf("Action Duration: %d\n", action_duration);
-
-    // // check time
-    // setup_pwm_50hz(BLIMS_MOTOR);
-    // ///
-    // set_motor_position(BLIMS_MOTOR, 0.0);
-    // sleep_ms(5000);
-    // logf("Motor 1 Done");
-
-    // set_motor_position(BLIMS_MOTOR, 0.5);
-    // sleep_ms(5000);
-    // logf("Motor 2 Done");
-
-    // set_motor_position(BLIMS_MOTOR, 1.0);
-    // sleep_ms(5000);
-    // logf("Motor 3 Done");
-    // if (action_duration < 0 && !run_init_hold && !brake_alt)
-    if (action_duration < 0) {
-        printf("TEST 3\n");
-        action_index = action_index + 1;
-        action_duration = action_arr[action_index].duration;
-        set_motor_position(BLIMS_MOTOR, action_arr[action_index].position);
-        printf("TEST 4\n");
-    }
-    // printf("TEST 5\n");
-    // check altitude
-    // if (state::alt::altitude < constants::brake_alt) {
-    //     set_motor_position(BLIMS_MOTOR, constants::neutral_pos);
-    //     brake_alt = true;
-    // }
+    blims.execute();
 }

@@ -141,6 +141,10 @@ namespace state {
         extern bool open;
 
     } // namespace mav
+    namespace blims {
+        extern int32_t curr_action_duration;
+        extern int curr_action_index;
+    } // namespace blims
 }; // namespace state
 
 #endif // STATE_HPP
