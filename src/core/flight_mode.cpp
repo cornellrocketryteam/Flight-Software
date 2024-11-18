@@ -45,7 +45,6 @@ void FlightMode::execute() {
 }
 
 void FlightMode::to_mode(FlightMode *mode) {
-    printf("TO_MODE hold start: %d\n", state::flight::hold_start);
     state::flight::mode = mode;
     if (state::fram::init) {
         fram.store(Data::flight_mode);
@@ -93,18 +92,19 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    if (state::flight::old_mode == 5) {
-        // Transition to Fault Mode if we faulted in the last boot
-        to_mode(state::flight::fault);
-    } else if (state::flight::key_armed) {
-        if (state::alt::status != VALID) {
-            // Transition to Fault Mode if the altimeter is non-operational
-            to_mode(state::flight::fault);
-        } else {
-            // Transition to Standby Mode otherwise
-            to_mode(state::flight::standby);
-        }
-    }
+    // if (state::flight::old_mode == 5) {
+    //     // Transition to Fault Mode if we faulted in the last boot
+    //     to_mode(state::flight::fault);
+    // } else if (state::flight::key_armed) {
+    //     if (state::alt::status != VALID) {
+    //         // Transition to Fault Mode if the altimeter is non-operational
+    //         to_mode(state::flight::fault);
+    //     } else {
+    //         // Transition to Standby Mode otherwise
+    //         to_mode(state::flight::standby);
+    //     }
+    // }
+    to_mode(state::flight::standby);
 }
 
 // Standby Mode
@@ -130,23 +130,30 @@ void StandbyMode::execute() {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
             mav.open(constants::mav_open_time);
+            printf("LAUNCH LAUNCH LAUNCH\n\n\n");
+            gpio_put(LED, 0);
             state::flight::launch_commanded = true;
+            printf("before emplace back\n");
             state::flight::events.emplace_back(Event::launch_command_received);
             break;
         case static_cast<char>(Command::mav_open):
             mav.open();
+            printf("MAV OPEN MAV OPEN MAV OPEN\n\n\n");
             state::flight::events.emplace_back(Event::mav_command_received);
             break;
         case static_cast<char>(Command::mav_close):
             mav.close();
+            printf("MAV CLOSE MAV CLOSE MAV CLOSE\n\n\n");
             state::flight::events.emplace_back(Event::mav_command_received);
             break;
         case static_cast<char>(Command::sv_open):
             sv.open();
+            printf("SV OPEN SV OPEN SV OPEN\n\n\n");
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::sv_close):
             sv.close();
+            printf("SV CLOSE SV CLOSE SV CLOSE\n\n\n");
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::clear_card):
@@ -180,6 +187,7 @@ void StandbyMode::transition() {
 // Ascent Mode
 
 void AscentMode::execute() {
+    printf("in ascent\n");
     FlightMode::execute();
 
     // Check for arming altitude

@@ -20,7 +20,7 @@ add_compile_options(
 
 # add_definitions(-DVERBOSE)
 add_definitions(-DLAUNCH)
-# add_definitions(-DSIM)
+add_definitions(-DSIM)
 
 # Add source files from src/
 set(SOURCES
