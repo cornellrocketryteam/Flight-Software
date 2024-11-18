@@ -25,6 +25,7 @@ add_definitions(-DLAUNCH)
 # Add source files from src/
 set(SOURCES
     src/main.cpp
+    src/blims/blims.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp

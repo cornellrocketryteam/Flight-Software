@@ -12,8 +12,6 @@
 #include "pins.hpp"
 #include "state.hpp"
 
-// SimData sim_data;
-
 void FlightMode::execute() {
     // Execute the primary functionality of every module
     if (state::alt::status != OFF) {
@@ -64,9 +62,9 @@ void StartupMode::execute() {
     }
 
     // Attempt to initialize all modules
-    // if (state::alt::status == OFF) {
-    //     altimeter.begin();
-    // }
+    if (state::alt::status == OFF) {
+        altimeter.begin();
+    }
     // if (state::gps::status == OFF) {
     // }
     // if (state::imu::status == OFF) {
@@ -95,19 +93,18 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    // if (state::flight::old_mode == 5) {
-    //     // Transition to Fault Mode if we faulted in the last boot
-    //     to_mode(state::flight::fault);
-    // } else if (state::flight::key_armed) {
-    //     if (state::alt::status != VALID) {
-    //         // Transition to Fault Mode if the altimeter is non-operational
-    //         to_mode(state::flight::fault);
-    //     } else {
-    //         // Transition to Standby Mode otherwise
-    //         to_mode(state::flight::standby);
-    //     }
-    // }
-    to_mode(state::flight::standby);
+    if (state::flight::old_mode == 5) {
+        // Transition to Fault Mode if we faulted in the last boot
+        to_mode(state::flight::fault);
+    } else if (state::flight::key_armed) {
+        if (state::alt::status != VALID) {
+            // Transition to Fault Mode if the altimeter is non-operational
+            to_mode(state::flight::fault);
+        } else {
+            // Transition to Standby Mode otherwise
+            to_mode(state::flight::standby);
+        }
+    }
 }
 
 // Standby Mode
@@ -122,9 +119,9 @@ void StandbyMode::execute() {
     }
 
     // Check the umbilical connection
-    if (!stdio_usb_connected()) {
-        state::flight::usb_failed_reads++;
-    }
+    // if (!stdio_usb_connected()) {
+    //     state::flight::usb_failed_reads++;
+    // }
 
     // Check for any incoming commands
     int c = getchar_timeout_us(0);
@@ -166,19 +163,18 @@ void StandbyMode::execute() {
 
 void StandbyMode::transition() {
     // Transition to Ascent Mode if launch was commanded through the umbilical
-    // if (state::flight::launch_commanded) {
-    //     to_mode(state::flight::ascent);
-    // }
-    // // Transition to Fault Mode if the umbilical is disconnected
-    // else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
-    //     sv.open();
-    //     to_mode(state::flight::fault);
-    // }
-    // // Transition to Startup Mode if the arming key was turned off
-    // else if (!state::flight::key_armed) {
-    //     to_mode(state::flight::startup);
-    // }
-    to_mode(state::flight::ascent);
+    if (state::flight::launch_commanded) {
+        to_mode(state::flight::ascent);
+    }
+    // Transition to Fault Mode if the umbilical is disconnected
+    else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
+        sv.open();
+        to_mode(state::flight::fault);
+    }
+    // Transition to Startup Mode if the arming key was turned off
+    else if (!state::flight::key_armed) {
+        to_mode(state::flight::startup);
+    }
 }
 
 // Ascent Mode
@@ -194,32 +190,31 @@ void AscentMode::execute() {
 }
 
 void AscentMode::transition() {
-    // if (state::alt::status == VALID && state::flight::alt_armed) {
-    //     // If we're armed and the altimeter is valid, start checking for apogee
-    //     alt_sum -= alt_buffer[index];
-    //     alt_buffer[index] = state::alt::altitude;
-    //     alt_sum += state::alt::altitude;
-    //     index++;
-    //     if (index == 10) {
-    //         index = 0;
-    //     }
+    if (state::alt::status == VALID && state::flight::alt_armed) {
+        // If we're armed and the altimeter is valid, start checking for apogee
+        alt_sum -= alt_buffer[index];
+        alt_buffer[index] = state::alt::altitude;
+        alt_sum += state::alt::altitude;
+        index++;
+        if (index == 10) {
+            index = 0;
+        }
 
-    //     if (count == interval) {
-    //         filtered_alt[2] = filtered_alt[1];
-    //         filtered_alt[1] = filtered_alt[0];
-    //         filtered_alt[0] = alt_sum * 0.1;
-    //         count = 0;
-    //     }
-    //     count++;
+        if (count == interval) {
+            filtered_alt[2] = filtered_alt[1];
+            filtered_alt[1] = filtered_alt[0];
+            filtered_alt[0] = alt_sum * 0.1;
+            count = 0;
+        }
+        count++;
 
-    //     if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
-    //         filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
-    //         gpio_put(SSA_DROGUE, 1);
-    //         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-    //         to_mode(state::flight::drogue_deployed);
-    //     }
-    // }
-    to_mode(state::flight::drogue_deployed);
+        if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
+            filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
+            gpio_put(SSA_DROGUE, 1);
+            state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+            to_mode(state::flight::drogue_deployed);
+        }
+    }
 }
 
 // Drogue Deployed Mode
@@ -234,22 +229,18 @@ void DrogueDeployedMode::execute() {
 
 void DrogueDeployedMode::transition() {
     // Proceed to Main Deployed mode if the deployment altitude is reached and we have waited for main_deploy_wait
-    // if (main_cycle_count < constants::main_deploy_wait) {
-    //     main_cycle_count++;
-    // } else if (main_cycle_count == constants::main_deploy_wait) {
-    //     state::flight::events.emplace_back(Event::main_deploy_wait_end);
-    //     main_cycle_count++;
-    // } else if (state::alt::altitude < constants::main_deploy_altitude) {
-    //     gpio_put(SSA_MAIN, 1);
-    //     state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-    //     ////////
-    state::flight::hold_start = to_ms_since_boot(get_absolute_time());
-    state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
-
-    //     ////////
-    //     to_mode(state::flight::main_deployed);
-    // }
-    to_mode(state::flight::main_deployed);
+    if (main_cycle_count < constants::main_deploy_wait) {
+        main_cycle_count++;
+    } else if (main_cycle_count == constants::main_deploy_wait) {
+        state::flight::events.emplace_back(Event::main_deploy_wait_end);
+        main_cycle_count++;
+    } else if (state::alt::altitude < constants::main_deploy_altitude) {
+        gpio_put(SSA_MAIN, 1);
+        state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+        state::flight::hold_start = to_ms_since_boot(get_absolute_time());
+        state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
+        to_mode(state::flight::main_deployed);
+    }
 }
 
 // Main Deployed Mode
