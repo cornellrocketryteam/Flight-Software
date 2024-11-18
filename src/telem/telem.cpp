@@ -48,7 +48,7 @@ void Umbilical::transmit() {
     memcpy(&packet[10], &state::rfm::init, sizeof(bool));
     memcpy(&packet[11], &state::rfm::init, sizeof(bool));
 
-    for (uint i = 0; i < 2; ++i) {
+    for (uint i = 0; i < constants::umb_packet_size; ++i) {
         printf("%08b", packet[i]);
     }
     printf("\n");

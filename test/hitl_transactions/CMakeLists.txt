@@ -18,6 +18,7 @@ add_compile_options(
 
 add_executable(${PROJECT_NAME}
     ${PROJECT_NAME}.cpp
+    ../../sim/hitl.cpp
 )
 
 # Pull in common dependencies
