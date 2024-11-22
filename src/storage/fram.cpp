@@ -15,8 +15,14 @@ bool FRAM::begin() {
     if (fram.begin()) {
         state::fram::init = true;
         load(Data::boot_count);
-        load(Data::flight_mode);
-        // TODO: Load and process other data
+        load(Data::old_mode);
+
+        state::flight::boot_count++;
+        store(Data::boot_count);
+
+        if (state::flight::old_mode > 1) {
+            load(Data::ref_pressure);
+        }
         return true;
     } else {
         state::flight::events.emplace_back(Event::fram_init_fail);
@@ -30,14 +36,13 @@ void FRAM::load(Data data) {
         uint8_t boot_count[2];
         if (fram.read_bytes(static_cast<uint8_t>(Data::boot_count), boot_count, 2)) {
             state::flight::boot_count = (boot_count[1] << 8) | boot_count[0];
-            state::flight::boot_count++;
             return;
         }
         break;
     }
-    case Data::flight_mode: {
+    case Data::old_mode: {
         uint8_t old_mode;
-        if (fram.read_bytes(static_cast<uint8_t>(Data::flight_mode), &old_mode, 1)) {
+        if (fram.read_bytes(static_cast<uint8_t>(Data::old_mode), &old_mode, 1)) {
             state::flight::old_mode = old_mode;
             return;
         }
@@ -72,9 +77,9 @@ void FRAM::store(Data data) {
             return;
         }
         break;
-    case Data::flight_mode: {
+    case Data::old_mode: {
         uint8_t mode = state::flight::mode->id();
-        if (fram.write_bytes(static_cast<uint8_t>(Data::flight_mode), &mode, 1)) {
+        if (fram.write_bytes(static_cast<uint8_t>(Data::old_mode), &mode, 1)) {
             return;
         }
         break;

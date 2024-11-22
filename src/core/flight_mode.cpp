@@ -14,9 +14,9 @@
 
 void FlightMode::execute() {
     // Execute the primary functionality of every module
-    // if (state::alt::status != OFF) {
-    //     altimeter.read_altitude();
-    // }
+    if (state::alt::status != OFF) {
+        altimeter.read_altitude();
+    }
     if (state::gps::status != OFF) {
     }
     if (state::imu::status != OFF) {
@@ -47,7 +47,7 @@ void FlightMode::execute() {
 void FlightMode::to_mode(FlightMode *mode) {
     state::flight::mode = mode;
     if (state::fram::init) {
-        fram.store(Data::flight_mode);
+        fram.store(Data::old_mode);
     }
 }
 
@@ -165,8 +165,9 @@ void StandbyMode::execute() {
             state::flight::events.emplace_back(Event::unknown_command_received);
         }
     }
-
+#ifdef LAUNCH
     umb.transmit();
+#endif
 }
 
 void StandbyMode::transition() {
