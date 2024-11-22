@@ -14,9 +14,9 @@
 
 void FlightMode::execute() {
     // Execute the primary functionality of every module
-    if (state::alt::status != OFF) {
-        altimeter.read_altitude();
-    }
+    // if (state::alt::status != OFF) {
+    //     altimeter.read_altitude();
+    // }
     if (state::gps::status != OFF) {
     }
     if (state::imu::status != OFF) {
@@ -61,9 +61,9 @@ void StartupMode::execute() {
     }
 
     // Attempt to initialize all modules
-    if (state::alt::status == OFF) {
-        altimeter.begin();
-    }
+    // if (state::alt::status == OFF) {
+    //     altimeter.begin();
+    // }
     // if (state::gps::status == OFF) {
     // }
     // if (state::imu::status == OFF) {
@@ -161,6 +161,7 @@ void StandbyMode::execute() {
             state::flight::events.emplace_back(Event::clear_card_command_received);
             break;
         default:
+            printf("COMMAND RECEIVED: %c\n\n\n", (char)c);
             state::flight::events.emplace_back(Event::unknown_command_received);
         }
     }

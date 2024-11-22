@@ -122,6 +122,14 @@ namespace state {
         extern float temp;
 
     } // namespace therm
+    namespace voltage {
+        extern enum SensorState status;
+
+    } // namespace voltage
+    namespace adc {
+        extern enum SensorState status;
+
+    } // namespace adc
     namespace sd {
         extern bool init;
         extern bool failed_init;
@@ -141,6 +149,10 @@ namespace state {
         extern bool open;
 
     } // namespace mav
+    namespace sv {
+        extern bool open;
+
+    } // namespace sv
     namespace blims {
         extern int32_t curr_action_duration;
         extern int curr_action_index;

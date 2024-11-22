@@ -107,6 +107,14 @@ namespace state {
         float temp = -1;
 
     } // namespace therm
+    namespace voltage {
+        enum SensorState status = OFF;
+
+    } // namespace voltage
+    namespace adc {
+        enum SensorState status = OFF;
+
+    } // namespace adc
     namespace sd {
         bool init = false;
         bool failed_init = false;
@@ -126,6 +134,10 @@ namespace state {
         bool open = false;
 
     } // namespace mav
+    namespace sv {
+        bool open = true;
+
+    } // namespace sv
     namespace blims {
         int32_t curr_action_duration = 0;
         int curr_action_index = 0;
