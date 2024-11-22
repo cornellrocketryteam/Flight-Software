@@ -10,7 +10,7 @@
 #include "../../src/pins.hpp"
 
 void set_position(float position) {
-    uint slice_num = pwm_gpio_to_slice_num(MAV);
+    uint slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
     uint16_t dc = (uint16_t)(21845 + position * 21845);
     pwm_set_chan_level(slice_num, pwm_gpio_to_channel(MAV_SIGNAL), dc);
 }
@@ -19,7 +19,7 @@ int main() {
     stdio_init_all();
 
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
-    uint slice_num = pwm_gpio_to_slice_num(MAV);
+    uint slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
     
     uint8_t divider = 125000000 / 330 / 65535;
     pwm_set_clkdiv_int_frac(slice_num, divider, 12);
