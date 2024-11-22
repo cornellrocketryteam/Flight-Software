@@ -1,8 +1,8 @@
 /**
- * @file fram_read.cpp
+ * @file fram_clear.cpp
  * @author csg83
  * 
- * @brief Reads out the contents of FRAM
+ * @brief Clears the contents of FRAM
  */
 
 #include "pico/stdlib.h"
@@ -11,7 +11,7 @@
 #include "tusb.h"
 #include <cstdio>
 
-#define BYTES_TO_READ 20
+#define BYTES_TO_CLEAR 20
 
 MB85RS fram(SPI_PORT, FRAM_CS);
 
@@ -36,14 +36,12 @@ int main() {
         printf("Error: FRAM begin unsuccessful\n");
     }
 
-    uint8_t data[BYTES_TO_READ] = {0};
+    uint8_t clear[BYTES_TO_CLEAR] = {0};
 
-    if (fram.read_bytes(0, data, BYTES_TO_READ)) {
-        for (int i = 0; i < BYTES_TO_READ; i++) {
-            printf("(%d): %d\n", i, data[i]);
-        }
+    if (fram.write_bytes(0, clear, BYTES_TO_CLEAR)) {
+        printf("FRAM clear successful!\n");
     } else {
-        printf("Error: FRAM read unsuccessful\n");
+        printf("Error: FRAM clear unsuccessful\n");
     }
 
     return 0;

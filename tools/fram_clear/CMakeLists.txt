@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.22)
 # Pull in SDK (must be before project)
 include(../../lib/pico-sdk/pico_sdk_init.cmake)
 
-project(perf C CXX ASM)
+project(fram_clear C CXX ASM)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
@@ -20,34 +20,17 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_NAME}.cpp
 )
 
-
-add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/BMP388-Pico ${CMAKE_BINARY_DIR}/BMP388-Pico)
-add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/BNO055-Pico ${CMAKE_BINARY_DIR}/BNO055-Pico)
-add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/LIS3DH-Pico ${CMAKE_BINARY_DIR}/LIS3DH-Pico)
-add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/Si7021-Pico ${CMAKE_BINARY_DIR}/Si7021-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/MB85RS-Pico ${CMAKE_BINARY_DIR}/MB85RS-Pico)
 
 # Include project and library headers
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-    # External library include directories
-    ${PROJECT_SOURCE_DIR}/../../lib/BMP388-Pico
-    ${PROJECT_SOURCE_DIR}/../../lib/BNO055-Pico
-    ${PROJECT_SOURCE_DIR}/../../lib/LIS3DH-Pico
-    ${PROJECT_SOURCE_DIR}/../../lib/Si7021-Pico
     ${PROJECT_SOURCE_DIR}/../../lib/MB85RS-Pico
 )
 
 # Pull in common dependencies
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib
-    hardware_i2c
-    hardware_spi
-    hardware_gpio
-    BMP388-Pico
-    BNO055-Pico
-    LIS3DH-Pico 
-    Si7021-Pico
     MB85RS-Pico
 )
 
