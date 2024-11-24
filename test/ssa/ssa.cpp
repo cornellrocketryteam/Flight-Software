@@ -8,8 +8,26 @@
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "tusb.h"
-#include "../../src/pins.hpp"
-#include "../../src/constants.hpp"
+#include "pins.hpp"
+#include "constants.hpp"
+
+enum class Chute : uint8_t {
+    drogue = SSA_DROGUE,
+    main = SSA_MAIN
+};
+
+int64_t callback(alarm_id_t id, void *user_data) {
+    Chute chute = static_cast<Chute>(reinterpret_cast<uintptr_t>(user_data));
+    gpio_put(static_cast<uint8_t>(chute), 0);
+    printf("Ematch set LOW\n");
+    return 0;
+}
+
+void trigger(Chute chute) {
+    gpio_put(static_cast<uint8_t>(chute), 1);
+    printf("Ematch set HIGH\n");
+    add_alarm_in_ms(constants::ematch_threshold, callback, reinterpret_cast<void *>(static_cast<uintptr_t>(chute)), true);
+}
 
 int main() {
     stdio_init_all();
@@ -24,34 +42,14 @@ int main() {
         sleep_ms(500);
     }
     printf("Connected\n");
+
     sleep_ms(10000);
-
-    uint32_t ematch_start = 0;
-
-    // Mimic the behavior of FSW - Loop continuously while checking the on-time
-    printf("Drogue ematch set HIGH\n");
-    gpio_put(SSA_DROGUE, 1);
-    ematch_start = to_ms_since_boot(get_absolute_time());
-    while (true) {
-        if (to_ms_since_boot(get_absolute_time()) - ematch_start >= constants::ematch_threshold) {
-            gpio_put(SSA_DROGUE, 0);
-            break;
-        }
-    }
-    printf("Drogue ematch set LOW\n");
+    trigger(Chute::drogue);
     
     sleep_ms(10000);
+    trigger(Chute::main);
 
-    printf("Main ematch set HIGH\n");
-    gpio_put(SSA_MAIN, 1);
-    ematch_start = to_ms_since_boot(get_absolute_time());
-    while (true) {
-        if (to_ms_since_boot(get_absolute_time()) - ematch_start >= constants::ematch_threshold) {
-            gpio_put(SSA_MAIN, 0);
-            break;
-        }
-    }
-    printf("Main ematch set LOW\n");
+    sleep_ms(1000);
 
     return 0;
 }

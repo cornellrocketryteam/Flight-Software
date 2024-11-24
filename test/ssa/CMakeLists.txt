@@ -20,12 +20,18 @@ add_executable(${PROJECT_NAME}
     ${PROJECT_NAME}.cpp
 )
 
+target_include_directories(${PROJECT_NAME}
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/../../src
+)
+
 # Pull in common dependencies
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib 
     hardware_gpio
 )
 
+# Enable serial over USB
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
