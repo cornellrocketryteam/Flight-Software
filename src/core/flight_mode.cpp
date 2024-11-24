@@ -61,20 +61,20 @@ void StartupMode::execute() {
     }
 
     // Attempt to initialize all modules
-    // if (state::alt::status == OFF) {
-    //     altimeter.begin();
-    // }
-    // if (state::gps::status == OFF) {
-    // }
-    // if (state::imu::status == OFF) {
-    //     imu.begin();
-    // }
-    // if (state::accel::status == OFF) {
-    //     accel.begin();
-    // }
-    // if (state::therm::status == OFF) {
-    //     therm.begin();
-    // }
+    if (state::alt::status == OFF) {
+        altimeter.begin();
+    }
+    if (state::gps::status == OFF) {
+    }
+    if (state::imu::status == OFF) {
+        imu.begin();
+    }
+    if (state::accel::status == OFF) {
+        accel.begin();
+    }
+    if (state::therm::status == OFF) {
+        therm.begin();
+    }
     // if (!state::rfm::attempted_init) {
     //     rfm.begin();
     // }
@@ -92,19 +92,18 @@ void StartupMode::execute() {
 }
 
 void StartupMode::transition() {
-    // if (state::flight::old_mode == 5) {
-    //     // Transition to Fault Mode if we faulted in the last boot
-    //     to_mode(state::flight::fault);
-    // } else if (state::flight::key_armed) {
-    //     if (state::alt::status != VALID) {
-    //         // Transition to Fault Mode if the altimeter is non-operational
-    //         to_mode(state::flight::fault);
-    //     } else {
-    //         // Transition to Standby Mode otherwise
-    //         to_mode(state::flight::standby);
-    //     }
-    // }
-    to_mode(state::flight::standby);
+    if (state::flight::old_mode == 5) {
+        // Transition to Fault Mode if we faulted in the last boot
+        to_mode(state::flight::fault);
+    } else if (state::flight::key_armed) {
+        if (state::alt::status != VALID) {
+            // Transition to Fault Mode if the altimeter is non-operational
+            to_mode(state::flight::fault);
+        } else {
+            // Transition to Standby Mode otherwise
+            to_mode(state::flight::standby);
+        }
+    }
 }
 
 // Standby Mode
@@ -166,7 +165,7 @@ void StandbyMode::execute() {
         }
     }
 #ifdef LAUNCH
-    umb.transmit();
+    // umb.transmit();
 #endif
 }
 
@@ -220,22 +219,13 @@ void AscentMode::transition() {
 
         if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
             filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
-            gpio_put(SSA_DROGUE, 1);
-            state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+            ssa.trigger(Chute::drogue);
             to_mode(state::flight::drogue_deployed);
         }
     }
 }
 
 // Drogue Deployed Mode
-
-void DrogueDeployedMode::execute() {
-    // Check to see if we have exceeded the threshold for holding the ematch pin high
-    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
-        gpio_put(SSA_DROGUE, 0);
-    }
-    FlightMode::execute();
-}
 
 void DrogueDeployedMode::transition() {
     // Proceed to Main Deployed mode if the deployment altitude is reached and we have waited for main_deploy_wait
@@ -245,8 +235,7 @@ void DrogueDeployedMode::transition() {
         state::flight::events.emplace_back(Event::main_deploy_wait_end);
         main_cycle_count++;
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
-        gpio_put(SSA_MAIN, 1);
-        state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
+        ssa.trigger(Chute::main);
         state::flight::hold_start = to_ms_since_boot(get_absolute_time());
         state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
         to_mode(state::flight::main_deployed);
@@ -256,10 +245,6 @@ void DrogueDeployedMode::transition() {
 // Main Deployed Mode
 
 void MainDeployedMode::execute() {
-    // Check to see if we have exceeded the threshold for holding the ematch pin high
-    if (to_ms_since_boot(get_absolute_time()) - state::flight::ematch_start >= constants::ematch_threshold) {
-        gpio_put(SSA_MAIN, 0);
-    }
     if (log_cycle_count < constants::main_log_shutoff) {
         log_cycle_count++;
     }

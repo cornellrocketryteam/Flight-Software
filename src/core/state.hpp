@@ -57,8 +57,6 @@ namespace state {
         extern bool key_armed;
         extern bool alt_armed;
 
-        extern uint32_t ematch_start;
-
         extern std::vector<Event> events;
         // blims add
         extern uint32_t hold_start;

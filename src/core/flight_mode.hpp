@@ -65,6 +65,7 @@ protected:
 
     MAV mav;
     SV sv;
+    SSA ssa;
 
     BLIMS blims;
 };
@@ -162,11 +163,6 @@ private:
  */
 class DrogueDeployedMode : public FlightMode {
 public:
-    /**
-     * Checks ematch on-time in addition to sensor reading.
-     */
-    void execute() override;
-
     /**
      * Transition to main deployed mode if the proper altitude has been reached.
      */

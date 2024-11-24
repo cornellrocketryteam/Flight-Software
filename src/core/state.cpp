@@ -41,8 +41,6 @@ namespace state {
         bool key_armed = false;
         bool alt_armed = false;
 
-        uint32_t ematch_start = 0;
-
         std::vector<Event> events = {};
 
         // blims add
