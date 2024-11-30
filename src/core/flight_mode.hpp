@@ -8,17 +8,11 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
-#include "actuator.hpp"
-#include "blims/blims.hpp"
-#include "fram.hpp"
-#include "sd.hpp"
-#include "sensor.hpp"
-#include "telem.hpp"
-
+#include <cstdint>
 #include <string>
 
 /**
- * Abstract flight mode class.
+ * Abstract flight mode class
  */
 class FlightMode {
 public:
@@ -50,28 +44,10 @@ public:
      * A verbose name for debugging purposes.
      */
     virtual std::string name() = 0;
-
-protected:
-    Altimeter altimeter;
-    Accel accel;
-    IMU imu;
-    Therm therm;
-
-    SD sd;
-    FRAM fram;
-
-    RFM rfm;
-    Umbilical umb;
-
-    MAV mav;
-    SV sv;
-    SSA ssa;
-
-    BLIMS blims;
 };
 
 /**
- * Flight mode representing the period before arming.
+ * Flight mode representing the period before arming
  */
 class StartupMode : public FlightMode {
 public:
@@ -91,7 +67,7 @@ public:
 };
 
 /**
- * Flight mode representing the period before liftoff.
+ * Flight mode representing the period before liftoff
  */
 class StandbyMode : public FlightMode {
 public:
@@ -109,7 +85,7 @@ public:
 };
 
 /**
- * Flight mode representing the period between liftoff and apogee.
+ * Flight mode representing the period between liftoff and apogee
  */
 class AscentMode : public FlightMode {
 public:
@@ -159,7 +135,7 @@ private:
 };
 
 /**
- * Flight mode representing the period after drogue parachute deployment.
+ * Flight mode representing the period after drogue parachute deployment
  */
 class DrogueDeployedMode : public FlightMode {
 public:
@@ -179,7 +155,7 @@ private:
 };
 
 /**
- * Flight mode representing the period after main parachute deployment.
+ * Flight mode representing the period after main parachute deployment
  */
 class MainDeployedMode : public FlightMode {
 public:
@@ -204,7 +180,7 @@ private:
 };
 
 /**
- * Flight mode representating situations where flight functions are not able to proceed.
+ * Flight mode representating situations where flight functions are not able to proceed
  */
 class FaultMode : public FlightMode {
 public:

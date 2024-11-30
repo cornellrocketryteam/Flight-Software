@@ -7,8 +7,7 @@
 
 #include "flight_mode.hpp"
 #include "constants.hpp"
-#include "hardware/gpio.h"
-#include "hardware/pwm.h"
+#include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
 
