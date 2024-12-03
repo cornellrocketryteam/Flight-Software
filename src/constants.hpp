@@ -1,6 +1,8 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include <cstdint>
+
 #ifdef VERBOSE
 #define logf(...) printf(__VA_ARGS__)
 #else

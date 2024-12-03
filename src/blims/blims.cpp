@@ -6,8 +6,8 @@
  */
 
 #include "blims.hpp"
+#include "../core/state.hpp"
 #include "hardware/pwm.h"
-#include "state.hpp"
 
 void BLIMS::set_motor_position(float position) {
     // Position should be between 0-1

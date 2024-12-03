@@ -6,10 +6,10 @@
  */
 #ifndef BLIMS_HPP
 #define BLIMS_HPP
-#include "constants.hpp"
+#include "../constants.hpp"
+#include "../pins.hpp"
 #include "hardware/pwm.h"
 #include "pico/stdlib.h"
-#include "pins.hpp"
 
 struct Action {
     float position;
