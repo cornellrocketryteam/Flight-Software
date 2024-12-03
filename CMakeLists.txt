@@ -23,6 +23,7 @@ add_definitions(-DLAUNCH)
 # Add source files from src/
 set(SOURCES
     src/main.cpp
+    src/blims/blims.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
@@ -30,6 +31,7 @@ set(SOURCES
     src/rfm/rfm.cpp
     src/sd/sd.cpp
     src/sd/hw_config.c
+    
 )
 
 # Add source files from sim/
@@ -83,6 +85,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME} 
     pico_stdlib 
     hardware_i2c 
+    hardware_pwm
     hardware_gpio
     RadioLib
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 

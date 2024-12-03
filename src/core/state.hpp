@@ -125,6 +125,10 @@ namespace state {
         extern uint32_t start_time;
 
     } // namespace rfm
+    namespace blims {
+        extern int32_t curr_action_duration;
+        extern int curr_action_index;
+    } // namespace blims
 }; // namespace state
 
 #endif // STATE_HPP

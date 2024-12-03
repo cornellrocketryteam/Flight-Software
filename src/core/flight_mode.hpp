@@ -1,7 +1,9 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
+#include "blims/blims.hpp"
 #include "modules.hpp"
+
 #include <string>
 
 /**
@@ -50,6 +52,9 @@ private:
      * A variable to hold the sensor return statuses.
      */
     bool ret;
+
+protected:
+    BLIMS blims;
 };
 
 /**

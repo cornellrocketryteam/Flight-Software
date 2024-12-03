@@ -110,4 +110,8 @@ namespace state {
         uint32_t start_time = UINT32_MAX - constants::interrupt_delay;
 
     } // namespace rfm
+    namespace blims {
+        int32_t curr_action_duration = 0;
+        int curr_action_index = 0;
+    } // namespace blims
 }; // namespace state
