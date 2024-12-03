@@ -18,9 +18,9 @@ add_compile_options(
     # -O3
 )
 
-# add_definitions(-DVERBOSE)
-add_definitions(-DLAUNCH)
-add_definitions(-DSIM)
+add_definitions(-DVERBOSE)
+# add_definitions(-DLAUNCH)
+# add_definitions(-DSIM)
 
 # Add source files from src/
 set(SOURCES
@@ -29,6 +29,7 @@ set(SOURCES
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
+    src/core/modules.cpp
     src/telem/telem.cpp
     src/storage/sd.cpp
     src/storage/fram.cpp
@@ -69,6 +70,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/sim
     ${PROJECT_SOURCE_DIR}/src
     ${PROJECT_SOURCE_DIR}/src/actuator
+    ${PROJECT_SOURCE_DIR}/src/blims
     ${PROJECT_SOURCE_DIR}/src/core
     ${PROJECT_SOURCE_DIR}/src/sensor
     ${PROJECT_SOURCE_DIR}/src/storage
