@@ -13,7 +13,7 @@ void Flight::execute() {
 
     logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
     logf("Latitude: %f\n", state::gps::data.latitude);
-    logf("Longitude: %f\n", state::gps::data.latitude);
+    logf("Longitude: %f\n", state::gps::data.longitude);
     logf("Num Satellites: %d\n\n", state::gps::data.num_satellites);
 
     logf("IMU: %d\n", state::imu::status);
