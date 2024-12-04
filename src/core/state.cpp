@@ -54,7 +54,7 @@ namespace state {
         uint8_t failed_reads = 0;
 
         gnss_data_t data = {0};
-        
+
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;
