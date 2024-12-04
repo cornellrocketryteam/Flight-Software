@@ -68,11 +68,8 @@ namespace state {
         extern bool failed_init;
         extern uint8_t failed_reads;
 
-        extern bool valid;
-        extern int32_t latitude;
-        extern int32_t longitude;
-        extern int32_t altitude;
-        extern uint8_t siv;
+        extern gnss_data_t data;
+
     } // namespace gps
     namespace imu {
         extern enum SensorState status;

@@ -57,7 +57,7 @@ bool RFM::transmit() {
         metadata |= (static_cast<uint8_t>(state::therm::status) & 0b11) << 3;
 
         metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 2;
-        metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 1;
+        metadata |= (static_cast<uint8_t>(state::gps::data.valid) & 0b1) << 1;
         metadata |= (static_cast<uint8_t>(state::flight::alt_armed) & 0b1);
 
         std::bitset<24> event_bits;
@@ -74,9 +74,9 @@ bool RFM::transmit() {
 
         memcpy(&packet[9], &state::alt::altitude, sizeof(float));
 
-        memcpy(&packet[13], &state::gps::latitude, sizeof(int32_t));
-        memcpy(&packet[17], &state::gps::longitude, sizeof(int32_t));
-        memcpy(&packet[21], &state::gps::siv, sizeof(uint8_t));
+        memcpy(&packet[13], &state::gps::data.latitude, sizeof(int32_t));
+        memcpy(&packet[17], &state::gps::data.longitude, sizeof(int32_t));
+        memcpy(&packet[21], &state::gps::data.num_satellites, sizeof(uint8_t));
 
         memcpy(&packet[22], &state::accel::accel_x, sizeof(float));
         memcpy(&packet[26], &state::accel::accel_y, sizeof(float));

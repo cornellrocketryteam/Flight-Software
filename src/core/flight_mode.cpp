@@ -16,7 +16,7 @@ void FlightMode::execute() {
     // state::alt::altitude = sim_data.get_alt();
 
     if (!state::gps::status == OFF) {
-        // TODO
+        ret = modules::gps.read_data(&state::gps::data);
         check_sensor(GPS);
     }
 

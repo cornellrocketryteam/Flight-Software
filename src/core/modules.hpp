@@ -5,6 +5,7 @@
 #include "bno055.hpp"
 #include "lis3dh.hpp"
 #include "si7021.hpp"
+#include "ublox_mx.hpp"
 
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
@@ -25,6 +26,7 @@ namespace modules {
     extern BNO055 imu;
     extern LIS3DH accel;
     extern Si7021 therm;
+    extern GNSS gps;
 
     extern SD sd;
     extern RFM rfm;
