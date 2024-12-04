@@ -52,9 +52,6 @@ private:
      * A variable to hold the sensor return statuses.
      */
     bool ret;
-
-protected:
-    BLIMS blims;
 };
 
 /**

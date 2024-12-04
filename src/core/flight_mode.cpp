@@ -340,7 +340,7 @@ void DrogueDeployedMode::transition() {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
         state::flight::hold_start = to_ms_since_boot(get_absolute_time());
-        state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
+        state::blims::curr_action_duration = modules::blims.action_arr[state::blims::curr_action_index].duration;
         to_mode(state::flight::main_deployed);
     }
 }
@@ -362,5 +362,5 @@ void MainDeployedMode::execute() {
         log_cycle_count++;
     }
     FlightMode::execute();
-    blims.execute();
+    modules::blims.execute();
 }

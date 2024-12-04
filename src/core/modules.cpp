@@ -8,4 +8,5 @@ namespace modules {
 
     SD sd;
     RFM rfm;
+    BLIMS blims;
 }; // namespace modules

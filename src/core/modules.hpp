@@ -6,6 +6,7 @@
 #include "lis3dh.hpp"
 #include "si7021.hpp"
 
+#include "../blims/blims.hpp"
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 
@@ -28,6 +29,7 @@ namespace modules {
 
     extern SD sd;
     extern RFM rfm;
+    extern BLIMS blims;
 }; // namespace modules
 
 #endif // MODULES_HPP
