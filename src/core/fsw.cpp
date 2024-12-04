@@ -11,6 +11,11 @@ void Flight::execute() {
     logf("Altitude (m): %.3f\n", state::alt::altitude);
     logf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
+    logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
+    logf("Latitude: %f\n", state::gps::data.latitude);
+    logf("Longitude: %f\n", state::gps::data.latitude);
+    logf("Num Satellites: %d\n\n", state::gps::data.num_satellites);
+
     logf("IMU: %d\n", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
     logf("Gyro Y (deg/s): %.3f\n", state::imu::gyro_y);

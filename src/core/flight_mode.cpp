@@ -67,7 +67,7 @@ void FlightMode::execute() {
     }
 
     if (state::sd::init) {
-        modules::sd.log();
+        // modules::sd.log();
     }
 
     if (!state::flight::events.empty()) {
@@ -194,7 +194,14 @@ void StartupMode::execute() {
         state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
     }
     if (state::gps::status == OFF) {
-        // TODO
+        if (modules::gps.begin()) {
+            state::gps::status = VALID;
+        } else {
+            if (!state::gps::failed_init) {
+                state::flight::events.emplace_back(Event::gps_init_fail);
+                state::gps::failed_init = true;
+            }
+        }
     }
     if (state::imu::status == OFF) {
         if (modules::imu.begin()) {
@@ -234,16 +241,16 @@ void StartupMode::execute() {
             state::flight::events.emplace_back(Event::rfm_init_fail);
         }
     }
-    if (!state::sd::init) {
-        if (modules::sd.begin()) {
-            state::sd::init = true;
-        } else {
-            if (!state::sd::failed_init) {
-                state::flight::events.emplace_back(Event::sd_init_fail);
-                state::sd::failed_init = true;
-            }
-        }
-    }
+    // if (!state::sd::init) {
+    //     if (modules::sd.begin()) {
+    //         state::sd::init = true;
+    //     } else {
+    //         if (!state::sd::failed_init) {
+    //             state::flight::events.emplace_back(Event::sd_init_fail);
+    //             state::sd::failed_init = true;
+    //         }
+    //     }
+    // }
 }
 
 void StartupMode::transition() {
