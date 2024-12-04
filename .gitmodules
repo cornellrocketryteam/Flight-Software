@@ -22,3 +22,6 @@
 [submodule "lib/MB85RS-Pico"]
 	path = lib/MB85RS-Pico
 	url = git@github.com:cornellrocketryteam/MB85RS-Pico.git
+[submodule "lib/ublox-MX-Pico"]
+	path = lib/ublox-MX-Pico
+	url = git@github.com:cornellrocketryteam/ublox-MX-Pico.git
