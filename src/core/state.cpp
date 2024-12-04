@@ -53,11 +53,8 @@ namespace state {
         bool failed_init = false;
         uint8_t failed_reads = 0;
 
-        bool valid = false;
-        int32_t latitude = -1;
-        int32_t longitude = -1;
-        int32_t altitude = -1;
-        uint8_t siv = -1;
+        gnss_data_t data = {0};
+
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;
