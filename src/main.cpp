@@ -52,6 +52,8 @@ int main() {
     gpio_set_dir(RFM_CS, GPIO_OUT);
     gpio_put(RFM_CS, 1);
 
+    gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
+
 #ifndef LAUNCH
     while (!tud_cdc_connected()) {
         sleep_ms(500);
