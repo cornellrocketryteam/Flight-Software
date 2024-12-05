@@ -88,14 +88,6 @@ namespace state {
         float accel_z = -1;
 
     } // namespace accel
-    namespace therm {
-        enum SensorState status = OFF;
-        bool failed_init = false;
-        uint8_t failed_reads = 0;
-
-        float temp = -1;
-
-    } // namespace therm
     namespace sd {
         bool init = false;
         bool failed_init = false;

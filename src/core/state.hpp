@@ -103,14 +103,6 @@ namespace state {
         extern float accel_z;
 
     } // namespace accel
-    namespace therm {
-        extern enum SensorState status;
-        extern bool failed_init;
-        extern uint8_t failed_reads;
-
-        extern float temp;
-
-    } // namespace therm
     namespace sd {
         extern bool init;
         extern bool failed_init;

@@ -4,7 +4,6 @@
 #include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
-#include "si7021.hpp"
 #include "ublox_mx.hpp"
 
 #include "../blims/blims.hpp"
@@ -15,8 +14,7 @@ enum Sensor {
     ALT,
     GPS,
     IMU,
-    ACCEL,
-    THERM
+    ACCEL
 };
 
 /**
@@ -26,7 +24,6 @@ namespace modules {
     extern BMP388 altimeter;
     extern BNO055 imu;
     extern LIS3DH accel;
-    extern Si7021 therm;
     extern GNSS gps;
 
     extern SD sd;

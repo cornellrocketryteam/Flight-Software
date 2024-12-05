@@ -54,7 +54,6 @@ bool RFM::transmit() {
         metadata |= (static_cast<uint8_t>(state::gps::status) & 0b11) << 9;
         metadata |= (static_cast<uint8_t>(state::imu::status) & 0b11) << 7;
         metadata |= (static_cast<uint8_t>(state::accel::status) & 0b11) << 5;
-        metadata |= (static_cast<uint8_t>(state::therm::status) & 0b11) << 3;
 
         metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 2;
         metadata |= (static_cast<uint8_t>(state::gps::data.valid) & 0b1) << 1;

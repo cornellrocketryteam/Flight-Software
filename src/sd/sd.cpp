@@ -78,9 +78,6 @@ bool SD::log() {
         + std::to_string(state::accel::accel_y) + ","
         + std::to_string(state::accel::accel_z) + ","
 
-        + std::to_string(state::therm::status) + ","
-        + std::to_string(state::therm::temp) + ","
-
         + std::to_string(state::blims::motor_position) + ","
 
         + std::to_string(state::rfm::init) + ",";

@@ -1,11 +1,11 @@
 #include "flight_mode.hpp"
-#include "../../sim/sim_data.hpp"
+// #include "../../sim/sim_data.hpp"
 #include "../constants.hpp"
 #include "../pins.hpp"
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
-SimData sim_data;
+// SimData sim_data;
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
@@ -13,7 +13,7 @@ void FlightMode::execute() {
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
     }
-    state::alt::altitude = sim_data.get_alt();
+    // state::alt::altitude = sim_data.get_alt();
 
     if (!state::gps::status == OFF) {
         ret = modules::gps.read_data(&state::gps::data);
@@ -55,12 +55,7 @@ void FlightMode::execute() {
         );
         check_sensor(ACCEL);
     }
-    state::accel::accel_z = sim_data.get_accel();
-
-    if (!state::therm::status == OFF) {
-        ret = modules::therm.read_temperature(&state::therm::temp);
-        check_sensor(THERM);
-    }
+    // state::accel::accel_z = sim_data.get_accel();
 
     if (state::rfm::init) {
         modules::rfm.transmit();
@@ -139,21 +134,6 @@ void FlightMode::check_sensor(enum Sensor sensor) {
             }
         }
         break;
-    case THERM:
-        if (ret) {
-            if (state::therm::status == INVALID) {
-                state::therm::status = VALID;
-            }
-        } else {
-            state::therm::failed_reads++;
-            state::therm::status = INVALID;
-            state::flight::events.emplace_back(Event::therm_read_fail);
-            if (state::therm::failed_reads >= constants::max_failed_reads) {
-                state::therm::status = OFF;
-                state::flight::events.emplace_back(Event::therm_turn_off);
-            }
-        }
-        break;
     }
 }
 
@@ -222,16 +202,6 @@ void StartupMode::execute() {
             }
         }
     }
-    if (state::therm::status == OFF) {
-        if (modules::therm.begin()) {
-            state::therm::status = VALID;
-        } else {
-            if (!state::therm::failed_init) {
-                state::flight::events.emplace_back(Event::therm_init_fail);
-                state::therm::failed_init = true;
-            }
-        }
-    }
     if (!state::rfm::attempted_init) {
         state::rfm::attempted_init = true;
         if (modules::rfm.begin()) {
@@ -271,19 +241,20 @@ void StartupMode::transition() {
 // Standby Mode
 
 void StandbyMode::transition() {
-    if (state::accel::status == VALID) {
-        accel_sum -= accel_buffer[index];
-        accel_buffer[index] = state::accel::accel_z;
-        accel_sum += state::accel::accel_z;
-        index++;
-        if (index == 10) {
-            index = 0;
-        }
+    // if (state::accel::status == VALID) {
+    //     accel_sum -= accel_buffer[index];
+    //     accel_buffer[index] = state::accel::accel_z;
+    //     accel_sum += state::accel::accel_z;
+    //     index++;
+    //     if (index == 10) {
+    //         index = 0;
+    //     }
 
-        if (accel_sum * 0.1 > constants::accel_threshold) {
-            to_mode(state::flight::ascent);
-        }
-    }
+    //     if (accel_sum * 0.1 > constants::accel_threshold) {
+    //         to_mode(state::flight::ascent);
+    //     }
+    // }
+    to_mode(state::flight::ascent);
 }
 
 // Ascent Mode
