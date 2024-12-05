@@ -10,40 +10,39 @@
 #endif
 
 enum class Event : uint8_t {
-    key_armed = 0,
-    alt_armed = 1,
+    alt_armed = 0,
 
-    alt_init_fail = 2,
-    alt_read_fail = 3,
-    alt_turn_off = 4,
+    alt_init_fail = 1,
+    alt_read_fail = 2,
+    alt_turn_off = 3,
 
-    gps_init_fail = 5,
-    gps_read_fail = 6,
-    gps_turn_off = 7,
+    gps_init_fail = 4,
+    gps_read_fail = 5,
+    gps_turn_off = 6,
 
-    imu_init_fail = 8,
-    imu_read_fail = 9,
-    imu_turn_off = 10,
+    imu_init_fail = 7,
+    imu_read_fail = 8,
+    imu_turn_off = 9,
 
-    accel_init_fail = 11,
-    accel_read_fail = 12,
-    accel_turn_off = 13,
+    accel_init_fail = 10,
+    accel_read_fail = 11,
+    accel_turn_off = 12,
 
-    therm_init_fail = 14,
-    therm_read_fail = 15,
-    therm_turn_off = 16,
+    therm_init_fail = 13,
+    therm_read_fail = 14,
+    therm_turn_off = 15,
 
-    sd_init_fail = 17,
-    sd_write_fail = 18,
+    sd_init_fail = 16,
+    sd_write_fail = 17,
 
-    rfm_init_fail = 19,
-    rfm_tx_fail = 20,
+    rfm_init_fail = 18,
+    rfm_tx_fail = 19,
 
-    main_deploy_wait_end = 21,
-    main_log_shutoff = 22,
+    main_deploy_wait_end = 20,
+    main_log_shutoff = 21,
 
-    below_brake_alt = 23,
-    blims_threshold_reached = 24
+    below_brake_alt = 22,
+    blims_threshold_reached = 23
 
 };
 

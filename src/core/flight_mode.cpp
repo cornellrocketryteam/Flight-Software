@@ -1,11 +1,11 @@
 #include "flight_mode.hpp"
-// #include "../../sim/sim_data.hpp"
+#include "../../sim/sim_data.hpp"
 #include "../constants.hpp"
 #include "../pins.hpp"
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
-// SimData sim_data;
+SimData sim_data;
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
@@ -13,7 +13,7 @@ void FlightMode::execute() {
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
     }
-    // state::alt::altitude = sim_data.get_alt();
+    state::alt::altitude = sim_data.get_alt();
 
     if (!state::gps::status == OFF) {
         ret = modules::gps.read_data(&state::gps::data);
@@ -55,7 +55,7 @@ void FlightMode::execute() {
         );
         check_sensor(ACCEL);
     }
-    // state::accel::accel_z = sim_data.get_accel();
+    state::accel::accel_z = sim_data.get_accel();
 
     if (!state::therm::status == OFF) {
         ret = modules::therm.read_temperature(&state::therm::temp);
@@ -171,7 +171,6 @@ void StartupMode::execute() {
     if (gpio_get(ARMED_IN)) {
         state::flight::key_armed = true;
         gpio_put(ARMED_OUT, 1);
-        state::flight::events.emplace_back(Event::key_armed);
     }
 
     // Attempt to initialize all modules

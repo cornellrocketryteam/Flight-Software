@@ -72,9 +72,9 @@ void BLIMS::execute() {
     }
     printf("TEST 5\n");
     // check altitude
-    if (state::alt::altitude < constants::brake_alt) {
-        set_motor_position(0.5);
-        state::blims::below_brake_alt = true;
-        state::flight::events.emplace_back(Event::below_brake_alt); // logs the event to SD
-    }
+    // if (state::alt::altitude < constants::brake_alt) {
+    //     set_motor_position(0.5);
+    //     state::blims::below_brake_alt = true;
+    //     state::flight::events.emplace_back(Event::below_brake_alt); // logs the event to SD
+    // }
 }
