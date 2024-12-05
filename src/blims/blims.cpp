@@ -18,6 +18,9 @@ void BLIMS::set_motor_position(float position) {
     // ranges between 5% and 10% duty cycle; 3276 ~= 5% duty, 6552 ~= 10% duty
     uint16_t duty = (uint16_t)(five_percent_duty_cycle + position * five_percent_duty_cycle);
     pwm_set_chan_level(slice_num, pwm_gpio_to_channel(BLIMS_MOTOR), duty);
+
+    // update state of motor (what is the position at the current time)
+    state::blims::motor_position = position;
 }
 
 void BLIMS::pwm_setup() {
@@ -40,6 +43,11 @@ void BLIMS::pwm_setup() {
     pwm_set_enabled(slice_num, true);
 }
 void BLIMS::execute() {
+    // don't want to do anything if brake_alt is true
+    if (state::blims::below_brake_alt) {
+        return;
+    }
+
     // assume motor starts as neutral
     if (run_init_hold && (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold)) {
         run_init_hold = false;
@@ -50,7 +58,7 @@ void BLIMS::execute() {
     curr_time = to_ms_since_boot(get_absolute_time());
 
     pwm_setup();
-    if (state::blims::curr_action_duration < 0 && !run_init_hold && !brake_alt) {
+    if (state::blims::curr_action_duration <= 0 && !run_init_hold) {
         state::blims::curr_action_index = state::blims::curr_action_index + 1;
         if (state::blims::curr_action_index >= 10) { // length calculation - need to fix and get size of action_arr
             state::blims::curr_action_index = 0;
@@ -60,11 +68,13 @@ void BLIMS::execute() {
         printf("Action Index: %d\n", state::blims::curr_action_index);
         state::blims::curr_action_duration = action_arr[state::blims::curr_action_index].duration;
         set_motor_position(action_arr[state::blims::curr_action_index].position);
+        state::flight::events.emplace_back(Event::blims_threshold_reached); // we've completed a motor action in action_arr
     }
-    // printf("TEST 5\n");
+    printf("TEST 5\n");
     // check altitude
-    // if (state::alt::altitude < constants::brake_alt) {
-    //     set_motor_position(BLIMS_MOTOR, constants::neutral_pos);
-    //     brake_alt = true;
-    // }
+    if (state::alt::altitude < constants::brake_alt) {
+        set_motor_position(0.5);
+        state::blims::below_brake_alt = true;
+        state::flight::events.emplace_back(Event::below_brake_alt); // logs the event to SD
+    }
 }

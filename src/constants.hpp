@@ -40,7 +40,11 @@ enum class Event : uint8_t {
     rfm_tx_fail = 20,
 
     main_deploy_wait_end = 21,
-    main_log_shutoff = 22
+    main_log_shutoff = 22,
+
+    below_brake_alt = 23,
+    blims_threshold_reached = 24
+
 };
 
 /**

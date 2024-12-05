@@ -98,7 +98,7 @@ bool RFM::transmit() {
         memcpy(&packet[74], &state::imu::gravity_y, sizeof(float));
         memcpy(&packet[78], &state::imu::gravity_z, sizeof(float));
 
-        memcpy(&packet[82], &state::therm::temp, sizeof(float));
+        memcpy(&packet[82], &state::blims::motor_position, sizeof(float));
 
 #ifdef VERBOSE
         printf("Transmitting: ");

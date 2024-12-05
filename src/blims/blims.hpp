@@ -47,7 +47,6 @@ private:
   // initial hold
     bool run_init_hold = true;
   // reached braking altitude
-    bool brake_alt = false;
 };
 
 #endif

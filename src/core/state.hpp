@@ -127,6 +127,9 @@ namespace state {
     namespace blims {
         extern int32_t curr_action_duration;
         extern int curr_action_index;
+        extern bool below_brake_alt;
+        extern float motor_position;
+
     } // namespace blims
 }; // namespace state
 

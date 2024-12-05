@@ -112,5 +112,7 @@ namespace state {
     namespace blims {
         int32_t curr_action_duration = 0;
         int curr_action_index = 0;
+        bool below_brake_alt = false;
+        float motor_position = 0;
     } // namespace blims
 }; // namespace state
