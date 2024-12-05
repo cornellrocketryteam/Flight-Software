@@ -241,20 +241,19 @@ void StartupMode::transition() {
 // Standby Mode
 
 void StandbyMode::transition() {
-    // if (state::accel::status == VALID) {
-    //     accel_sum -= accel_buffer[index];
-    //     accel_buffer[index] = state::accel::accel_z;
-    //     accel_sum += state::accel::accel_z;
-    //     index++;
-    //     if (index == 10) {
-    //         index = 0;
-    //     }
+    if (state::accel::status == VALID) {
+        accel_sum -= accel_buffer[index];
+        accel_buffer[index] = state::accel::accel_z;
+        accel_sum += state::accel::accel_z;
+        index++;
+        if (index == 10) {
+            index = 0;
+        }
 
-    //     if (accel_sum * 0.1 > constants::accel_threshold) {
-    //         to_mode(state::flight::ascent);
-    //     }
-    // }
-    to_mode(state::flight::ascent);
+        if (accel_sum * 0.1 > constants::accel_threshold) {
+            to_mode(state::flight::ascent);
+        }
+    }
 }
 
 // Ascent Mode
