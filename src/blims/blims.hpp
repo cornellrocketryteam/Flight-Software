@@ -31,13 +31,14 @@ public:
         {1.0f, constants::turn_hold_threshold},
         {0.5f, constants::neutral_hold_threshold},
     };
+    void pwm_setup();
 
 private:
   // sets position of motor on a 0-1 scale
     void set_motor_position(float position);
 
   // pwm_setup configures the pwm signal
-    void pwm_setup();
+    
 
   // want wrap to be as large as possible, increases the amount of steps so that we have as much control as possible
     uint16_t wrap_cycle_count = 65535;

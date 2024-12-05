@@ -250,6 +250,7 @@ void StartupMode::execute() {
             }
         }
     }
+    modules::blims.pwm_setup();
 }
 
 void StartupMode::transition() {

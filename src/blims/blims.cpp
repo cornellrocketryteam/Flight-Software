@@ -53,13 +53,15 @@ void BLIMS::execute() {
         run_init_hold = false;
         printf("TEST 2\n\n\n\n\n");
     }
+    // don't want to increase curr_action duration during initial hold
+    if (run_init_hold) {
+        return;
+    }
 
     state::blims::curr_action_duration -= (state::flight::timestamp - curr_time);
     curr_time = to_ms_since_boot(get_absolute_time());
 
-    pwm_setup();
     if (state::blims::curr_action_duration <= 0 && !run_init_hold) {
-        state::blims::curr_action_index = state::blims::curr_action_index + 1;
         if (state::blims::curr_action_index >= 10) { // length calculation - need to fix and get size of action_arr
             state::blims::curr_action_index = 0;
             printf("TEST 4\n");
@@ -68,6 +70,7 @@ void BLIMS::execute() {
         printf("Action Index: %d\n", state::blims::curr_action_index);
         state::blims::curr_action_duration = action_arr[state::blims::curr_action_index].duration;
         set_motor_position(action_arr[state::blims::curr_action_index].position);
+        state::blims::curr_action_index = state::blims::curr_action_index + 1;
         state::flight::events.emplace_back(Event::blims_threshold_reached); // we've completed a motor action in action_arr
     }
     printf("TEST 5\n");
