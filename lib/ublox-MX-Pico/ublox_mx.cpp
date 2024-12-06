@@ -36,7 +36,7 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
 
     if (tokens.size() < 8) {
 #ifdef VERBOSE
-        printf("Error: Incomplete GNGGA message: %s\n", sentence.c_str());
+        printf("Error: Incomplete GNGGA message\n");
 #endif
         return false;
     }

@@ -24,4 +24,4 @@
 #define ARMED_IN 6
 #define ARMED_OUT 7
 
-#define BLIMS_MOTOR 28
+#define BLIMS_MOTOR 10
