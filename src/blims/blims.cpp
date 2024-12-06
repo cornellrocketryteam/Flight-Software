@@ -41,9 +41,7 @@ void BLIMS::set_motor_position(float position) {
 }
 
 void BLIMS::pwm_setup() {
-    printf("pwm setup for blims\n");
-      // Set up the PWM configuration
-    gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
+    // Set up the PWM configuration
     uint slice_num = pwm_gpio_to_slice_num(BLIMS_MOTOR);
 
     uint32_t clock = 125000000; // What our pico runs - set by the pico hardware itself
@@ -53,9 +51,9 @@ void BLIMS::pwm_setup() {
     uint32_t divider_int = clock / pwm_freq / wrap_cycle_count; // div is important to get the frequency we want as we lose float info here
 
     uint32_t divider_frac = (clock % (pwm_freq * wrap_cycle_count)) * 16 / (pwm_freq * wrap_cycle_count); // gives us the fractional component of the divider
-      // Clock divider: slows down pwm to get a certain amount of Hz
-      // slice num - depends on what pin we're at, we set pin, pin has set slice num
-      // integer divider - going to be 38
+    // Clock divider: slows down pwm to get a certain amount of Hz
+    // slice num - depends on what pin we're at, we set pin, pin has set slice num
+    // integer divider - going to be 38
     pwm_set_clkdiv_int_frac(slice_num, divider_int, divider_frac);
     pwm_set_wrap(slice_num, wrap_cycle_count);
     pwm_set_enabled(slice_num, true);

@@ -34,50 +34,16 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
         tokens.push_back(token);
     }
 
-    if (tokens.size() < 7) {
+    if (tokens.size() < 8) {
 #ifdef VERBOSE
         printf("Error: Incomplete GNGGA message: %s\n", sentence.c_str());
 #endif
         return false;
     }
 
-    // UTC Time
-    if (!tokens[1].empty()) {
-        char *end;
-        double raw_utc = std::strtod(tokens[1].c_str(), &end);
-        if (*end != '\0') {
-#ifdef VERBOSE
-            printf("Error: Invalid UTC time value: %s\n", tokens[2].c_str());
-#endif
-            return false;
-        }
-        data->utc_time = static_cast<uint32_t>(raw_utc);
-    } else {
-#ifdef VERBOSE
-        printf("Error: Missing UTC time data in GNGGA message\n");
-#endif
-        return false;
-    }
-
     // Latitude
     if (!tokens[2].empty() && !tokens[3].empty()) {
-        char *end;
-        double raw_lat = std::strtod(tokens[2].c_str(), &end);
-        if (*end != '\0') {
-#ifdef VERBOSE
-            printf("Error: Invalid latitude value: %s\n", tokens[2].c_str());
-#endif
-            return false;
-        }
-
-        char lat_dir = tokens[3][0];
-        int lat_degrees = static_cast<int>(raw_lat / 100);
-        double lat_minutes = raw_lat - (lat_degrees * 100);
-        data->latitude = lat_degrees + (lat_minutes / 60.0);
-
-        if (lat_dir == 'S') {
-            data->latitude = -data->latitude;
-        }
+        data->latitude = tokens[2];
     } else {
 #ifdef VERBOSE
         printf("Error: Missing latitude data in GNGGA message\n");
@@ -87,23 +53,7 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
 
     // Longitude
     if (!tokens[4].empty() && !tokens[5].empty()) {
-        char *end;
-        double raw_lon = std::strtod(tokens[4].c_str(), &end);
-        if (*end != '\0') {
-#ifdef VERBOSE
-            printf("Error: Invalid longitude value: %s\n", tokens[4].c_str());
-#endif
-            return false;
-        }
-
-        char lon_dir = tokens[5][0];
-        int lon_degrees = static_cast<int>(raw_lon / 100);
-        double lon_minutes = raw_lon - (lon_degrees * 100);
-        data->longitude = lon_degrees + (lon_minutes / 60.0);
-
-        if (lon_dir == 'W') {
-            data->longitude = -data->longitude;
-        }
+        data->longitude = tokens[4];
     } else {
 #ifdef VERBOSE
         printf("Error: Missing longitude data in GNGGA message\n");
@@ -113,15 +63,7 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
 
     // Number of Satellites
     if (!tokens[7].empty()) {
-        char *end;
-        long satellites = std::strtol(tokens[7].c_str(), &end, 10);
-        if (*end != '\0') {
-#ifdef VERBOSE
-            printf("Error: Invalid satellite count: %s\n", tokens[7].c_str());
-#endif
-            return false;
-        }
-        data->num_satellites = static_cast<int>(satellites);
+        data->num_satellites = tokens[7];
     } else {
 #ifdef VERBOSE
         printf("Error: Missing satellite count in GNGGA message\n");
@@ -133,9 +75,7 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
 }
 
 bool GNSS::read_data(gnss_data_t *data) {
-    uint8_t buffer[256];
-
-    int bytes_read = i2c_read_blocking(i2c, UBLOX_ADDR, buffer, sizeof(buffer), false);
+    int bytes_read = i2c_read_timeout_us(i2c, UBLOX_ADDR, buffer, sizeof(buffer), false, 10000);
     if (bytes_read < 1) {
 #ifdef VERBOSE
         printf("Error: Failed to read data from GNSS module\n");
@@ -144,10 +84,11 @@ bool GNSS::read_data(gnss_data_t *data) {
         return false;
     }
 
-    // printf("Received GNSS Data: %.*s\n\n\n\n\n", buffer);
+    printf("Received GNSS Data: %.*s\n\n\n\n\n", bytes_read, buffer);
 
     raw_data = std::string(buffer, buffer + bytes_read);
     data->valid = parse_gngga(data);
+
     return true;
 }
 

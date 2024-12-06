@@ -53,7 +53,7 @@ namespace state {
         bool failed_init = false;
         uint8_t failed_reads = 0;
 
-        gnss_data_t data = {0};
+        gnss_data_t data = {};
 
     } // namespace gps
     namespace imu {

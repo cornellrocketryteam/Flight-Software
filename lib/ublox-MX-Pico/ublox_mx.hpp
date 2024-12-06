@@ -45,8 +45,10 @@ private:
 
     uint8_t *payload_cfg = nullptr;
 
-    std::string raw_data;
+    std::string raw_data = "";
 
+    uint8_t buffer[256];
+    
     /**
      * The I2C bus.
      */

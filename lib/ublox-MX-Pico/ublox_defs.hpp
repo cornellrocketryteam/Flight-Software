@@ -1,15 +1,15 @@
 #ifndef UBLOX_DEFS_HPP
 #define UBLOX_DEFS_HPP
 
+#include <string>
+
 // TODO: Change representation of UTC time
 typedef struct {
-    uint32_t utc_time;
-    float latitude;
-    float longitude;
-    float altitude;
-    int num_satellites;
+    std::string latitude = "";
+    std::string longitude = "";
+    std::string num_satellites = "";
 
-    bool valid;
+    bool valid = false;
 } gnss_data_t;
 
 struct UBXFrame {

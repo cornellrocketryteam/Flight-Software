@@ -33,14 +33,13 @@ int main() {
     sleep_ms(100);
     // gps.send_config_msg(0);
 
-    gnss_data_t data = {0};
+    gnss_data_t data;
 
     while (true) {
         if (gps.read_data(&data)) {
-            printf("UTC Time: %d\n", data.utc_time);
-            printf("Latitude: %f\n", data.latitude);
-            printf("Longitude: %f\n", data.longitude);
-            printf("Num Satellites: %d\n", data.num_satellites);
+            printf("Latitude: %s\n", data.latitude.c_str());
+            printf("Longitude: %s\n", data.longitude.c_str());
+            printf("Num Satellites: %s\n", data.num_satellites.c_str());
         }
         sleep_ms(1000);
     }

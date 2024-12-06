@@ -316,9 +316,7 @@ void DrogueDeployedMode::transition() {
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-        printf("calling execute for the first time\n");
         add_alarm_in_ms(constants::initial_hold_threshold, BLIMS::execute, NULL, true);
-        // state::blims::curr_action_duration = modules::blims.action_arr[state::blims::curr_action_index].duration;
         to_mode(state::flight::main_deployed);
     }
 }
@@ -340,5 +338,4 @@ void MainDeployedMode::execute() {
         log_cycle_count++;
     }
     FlightMode::execute();
-    // modules::blims.execute();
 }
