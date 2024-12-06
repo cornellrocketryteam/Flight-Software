@@ -18,8 +18,8 @@ struct Action {
 
 class BLIMS {
 public:
-    void execute();
-    Action action_arr[10] = {
+    // void execute();
+    constexpr static Action action_arr[10] = {
         {0.6f, constants::turn_hold_threshold},
         {0.5f, constants::neutral_hold_threshold},
         {0.3f, constants::turn_hold_threshold},
@@ -33,9 +33,11 @@ public:
     };
     void pwm_setup();
 
+    static int64_t execute(alarm_id_t id, void *user_data);
+
 private:
   // sets position of motor on a 0-1 scale
-    void set_motor_position(float position);
+    static void set_motor_position(float position);
 
   // pwm_setup configures the pwm signal
 

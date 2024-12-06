@@ -8,8 +8,21 @@
 #include "blims.hpp"
 #include "../core/state.hpp"
 #include "hardware/pwm.h"
+#include "hardware/timer.h"
+
+int64_t BLIMS::execute(alarm_id_t id, void *user_data) {
+    printf("in execute\n");
+    state::blims::curr_action_index++;
+    // set_motor_position(action_arr[state::blims::curr_action_index].position);
+    // state::flight::events.emplace_back(Event::blims_threshold_reached); // we've completed a motor action in action_arr
+    add_alarm_in_ms(action_arr[state::blims::curr_action_index % 10].duration, execute, NULL, false);
+    return 0;
+}
 
 void BLIMS::set_motor_position(float position) {
+    uint16_t wrap_cycle_count = 65535;
+    uint32_t curr_time = 0;
+    uint slice_num = pwm_gpio_to_slice_num(BLIMS_MOTOR);
     // Position should be between 0-1
     // Should map between -17 to 17 turns (configured in web UI)
 
@@ -24,6 +37,7 @@ void BLIMS::set_motor_position(float position) {
 }
 
 void BLIMS::pwm_setup() {
+    printf("pwm setup for blims\n");
       // Set up the PWM configuration
     gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
     uint slice_num = pwm_gpio_to_slice_num(BLIMS_MOTOR);
@@ -41,43 +55,4 @@ void BLIMS::pwm_setup() {
     pwm_set_clkdiv_int_frac(slice_num, divider_int, divider_frac);
     pwm_set_wrap(slice_num, wrap_cycle_count);
     pwm_set_enabled(slice_num, true);
-}
-void BLIMS::execute() {
-    // don't want to do anything if brake_alt is true
-    if (state::blims::below_brake_alt) {
-        return;
-    }
-
-    // assume motor starts as neutral
-    if (run_init_hold && (to_ms_since_boot(get_absolute_time()) - state::flight::hold_start >= constants::initial_hold_threshold)) {
-        run_init_hold = false;
-        printf("TEST 2\n\n\n\n\n");
-    }
-    // don't want to increase curr_action duration during initial hold
-    if (run_init_hold) {
-        return;
-    }
-
-    state::blims::curr_action_duration -= (state::flight::timestamp - curr_time);
-    curr_time = to_ms_since_boot(get_absolute_time());
-
-    if (state::blims::curr_action_duration <= 0 && !run_init_hold) {
-        if (state::blims::curr_action_index >= 10) { // length calculation - need to fix and get size of action_arr
-            state::blims::curr_action_index = 0;
-            printf("TEST 4\n");
-        }
-        printf("Action Duration: %d\n", state::blims::curr_action_duration);
-        printf("Action Index: %d\n", state::blims::curr_action_index);
-        state::blims::curr_action_duration = action_arr[state::blims::curr_action_index].duration;
-        set_motor_position(action_arr[state::blims::curr_action_index].position);
-        state::blims::curr_action_index = state::blims::curr_action_index + 1;
-        state::flight::events.emplace_back(Event::blims_threshold_reached); // we've completed a motor action in action_arr
-    }
-    printf("TEST 5\n");
-    // check altitude
-    // if (state::alt::altitude < constants::brake_alt) {
-    //     set_motor_position(0.5);
-    //     state::blims::below_brake_alt = true;
-    //     state::flight::events.emplace_back(Event::below_brake_alt); // logs the event to SD
-    // }
 }

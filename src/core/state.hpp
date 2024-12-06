@@ -118,7 +118,7 @@ namespace state {
     } // namespace rfm
     namespace blims {
         extern int32_t curr_action_duration;
-        extern int curr_action_index;
+        volatile extern int curr_action_index;
         extern bool below_brake_alt;
         extern float motor_position;
 
