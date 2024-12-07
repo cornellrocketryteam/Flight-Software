@@ -75,16 +75,16 @@ bool GNSS::parse_gngga(gnss_data_t *data) {
 }
 
 bool GNSS::read_data(gnss_data_t *data) {
-    int bytes_read = i2c_read_timeout_us(i2c, UBLOX_ADDR, buffer, sizeof(buffer), false, 10000);
+    int bytes_read = i2c_read_timeout_us(i2c, UBLOX_ADDR, buffer, sizeof(buffer), false, 15000);
     if (bytes_read < 1) {
 #ifdef VERBOSE
-        printf("Error: Failed to read data from GNSS module\n");
+        printf("Error: Failed to read data from GNSS module: %d\n", bytes_read);
 #endif
         data->valid = false;
         return false;
     }
 
-    printf("Received GNSS Data: %.*s\n\n\n\n\n", bytes_read, buffer);
+    // printf("Received GNSS Data: %.*s\n\n\n\n\n", bytes_read, buffer);
 
     raw_data = std::string(buffer, buffer + bytes_read);
     data->valid = parse_gngga(data);

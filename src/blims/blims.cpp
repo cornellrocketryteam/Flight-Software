@@ -11,7 +11,7 @@
 #include "hardware/timer.h"
 
 int64_t BLIMS::execute(alarm_id_t id, void *user_data) {
-    printf("in execute, action index = %d\n", state::blims::curr_action_index);
+    // printf("in execute, action index = %d\n", state::blims::curr_action_index);
     state::blims::curr_action_index++;
 
     if (state::blims::curr_action_index >= 10) {
@@ -24,7 +24,7 @@ int64_t BLIMS::execute(alarm_id_t id, void *user_data) {
 }
 
 void BLIMS::set_motor_position(float position) {
-    printf("setting motor position to %f\n", position);
+    // printf("setting motor position to %f\n", position);
     uint16_t wrap_cycle_count = 65535;
     uint slice_num = pwm_gpio_to_slice_num(BLIMS_MOTOR);
     // Position should be between 0-1

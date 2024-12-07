@@ -12,7 +12,7 @@ void Flight::execute() {
     logf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
     logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
-    logf("Latitude: sf\n", state::gps::data.latitude.c_str());
+    logf("Latitude: %s\n", state::gps::data.latitude.c_str());
     logf("Longitude: %s\n", state::gps::data.longitude.c_str());
     logf("Num Satellites: %s\n\n", state::gps::data.num_satellites.c_str());
 
