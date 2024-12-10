@@ -16,7 +16,7 @@ void Flight::execute() {
     logf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     logf("ALTIMETER: %d\n", state::alt::status);
-    logf("Altitude (m): %.3f\n\n", state::alt::altitude);
+    logf("Altitude (m): %.3f\n", state::alt::altitude);
     logf("Temperature (C): %.3f\n\n", state::alt::temp);
 
     logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
