@@ -25,6 +25,7 @@ add_definitions(-DVERBOSE)
 # Add source files from src/
 set(SOURCES
     src/main.cpp
+    src/pins.cpp
     src/blims/blims.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp

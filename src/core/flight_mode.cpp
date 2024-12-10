@@ -74,9 +74,6 @@ void StartupMode::execute() {
     if (state::therm::status == OFF) {
         therm.begin();
     }
-    // if (!state::rfm::attempted_init) {
-    //     rfm.begin();
-    // }
     if (!state::fram::init) {
         fram.begin();
     }
@@ -164,7 +161,7 @@ void StandbyMode::execute() {
         }
     }
 #ifdef LAUNCH
-    // umb.transmit();
+    umb.transmit();
 #endif
 }
 

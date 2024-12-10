@@ -5,6 +5,9 @@
  * @brief Pin definitions
  */
 
+#ifndef PINS_HPP
+#define PINS_HPP
+
 #define I2C_PORT i2c0
 #define I2C_SDA 12
 #define I2C_SCL 13
@@ -39,3 +42,10 @@
 #define BLIMS_MOTOR 28
 
 #define LED 25
+
+/**
+ * Initializes all GPIO, I2C, SPI, UART, and PWM pins
+ */
+void init_pins();
+
+#endif // PINS_HPP
