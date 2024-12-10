@@ -6,6 +6,7 @@
  */
 
 #include "fram.hpp"
+#include "hardware/watchdog.h"
 #include "pins.hpp"
 #include "state.hpp"
 
@@ -16,9 +17,15 @@ bool FRAM::begin() {
         state::fram::init = true;
         load(Data::boot_count);
         load(Data::old_mode);
+        load(Data::watchdog_boot_count);
 
         state::flight::boot_count++;
         store(Data::boot_count);
+
+        if (watchdog_caused_reboot()) {
+            state::flight::watchdog_boot_count++;
+        }
+        store(Data::watchdog_boot_count);
 
         if (state::flight::old_mode > 1) {
             load(Data::ref_pressure);
@@ -45,6 +52,13 @@ void FRAM::load(Data data) {
         if (fram.read_bytes(static_cast<uint8_t>(Data::old_mode), &old_mode, 1)) {
             state::flight::old_mode = old_mode;
             return;
+        }
+        break;
+    }
+    case Data::watchdog_boot_count: {
+        uint8_t watchdog_boot_count;
+        if (fram.read_bytes(static_cast<uint8_t>(Data::watchdog_boot_count), &watchdog_boot_count, 1)) {
+            state::flight::watchdog_boot_count = watchdog_boot_count;
         }
         break;
     }
@@ -84,6 +98,12 @@ void FRAM::store(Data data) {
         }
         break;
     }
+    case Data::watchdog_boot_count:
+        if (fram.write_bytes(static_cast<uint8_t>(Data::watchdog_boot_count), &state::flight::watchdog_boot_count, 1)) {
+            return;
+        }
+
+        break;
     case Data::alt_armed:
         if (fram.write_bytes(static_cast<uint8_t>(Data::alt_armed), reinterpret_cast<uint8_t *>(&state::flight::alt_armed), 1)) {
             return;
