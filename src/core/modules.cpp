@@ -8,9 +8,9 @@
 #include "modules.hpp"
 
 Altimeter altimeter;
+GPS gps;
 Accel accel;
 IMU imu;
-Therm therm;
 
 SD sd;
 FRAM fram;

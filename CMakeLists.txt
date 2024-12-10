@@ -60,9 +60,9 @@ add_custom_target(upload
 # Add external libraries
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
 
 # Include project and library headers
@@ -79,9 +79,9 @@ target_include_directories(${PROJECT_NAME}
 
     # External library include directories
     ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
+    ${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
-    ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
     ${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico
 )
 
@@ -94,9 +94,9 @@ target_link_libraries(${PROJECT_NAME}
     hardware_uart
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 
     BMP388-Pico
+    ublox-MX-Pico
     BNO055-Pico
-    LIS3DH-Pico 
-    Si7021-Pico
+    LIS3DH-Pico
     MB85RS-Pico
 )
 

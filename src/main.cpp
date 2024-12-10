@@ -11,6 +11,7 @@
 #ifndef LAUNCH
 #include "tusb.h"
 #endif
+#include "hardware/watchdog.h"
 
 Flight flight;
 
@@ -30,6 +31,7 @@ int main() {
 #endif
 
     init_pins();
+    watchdog_enable(constants::watchdog_delay, true);
 
     while (true) {
         flight.execute();

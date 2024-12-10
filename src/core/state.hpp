@@ -10,6 +10,7 @@
 
 // clang-format off
 #include "flight_mode.hpp"
+#include "sensor.hpp"
 #include "constants.hpp"
 #include "sd.hpp"
 #include <stdint.h>
@@ -68,6 +69,7 @@ namespace state {
 
         extern float altitude;
         extern float ref_pressure;
+        extern float temp;
     } // namespace alt
     namespace gps {
         extern enum SensorState status;
@@ -75,10 +77,7 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern bool valid;
-        extern int32_t latitude;
-        extern int32_t longitude;
-        extern int32_t altitude;
-        extern uint8_t siv;
+        extern gnss_data_t data;
     } // namespace gps
     namespace imu {
         extern enum SensorState status;
@@ -112,14 +111,6 @@ namespace state {
         extern float accel_z;
 
     } // namespace accel
-    namespace therm {
-        extern enum SensorState status;
-        extern bool failed_init;
-        extern uint8_t failed_reads;
-
-        extern float temp;
-
-    } // namespace therm
     namespace voltage {
         extern enum SensorState status;
 

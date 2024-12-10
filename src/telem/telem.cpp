@@ -21,7 +21,6 @@ void Telem::pack_data() {
     metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 8;
     metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 7;
     metadata |= (static_cast<uint8_t>(state::voltage::status) & 0b1) << 6;
-    metadata |= (static_cast<uint8_t>(state::therm::status) & 0b1) << 5;
     metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
     metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
     metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;

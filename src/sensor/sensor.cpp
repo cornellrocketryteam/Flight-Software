@@ -58,6 +58,12 @@ void Altimeter::read_altitude() {
     }
 }
 
+GPS::GPS() : gnss(I2C_PORT) {};
+
+bool GPS::begin() {
+    return true;
+}
+
 Accel::Accel() : accel(I2C_PORT) {}
 
 bool Accel::begin() {
@@ -134,32 +140,5 @@ void IMU::read_gravity() {
             &state::imu::gravity_y,
             &state::imu::gravity_z
         )) {
-    }
-}
-
-Therm::Therm() : therm(I2C_PORT) {}
-
-bool Therm::begin() {
-    if (therm.begin()) {
-        state::therm::status = VALID;
-        return true;
-    } else {
-        state::flight::events.emplace_back(Event::therm_init_fail);
-        return false;
-    }
-}
-
-void Therm::read_temperature() {
-    if (therm.read_temperature(&state::therm::temp)) {
-        if (state::therm::status == INVALID) {
-            state::therm::status = VALID;
-        }
-    } else {
-        state::therm::failed_reads++;
-        state::therm::status = INVALID;
-        state::flight::events.emplace_back(Event::therm_read_fail);
-        if (state::therm::failed_reads >= constants::max_failed_reads) {
-            state::therm::status = OFF;
-        }
     }
 }

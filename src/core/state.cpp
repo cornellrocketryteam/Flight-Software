@@ -53,6 +53,7 @@ namespace state {
 
         float altitude = -1;
         float ref_pressure = -1;
+        float temp = -1;
     } // namespace alt
     namespace gps {
         enum SensorState status = OFF;
@@ -60,10 +61,7 @@ namespace state {
         uint8_t failed_reads = 0;
 
         bool valid = false;
-        int32_t latitude = -1;
-        int32_t longitude = -1;
-        int32_t altitude = -1;
-        uint8_t siv = -1;
+        gnss_data_t data;
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;
@@ -97,14 +95,6 @@ namespace state {
         float accel_z = -1;
 
     } // namespace accel
-    namespace therm {
-        enum SensorState status = OFF;
-        bool failed_init = false;
-        uint8_t failed_reads = 0;
-
-        float temp = -1;
-
-    } // namespace therm
     namespace voltage {
         enum SensorState status = OFF;
 

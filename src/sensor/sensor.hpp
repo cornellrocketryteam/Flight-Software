@@ -11,7 +11,7 @@
 #include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
-#include "si7021.hpp"
+#include "ublox_mx.hpp"
 #ifdef SIM
 #include "hitl.hpp"
 #endif
@@ -40,6 +40,15 @@ private:
     const float alpha = 0.1;
 };
 
+class GPS : Sensor {
+public:
+    GPS();
+    bool begin() override;
+
+private:
+    GNSS gnss;
+};
+
 class Accel : Sensor {
 public:
     Accel();
@@ -61,16 +70,6 @@ public:
 
 private:
     BNO055 imu;
-};
-
-class Therm : Sensor {
-public:
-    Therm();
-    bool begin() override;
-    void read_temperature();
-
-private:
-    Si7021 therm;
 };
 
 #endif // SENSOR_HPP

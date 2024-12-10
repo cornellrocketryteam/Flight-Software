@@ -27,9 +27,6 @@ void FlightMode::execute() {
     if (state::accel::status != OFF) {
         accel.read_accel();
     }
-    if (state::therm::status != OFF) {
-        therm.read_temperature();
-    }
     if (state::rfm::init) {
         rfm.transmit();
     }
@@ -64,15 +61,13 @@ void StartupMode::execute() {
         altimeter.begin();
     }
     if (state::gps::status == OFF) {
+        gps.begin();
     }
     if (state::imu::status == OFF) {
         imu.begin();
     }
     if (state::accel::status == OFF) {
         accel.begin();
-    }
-    if (state::therm::status == OFF) {
-        therm.begin();
     }
     if (!state::fram::init) {
         fram.begin();

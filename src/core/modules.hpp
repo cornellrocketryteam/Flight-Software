@@ -16,9 +16,9 @@
 #include "telem.hpp"
 
 extern Altimeter altimeter;
+extern GPS gps;
 extern Accel accel;
 extern IMU imu;
-extern Therm therm;
 
 extern SD sd;
 extern FRAM fram;
@@ -32,4 +32,4 @@ extern SSA ssa;
 
 extern BLIMS blims;
 
-#endif
+#endif // MODULES_HPP

@@ -6,6 +6,7 @@
  */
 
 #include "fsw.hpp"
+#include "hardware/watchdog.h"
 
 void Flight::execute() {
 
@@ -16,6 +17,12 @@ void Flight::execute() {
 
     logf("ALTIMETER: %d\n", state::alt::status);
     logf("Altitude (m): %.3f\n\n", state::alt::altitude);
+    logf("Temperature (C): %.3f\n\n", state::alt::temp);
+
+    logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
+    logf("Latitude: %f\n", state::gps::data.latitude);
+    logf("Longitude: %f\n", state::gps::data.longitude);
+    logf("Num Satellites: %d\n\n", state::gps::data.num_satellites);
 
     logf("IMU: %d\n", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
@@ -39,13 +46,8 @@ void Flight::execute() {
     logf("Accel Y (G): %.3f\n", state::accel::accel_y);
     logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
-    logf("THERMOMETER: %d\n", state::therm::status);
-    logf("Temperature (C): %.3f\n\n", state::therm::temp);
-
     logf("SD: %d\n", state::sd::init);
     logf("FRAM: %d\n\n", state::fram::init);
-
-    logf("RFM: %d\n\n", state::rfm::init);
 
     cycle_start = to_ms_since_boot(get_absolute_time());
 
@@ -66,6 +68,8 @@ void Flight::execute() {
     if (state::flight::timestamp - cycle_start > constants::cycle_time) {
         state::flight::events.emplace_back(Event::cycle_overflow);
     }
+
+    watchdog_update();
 
     logf("----------------END LOOP----------------\n\n");
 }
