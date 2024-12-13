@@ -43,7 +43,7 @@ void Altimeter::update_ref_pressure() {
 }
 
 void Altimeter::read_altitude() {
-    if (alt.read_altitude(&state::alt::altitude, state::alt::ref_pressure)) {
+    if (alt.read_data(&state::alt::altitude, &state::alt::temp, state::alt::ref_pressure)) {
         if (state::alt::status == INVALID) {
             state::alt::status = VALID;
         }
