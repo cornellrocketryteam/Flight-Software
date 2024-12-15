@@ -21,6 +21,7 @@ add_compile_options(
 add_definitions(-DVERBOSE)
 # add_definitions(-DLAUNCH)
 # add_definitions(-DSIM)
+add_definitions(-DUSBD_PRODUCT="FSW Pico")
 
 # Add source files from src/
 set(SOURCES
