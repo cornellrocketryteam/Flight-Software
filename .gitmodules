@@ -25,3 +25,6 @@
 [submodule "lib/ublox-MX-Pico"]
 	path = lib/ublox-MX-Pico
 	url = git@github.com:cornellrocketryteam/ublox-MX-Pico.git
+[submodule "lib/ADS1015-Pico"]
+	path = lib/ADS1015-Pico
+	url = git@github.com:cornellrocketryteam/ADS1015-Pico.git
