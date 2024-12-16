@@ -86,7 +86,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
-    ${PROJECT_SOURCE_DIR}/lib/ASD1015-Pico
+    ${PROJECT_SOURCE_DIR}/lib/ADS1015-Pico
     ${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico
 )
 
