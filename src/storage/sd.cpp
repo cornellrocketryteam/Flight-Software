@@ -100,7 +100,7 @@ bool SD::log() {
 
     writes_count++;
 
-    logf("SD: Log success\n");
+    // logf("SD: Log success\n");
 
     return true;
 }

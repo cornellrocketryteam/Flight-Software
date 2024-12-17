@@ -12,6 +12,7 @@
 
 #ifdef VERBOSE
 #define logf(...) printf(__VA_ARGS__)
+#define SPACER ("                        ")
 #else
 #define logf(...)
 #endif
