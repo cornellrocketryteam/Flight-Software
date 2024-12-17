@@ -27,6 +27,9 @@ void FlightMode::execute() {
     if (state::accel::status != OFF) {
         accel.read_accel();
     }
+    if (state::adc::status != OFF) {
+        adc.read_data();
+    }
     if (state::rfm::init) {
         rfm.transmit();
     }
@@ -68,6 +71,9 @@ void StartupMode::execute() {
     }
     if (state::accel::status == OFF) {
         accel.begin();
+    }
+    if (state::adc::status == OFF) {
+        adc.begin();
     }
     if (!state::fram::init) {
         fram.begin();

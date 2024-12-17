@@ -46,6 +46,11 @@ void Flight::execute() {
     logf("Accel Y (G): %.3f\n", state::accel::accel_y);
     logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
+    logf("ADC: %d\n", state::adc::status);
+    logf("PT 3 (kPa): %.3f\n", state::adc::pressure_pt3);
+    logf("PT 4 (kPa): %.3f\n", state::adc::pressure_pt4);
+    logf("RTD (C): %.3f\n\n", state::adc::temp_rtd);
+
     logf("SD: %d\n", state::sd::init);
     logf("FRAM: %d\n\n", state::fram::init);
 
@@ -58,7 +63,7 @@ void Flight::execute() {
     // Sleep until the fixed cycle time is reached
     cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;
     if (cycle_duration < constants::cycle_time) {
-        sleep_ms(constants::cycle_time - cycle_duration);
+        // sleep_ms(constants::cycle_time - cycle_duration);
     }
 
     state::flight::cycle_count++;

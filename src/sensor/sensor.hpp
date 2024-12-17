@@ -2,16 +2,19 @@
  * @file sensor.hpp
  * @author csg83
  *
- * @brief Sensor-related functionality
+ * @brief Sensor-related definitions
  */
 
 #ifndef SENSOR_HPP
 #define SENSOR_HPP
 
+#include "ads1015.hpp"
 #include "bmp388.hpp"
 #include "bno055.hpp"
+#include "constants.hpp"
 #include "lis3dh.hpp"
 #include "ublox_mx.hpp"
+#include <vector>
 #ifdef SIM
 #include "hitl.hpp"
 #endif
@@ -70,6 +73,18 @@ public:
 
 private:
     BNO055 imu;
+};
+
+class ADC : Sensor {
+public:
+    ADC();
+    bool begin() override;
+    void read_data();
+
+private:
+    ADS1015 adc;
+    std::vector<uint8_t> channels = {constants::channel_pt3, constants::channel_pt4, constants::channel_rtd};
+    uint16_t data[3];
 };
 
 #endif // SENSOR_HPP

@@ -119,6 +119,12 @@ namespace state {
     } // namespace voltage
     namespace adc {
         extern enum SensorState status;
+        extern bool failed_init;
+        extern uint8_t failed_reads;
+
+        extern float pressure_pt3;
+        extern float pressure_pt4;
+        extern float temp_rtd;
 
     } // namespace adc
     namespace sd {

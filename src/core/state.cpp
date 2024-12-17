@@ -102,6 +102,12 @@ namespace state {
     } // namespace voltage
     namespace adc {
         enum SensorState status = OFF;
+        bool failed_init = false;
+        uint8_t failed_reads = 0;
+
+        float pressure_pt3 = -1;
+        float pressure_pt4 = -1;
+        float temp_rtd = -1;
 
     } // namespace adc
     namespace sd {

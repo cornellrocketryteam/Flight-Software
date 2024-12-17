@@ -11,6 +11,7 @@ Altimeter altimeter;
 GPS gps;
 Accel accel;
 IMU imu;
+ADC adc;
 
 SD sd;
 FRAM fram;

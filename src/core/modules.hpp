@@ -19,6 +19,7 @@ extern Altimeter altimeter;
 extern GPS gps;
 extern Accel accel;
 extern IMU imu;
+extern ADC adc;
 
 extern SD sd;
 extern FRAM fram;

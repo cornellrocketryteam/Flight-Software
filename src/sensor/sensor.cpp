@@ -142,3 +142,30 @@ void IMU::read_gravity() {
         )) {
     }
 }
+
+ADC::ADC() : adc(I2C_PORT) {}
+
+bool ADC::begin() {
+    if (adc.begin()) {
+        state::adc::status = VALID;
+        return true;
+    } else {
+        state::flight::events.emplace_back(Event::adc_init_fail);
+        return false;
+    }
+}
+
+void ADC::read_data() {
+    if (adc.read_data(channels, data)) {
+        state::adc::pressure_pt3 = data[0];
+        state::adc::pressure_pt4 = data[1];
+        state::adc::temp_rtd = data[2];
+    } else {
+        state::adc::failed_reads++;
+        state::adc::status = INVALID;
+        state::flight::events.emplace_back(Event::adc_read_fail);
+        if (state::adc::failed_reads >= constants::max_failed_reads) {
+            state::adc::status = OFF;
+        }
+    }
+}
