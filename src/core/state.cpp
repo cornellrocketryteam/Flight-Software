@@ -98,6 +98,10 @@ namespace state {
     } // namespace accel
     namespace voltage {
         enum SensorState status = OFF;
+        bool failed_init = false;
+        uint8_t failed_reads = 0;
+
+        float voltage = -1;
 
     } // namespace voltage
     namespace adc {
@@ -113,6 +117,7 @@ namespace state {
     namespace sd {
         bool init = false;
         bool failed_init = false;
+        uint8_t failed_writes = 0;
 
         int current_file = 0;
 
