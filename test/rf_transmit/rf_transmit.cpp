@@ -13,22 +13,22 @@ const char *reboot_seq = "ATZ\r";
 void set_register(uint8_t register_num, uint8_t value) {
     uart_write_blocking(UART_PORT, (const uint8_t *)command_enter_seq, strlen(command_enter_seq));
     printf("Wrote \"%s\"\n", command_enter_seq);
-    sleep_ms(5000);
+    sleep_ms(1000);
 
     char command[20];
     sprintf(command, "ATS%d=%d\r", register_num, value);
 
     uart_write_blocking(UART_PORT, (const uint8_t *)command, strlen(command));
     printf("Wrote \"%s\"\n", command);
-    sleep_ms(5000);
+    sleep_ms(1000);
 
     uart_write_blocking(UART_PORT, (const uint8_t *)save_values_seq, strlen(save_values_seq));
     printf("Wrote \"%s\"\n", save_values_seq);
-    sleep_ms(5000);
+    sleep_ms(1000);
 
     uart_write_blocking(UART_PORT, (const uint8_t *)reboot_seq, strlen(reboot_seq));
     printf("Wrote \"%s\"\n", reboot_seq);
-    sleep_ms(5000);
+    sleep_ms(1000);
 }
 
 int main() {
@@ -38,7 +38,7 @@ int main() {
         sleep_ms(500);
     }
     printf("Connected\n");
-    sleep_ms(5000);
+
     uart_init(UART_PORT, 115200);
 
     gpio_set_function(RFM_TX, GPIO_FUNC_UART);
@@ -52,7 +52,7 @@ int main() {
     int i = 0;
     char buffer[107];
 
-    set_register(12, 0);
+    set_register(12, 15);
 
     sleep_ms(10000);
 
