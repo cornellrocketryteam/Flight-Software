@@ -83,7 +83,7 @@ public:
 
 private:
     ADS1015 adc;
-    std::vector<uint8_t> channels = {constants::channel_pt3, constants::channel_pt4, constants::channel_rtd};
+    uint8_t channels[3] = {constants::channel_pt3, constants::channel_pt4, constants::channel_rtd};
     uint16_t data[3];
 };
 

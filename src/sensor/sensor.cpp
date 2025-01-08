@@ -156,7 +156,7 @@ bool ADC::begin() {
 }
 
 void ADC::read_data() {
-    if (adc.read_data(channels, data)) {
+    if (adc.read_data(channels, sizeof(channels), data)) {
         state::adc::pressure_pt3 = data[0];
         state::adc::pressure_pt4 = data[1];
         state::adc::temp_rtd = data[2];
