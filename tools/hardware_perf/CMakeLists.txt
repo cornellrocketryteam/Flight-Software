@@ -27,6 +27,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/BMP388-Pico ${CMAKE_BINARY_DIR}
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/ublox-MX-Pico ${CMAKE_BINARY_DIR}/ublox-MX-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/BNO055-Pico ${CMAKE_BINARY_DIR}/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/LIS3DH-Pico ${CMAKE_BINARY_DIR}/LIS3DH-Pico)
+add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/ADS1015-Pico ${CMAKE_BINARY_DIR}/ADS1015-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/../../lib/MB85RS-Pico ${CMAKE_BINARY_DIR}/MB85RS-Pico)
 
 # Include project and library headers
@@ -38,6 +39,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/../../lib/ublox-MX-Pico
     ${PROJECT_SOURCE_DIR}/../../lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/../../lib/LIS3DH-Pico
+    ${PROJECT_SOURCE_DIR}/../../lib/ADS1015-Pico
     ${PROJECT_SOURCE_DIR}/../../lib/MB85RS-Pico
 )
 
@@ -53,6 +55,7 @@ target_link_libraries(${PROJECT_NAME}
     ublox-MX-Pico
     BNO055-Pico
     LIS3DH-Pico
+    ADS1015-Pico
     MB85RS-Pico
 )
 

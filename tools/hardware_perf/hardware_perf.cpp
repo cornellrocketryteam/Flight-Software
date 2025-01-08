@@ -1,4 +1,9 @@
-
+/**
+ * @file hardware_perf.cpp
+ * @author csg83
+ * 
+ * @brief Records how long each hardware module takes to perform its action
+ */
 
 #include "pico/stdlib.h"
 #include <cstdio>
@@ -12,16 +17,18 @@
 #include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
+#include "ads1015.hpp"
 #include "mb85rs.hpp"
 
 #include <functional>
 #include <tuple>
 
-#define NUM_RUNS 1
+#define NUM_RUNS 200
 
 BMP388 altimeter(I2C_PORT);
-LIS3DH accel(I2C_PORT);
 BNO055 imu(I2C_PORT);
+LIS3DH accel(I2C_PORT);
+ADS1015 adc(I2C_PORT);
 
 MB85RS fram(SPI_PORT, FRAM_CS);
 
@@ -71,7 +78,7 @@ int main() {
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }
-    printf("Connected\n");
+    printf("Connected, NUM_RUNS = %d\n", NUM_RUNS);
 
     init_pins();
 
@@ -88,6 +95,9 @@ int main() {
     duration = time_func([&]() { imu.begin(); });
     printf("IMU begin(): %llu\n\n", duration);
 
+    duration = time_func([&]() { adc.begin(); });
+    printf("ADC begin(): %llu\n\n", duration);
+
     duration = time_func([&]() { sd_begin(); });
     printf("SD begin(): %llu\n", duration);
 
@@ -97,9 +107,13 @@ int main() {
     printf("========== Sensors ==========\n\n");
     float val;
     float x, y, z;
+    std::vector<uint8_t> adc_channels = {1, 2, 3};
+    uint16_t adc_data[3];
+
     uint64_t sensors_total_sum = 0;
     uint64_t sum = 0;
 
+    // Altimeter
     for (int i = 0; i < NUM_RUNS; i++) {
         duration = time_func([&]() { altimeter.read_data(&val, &val, 1); });
         sum += duration;
@@ -108,6 +122,7 @@ int main() {
     sensors_total_sum += sum / NUM_RUNS;
     printf("Altimeter read_data(): %llu\n", sum / NUM_RUNS);
 
+    // Accelerometer
     sum = 0;
     for (int i = 0; i < NUM_RUNS; i++) {
         duration = time_func([&]() { accel.read_accel(&x, &y, &z); });
@@ -117,6 +132,7 @@ int main() {
     sensors_total_sum += sum / NUM_RUNS;
     printf("Accel read_accel(): %llu\n", sum / NUM_RUNS);
 
+    // IMU
     sum = 0;
     for (int i = 0; i < NUM_RUNS; i++) {
         duration = time_func([&]() { imu.read_accel(&x, &y, &z); });
@@ -151,7 +167,17 @@ int main() {
         sleep_ms(5);
     }
     sensors_total_sum += sum / NUM_RUNS;
-    printf("IMU read_gravity(): %llu\n\n", sum / NUM_RUNS);
+    printf("IMU read_gravity(): %llu\n", sum / NUM_RUNS);
+
+    // ADC
+    sum = 0;
+    for (int i = 0; i < NUM_RUNS; i++) {
+        duration = time_func([&]() { adc.read_data(adc_channels, adc_data); });
+        sum += duration;
+        sleep_ms(5);
+    }
+    sensors_total_sum += sum / NUM_RUNS;
+    printf("ADC read_data(): %llu\n\n", sum / NUM_RUNS);
 
     printf("========== Storage ==========\n\n");
     uint8_t data;
