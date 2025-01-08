@@ -17,6 +17,7 @@
 #include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
+#include "ublox_mx.hpp"
 #include "ads1015.hpp"
 #include "mb85rs.hpp"
 
@@ -28,6 +29,7 @@
 BMP388 altimeter(I2C_PORT);
 BNO055 imu(I2C_PORT);
 LIS3DH accel(I2C_PORT);
+GNSS gps(I2C_PORT);
 ADS1015 adc(I2C_PORT);
 
 MB85RS fram(SPI_PORT, FRAM_CS);
@@ -93,7 +95,10 @@ int main() {
     printf("Accel begin(): %llu\n", duration);
 
     duration = time_func([&]() { imu.begin(); });
-    printf("IMU begin(): %llu\n\n", duration);
+    printf("IMU begin(): %llu\n", duration);
+
+    duration = time_func([&]() { gps.begin(); });
+    printf("GPS begin(): %llu\n", duration);
 
     duration = time_func([&]() { adc.begin(); });
     printf("ADC begin(): %llu\n\n", duration);
@@ -107,7 +112,8 @@ int main() {
     printf("========== Sensors ==========\n\n");
     float val;
     float x, y, z;
-    std::vector<uint8_t> adc_channels = {1, 2, 3};
+    gnss_data_t gps_data;
+    uint8_t adc_channels[] = {1, 2, 3};
     uint16_t adc_data[3];
 
     uint64_t sensors_total_sum = 0;
@@ -131,6 +137,16 @@ int main() {
     }
     sensors_total_sum += sum / NUM_RUNS;
     printf("Accel read_accel(): %llu\n", sum / NUM_RUNS);
+
+    // GPS
+    sum = 0;
+    for (int i = 0; i < NUM_RUNS; i++) {
+        duration = time_func([&]() { gps.read_data(&gps_data); });
+        sum += duration;
+        sleep_ms(5);
+    }
+    sensors_total_sum += sum / NUM_RUNS;
+    printf("GPS read_data(): %llu\n", sum / NUM_RUNS);
 
     // IMU
     sum = 0;
@@ -172,7 +188,7 @@ int main() {
     // ADC
     sum = 0;
     for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { adc.read_data(adc_channels, adc_data); });
+        duration = time_func([&]() { adc.read_data(adc_channels, sizeof(adc_channels), adc_data); });
         sum += duration;
         sleep_ms(5);
     }
