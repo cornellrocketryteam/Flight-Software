@@ -92,9 +92,9 @@ namespace constants {
 
     constexpr uint8_t max_usb_failed_reads = 50;
 
-    constexpr uint8_t channel_pt3 = 1;
+    constexpr uint8_t channel_pt3 = 3;
     constexpr uint8_t channel_pt4 = 2;
-    constexpr uint8_t channel_rtd = 3;
+    constexpr uint8_t channel_rtd = 1;
 
     constexpr uint mav_open_time = 15000;           // ms
 
