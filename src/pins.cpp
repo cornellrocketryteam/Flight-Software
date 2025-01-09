@@ -2,7 +2,7 @@
  * @file pins.cpp
  * @author csg83
  *
- * @brief Pin initialization functions
+ * @brief Pin initialization functionality
  */
 
 #include "pins.hpp"
@@ -50,8 +50,13 @@ void init_pins() {
 
     // Init UART pins
     uart_init(UART_PORT, constants::rfm_baudrate);
-    gpio_set_function(RFM_TX, UART_FUNCSEL_NUM(UART_PORT, RFM_TX));
-    gpio_set_function(RFM_RX, UART_FUNCSEL_NUM(UART_PORT, RFM_RX));
+    gpio_set_function(RFM_TX, GPIO_FUNC_UART);
+    gpio_set_function(RFM_RX, GPIO_FUNC_UART);
+
+    uart_set_format(UART_PORT, 8, 1, UART_PARITY_NONE);
+
+    uart_set_hw_flow(UART_PORT, false, false);
+    uart_set_fifo_enabled(UART_PORT, true);
 
     // Init PWM pins
     gpio_set_function(RELAY, GPIO_FUNC_PWM);

@@ -156,6 +156,8 @@ namespace state {
 
     } // namespace sv
     namespace blims {
+        extern float motor_position;
+
         extern int32_t curr_action_duration;
         extern int curr_action_index;
     } // namespace blims

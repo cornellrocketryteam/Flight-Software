@@ -139,6 +139,8 @@ namespace state {
 
     } // namespace sv
     namespace blims {
+        float motor_position = 0;
+
         int32_t curr_action_duration = 0;
         int curr_action_index = 0;
     } // namespace blims

@@ -30,12 +30,10 @@ void FlightMode::execute() {
     if (state::adc::status != OFF) {
         adc.read_data();
     }
-    if (state::rfm::init) {
-        rfm.transmit();
-    }
     if (state::sd::init) {
         sd.log();
     }
+    rfm.transmit();
 
     // Clear this cycle's events
     if (!state::flight::events.empty()) {
