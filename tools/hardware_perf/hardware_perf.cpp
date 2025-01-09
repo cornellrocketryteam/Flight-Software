@@ -23,6 +23,7 @@
 
 #include <functional>
 #include <tuple>
+#include <array>
 
 #define NUM_RUNS 200
 
@@ -63,7 +64,7 @@ void sd_write() {
     if (FR_OK != fr && FR_EXIST != fr) {
         panic("f_open(%s) error: %s (%d)\n", filename, FRESULT_str(fr), fr);
     }
-    
+
     if (f_printf(&fil, buffer) < 0) {
         printf("f_printf failed\n");
     }
@@ -74,154 +75,111 @@ void sd_write() {
     }
 }
 
+void time_begin() {
+    printf("============ Begin ============\n\n");
+    printf("Altimeter begin(): %llu us\n", time_func([&]() { altimeter.begin(); }));
+    printf("Accel begin(): %llu us\n", time_func([&]() { accel.begin(); }));
+    printf("IMU begin(): %llu us\n", time_func([&]() { imu.begin(); }));
+    printf("GPS begin(): %llu us\n", time_func([&]() { gps.begin(); }));
+    printf("ADC begin(): %llu us\n\n", time_func([&]() { adc.begin(); }));
+    printf("SD begin(): %llu us\n", time_func(sd_begin));
+    printf("FRAM begin(): %llu us\n\n", time_func([&]() { fram.begin(); }));
+}
+
+uint64_t run_sensor_test(const char* sensor_name, std::function<void()> read_func) {
+    uint64_t sum = 0;
+    for (int i = 0; i < NUM_RUNS; i++) {
+        sum += time_func(read_func);
+        sleep_ms(5);
+    }
+    uint64_t average_duration = sum / NUM_RUNS;
+    printf("%s: %llu us\n", sensor_name, average_duration);
+    return average_duration;
+}
+
+uint64_t time_sensors() {
+    printf("=========== Sensors ===========\n\n");
+    uint64_t sensors_total_sum = 0;
+
+    sensors_total_sum += run_sensor_test("Altimeter read_data()", [&]() { 
+        float val;
+        altimeter.read_data(&val, &val, 1); 
+    });
+
+    sensors_total_sum += run_sensor_test("Accel read_accel()", [&]() { 
+        float x, y, z;
+        accel.read_accel(&x, &y, &z); 
+    });
+
+    sensors_total_sum += run_sensor_test("GPS read_data()", [&]() { 
+        gnss_data_t gps_data;
+        gps.read_data(&gps_data); 
+    });
+
+    sensors_total_sum += run_sensor_test("IMU read_accel()", [&]() { 
+        float x, y, z;
+        imu.read_accel(&x, &y, &z); 
+    });
+
+    sensors_total_sum += run_sensor_test("IMU read_gyro()", [&]() { 
+        float x, y, z;
+        imu.read_gyro(&x, &y, &z); 
+    });
+
+    sensors_total_sum += run_sensor_test("IMU read_orientation()", [&]() { 
+        float x, y, z;
+        imu.read_orientation(&x, &y, &z); 
+    });
+
+    sensors_total_sum += run_sensor_test("IMU read_gravity()", [&]() { 
+        float x, y, z;
+        imu.read_gravity(&x, &y, &z); 
+    });
+
+    sensors_total_sum += run_sensor_test("ADC read_data()", [&]() { 
+        uint8_t adc_channels[] = {1, 2, 3};
+        uint16_t adc_data[3];
+        adc.read_data(adc_channels, sizeof(adc_channels), adc_data); 
+    });
+
+    printf("\n");
+    return sensors_total_sum;
+}
+
+uint64_t time_storage() {
+    printf("=========== Storage ===========\n\n");
+    uint64_t storage_total_sum = 0;
+
+    storage_total_sum += run_sensor_test("SD write()", [&]() { sd_write(); });
+
+    storage_total_sum += run_sensor_test("FRAM read_bytes()", [&]() { 
+        uint8_t data;
+        fram.read_bytes(0, &data, 1); 
+    });
+
+    printf("\n");
+    return storage_total_sum;
+}
+
 int main() {
     stdio_init_all();
 
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }
-    printf("Connected, NUM_RUNS = %d\n", NUM_RUNS);
 
+    printf("Connected, NUM_RUNS = %d\n", NUM_RUNS);
     init_pins();
 
-    uint64_t duration;
+    time_begin();
 
-    printf("=========== Begin ===========\n\n");
+    uint64_t sensors_total_sum = time_sensors();
+    uint64_t storage_total_sum = time_storage();
 
-    duration = time_func([&]() { altimeter.begin(); });
-    printf("Altimeter begin(): %llu\n", duration);
+    printf("===============================\n\n");
 
-    duration = time_func([&]() { accel.begin(); });
-    printf("Accel begin(): %llu\n", duration);
-
-    duration = time_func([&]() { imu.begin(); });
-    printf("IMU begin(): %llu\n", duration);
-
-    duration = time_func([&]() { gps.begin(); });
-    printf("GPS begin(): %llu\n", duration);
-
-    duration = time_func([&]() { adc.begin(); });
-    printf("ADC begin(): %llu\n\n", duration);
-
-    duration = time_func([&]() { sd_begin(); });
-    printf("SD begin(): %llu\n", duration);
-
-    duration = time_func([&]() { fram.begin(); });
-    printf("FRAM begin(): %llu\n\n", duration);
-
-    printf("========== Sensors ==========\n\n");
-    float val;
-    float x, y, z;
-    gnss_data_t gps_data;
-    uint8_t adc_channels[] = {1, 2, 3};
-    uint16_t adc_data[3];
-
-    uint64_t sensors_total_sum = 0;
-    uint64_t sum = 0;
-
-    // Altimeter
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { altimeter.read_data(&val, &val, 1); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("Altimeter read_data(): %llu\n", sum / NUM_RUNS);
-
-    // Accelerometer
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { accel.read_accel(&x, &y, &z); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("Accel read_accel(): %llu\n", sum / NUM_RUNS);
-
-    // GPS
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { gps.read_data(&gps_data); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("GPS read_data(): %llu\n", sum / NUM_RUNS);
-
-    // IMU
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { imu.read_accel(&x, &y, &z); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("IMU read_accel(): %llu\n", sum / NUM_RUNS);
-
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { imu.read_gyro(&x, &y, &z); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("IMU read_gyro(): %llu\n", sum / NUM_RUNS);
-
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { imu.read_orientation(&x, &y, &z); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("IMU read_orientation(): %llu\n", sum / NUM_RUNS);
-
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { imu.read_gravity(&x, &y, &z); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("IMU read_gravity(): %llu\n", sum / NUM_RUNS);
-
-    // ADC
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { adc.read_data(adc_channels, sizeof(adc_channels), adc_data); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    sensors_total_sum += sum / NUM_RUNS;
-    printf("ADC read_data(): %llu\n\n", sum / NUM_RUNS);
-
-    printf("========== Storage ==========\n\n");
-    uint8_t data;
-    uint64_t storage_total_sum = 0;
-
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { sd_write(); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    storage_total_sum += sum / NUM_RUNS;
-    printf("SD write(): %llu\n", sum / NUM_RUNS);
-
-    sum = 0;
-    for (int i = 0; i < NUM_RUNS; i++) {
-        duration = time_func([&]() { fram.read_bytes(0, &data, 1); });
-        sum += duration;
-        sleep_ms(5);
-    }
-    storage_total_sum += sum / NUM_RUNS;
-    printf("FRAM read_bytes(): %llu\n", sum / NUM_RUNS);
-
-
-    printf("=============================\n\n");
-
-    printf("Sensors total sum: %llu\n", sensors_total_sum);
-    printf("Storage total sum: %llu\n", storage_total_sum);
+    printf("Sensors total sum: %llu us\n", sensors_total_sum);
+    printf("Storage total sum: %llu us\n", storage_total_sum);
 
     return 0;
 }
