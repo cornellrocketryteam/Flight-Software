@@ -39,6 +39,7 @@ class SV {
 public:
     void open();
     void close();
+
 private:
     static int64_t hold_pwm(alarm_id_t id, void *user_data);
 };

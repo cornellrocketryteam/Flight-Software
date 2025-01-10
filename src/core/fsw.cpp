@@ -51,9 +51,6 @@ void Flight::execute() {
     logf("PT 4 (kPa): %.3f\n%s", state::adc::pressure_pt4, SPACER);
     logf("RTD (C): %.3f\n\n", state::adc::temp_rtd);
 
-    logf("VOLTAGE: %d ------------ ", state::voltage::status);
-    logf("Voltage (V): %.3f\n\n", state::voltage::voltage);
-
     logf("SD: %d%s", state::sd::init, "                   ");
     logf("FRAM: %d\n\n", state::fram::init);
 

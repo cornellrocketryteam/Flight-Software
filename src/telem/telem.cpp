@@ -21,7 +21,6 @@ void Telem::pack_data() {
     metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 9;
     metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 8;
     metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 7;
-    metadata |= (static_cast<uint8_t>(state::voltage::status) & 0b1) << 6;
     metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
     metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
     metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
@@ -61,10 +60,9 @@ void RFM::transmit() {
     memcpy(&packet[79], &state::accel::accel_y, sizeof(float));
     memcpy(&packet[83], &state::accel::accel_z, sizeof(float));
     memcpy(&packet[87], &state::alt::temp, sizeof(float));
-    memcpy(&packet[91], &state::voltage::voltage, sizeof(float));
-    memcpy(&packet[95], &state::adc::pressure_pt3, sizeof(float));
-    memcpy(&packet[99], &state::adc::pressure_pt4, sizeof(float));
-    memcpy(&packet[103], &state::blims::motor_position, sizeof(float));
+    memcpy(&packet[91], &state::adc::pressure_pt3, sizeof(float));
+    memcpy(&packet[95], &state::adc::pressure_pt4, sizeof(float));
+    memcpy(&packet[99], &state::blims::motor_position, sizeof(float));
 
     uart_write_blocking(UART_PORT, (const uint8_t *)packet, constants::rfm_packet_size);
 }

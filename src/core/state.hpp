@@ -113,14 +113,6 @@ namespace state {
         extern float accel_z;
 
     } // namespace accel
-    namespace voltage {
-        extern enum SensorState status;
-        extern bool failed_init;
-        extern uint8_t failed_reads;
-
-        extern float voltage;
-
-    } // namespace voltage
     namespace adc {
         extern enum SensorState status;
         extern bool failed_init;

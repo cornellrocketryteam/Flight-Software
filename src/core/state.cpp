@@ -96,14 +96,6 @@ namespace state {
         float accel_z = -1;
 
     } // namespace accel
-    namespace voltage {
-        enum SensorState status = OFF;
-        bool failed_init = false;
-        uint8_t failed_reads = 0;
-
-        float voltage = -1;
-
-    } // namespace voltage
     namespace adc {
         enum SensorState status = OFF;
         bool failed_init = false;
