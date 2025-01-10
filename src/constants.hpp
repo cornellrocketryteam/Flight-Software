@@ -103,6 +103,7 @@ namespace constants {
     constexpr uint8_t max_failed_reads = 10;
 
     constexpr uint8_t ematch_threshold = 200;       // ms
+    constexpr uint8_t sv_peak_threshold = 150;      // ms
 
     const uint16_t file_writes_threshold = 50000;   // cycles
     constexpr float log_threshold = 50;             // meters

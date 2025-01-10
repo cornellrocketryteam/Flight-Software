@@ -1,5 +1,5 @@
 /**
- * @file mav_actuate.cpp
+ * @file actuate_mav.cpp
  * @author csg83, zag7
  * 
  * @brief Unit test of MAV actuation

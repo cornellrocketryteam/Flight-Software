@@ -1,5 +1,5 @@
 /**
- * @file ssa.cpp
+ * @file actuate_ssa.cpp
  * @author csg83
  * 
  * @brief Unit test of SSA actuation for both main and drogue deployment

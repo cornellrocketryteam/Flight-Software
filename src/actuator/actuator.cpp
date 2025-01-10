@@ -51,3 +51,7 @@ void SV::open() {
 
 void SV::close() {
 }
+
+int64_t SV::hold_pwm(alarm_id_t id, void *user_data) {
+
+}
