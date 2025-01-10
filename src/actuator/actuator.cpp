@@ -52,14 +52,16 @@ int64_t MAV::time_close(alarm_id_t id, void *user_data) {
 
 void SV::open() {
     state::sv::open = true;
-
+    pwm_set_gpio_level(RELAY, 4095);
     add_alarm_in_ms(constants::sv_peak_threshold, hold_pwm, NULL, true);
 }
 
 void SV::close() {
     state::sv::open = false;
+    pwm_set_gpio_level(RELAY, 0);
 }
 
 int64_t SV::hold_pwm(alarm_id_t id, void *user_data) {
+    pwm_set_gpio_level(RELAY, 1707);
     return 0;
 }
