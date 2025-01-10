@@ -22,7 +22,7 @@ public:
     void trigger(Chute chute);
 
 private:
-    static int64_t callback(alarm_id_t id, void *user_data);
+    static int64_t time_off(alarm_id_t id, void *user_data);
 };
 
 class MAV {
@@ -32,6 +32,7 @@ public:
 
 private:
     void set_position(float position);
+    static int64_t time_close(alarm_id_t id, void *user_data);
     uint slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
 };
 

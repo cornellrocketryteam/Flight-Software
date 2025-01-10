@@ -54,6 +54,9 @@ void Flight::execute() {
     logf("SD: %d%s", state::sd::init, "                   ");
     logf("FRAM: %d\n\n", state::fram::init);
 
+    logf("MAV: %d%s", state::mav::open, "                  ");
+    logf("SV: %d\n\n", state::sv::open);
+
     cycle_start = to_ms_since_boot(get_absolute_time());
 
     // Execute the current flight mode
