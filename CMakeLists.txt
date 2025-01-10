@@ -58,7 +58,6 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src 
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
-add_subdirectory(${PROJECT_SOURCE_DIR}/lib/Si7021-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico)
 
 # Ignore warnings from RadioLib
@@ -70,7 +69,6 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/BMP388-Pico
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
-    ${PROJECT_SOURCE_DIR}/lib/Si7021-Pico
     ${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico
 )
 
@@ -85,7 +83,6 @@ target_link_libraries(${PROJECT_NAME}
     BMP388-Pico
     BNO055-Pico
     LIS3DH-Pico 
-    Si7021-Pico
     ublox-MX-Pico
 )
 
