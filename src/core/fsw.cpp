@@ -51,13 +51,13 @@ void Flight::execute() {
     logf("PT 4 (kPa): %.3f\n%s", state::adc::pressure_pt4, SPACER);
     logf("RTD (C): %.3f\n\n", state::adc::temp_rtd);
 
+    logf("SD: %d ----------------- ", state::sd::init);
+    logf("Current File: %d\n\n", state::sd::current_file);
+
     logf("FRAM: %d --------------- ", state::fram::init);
     logf("Boot Count: %d\n%s", state::flight::boot_count, SPACER);
     logf("Watchdog Boot Count: %d\n%s", state::flight::watchdog_boot_count, SPACER);
     logf("Old Mode: %d\n\n", state::flight::old_mode);
-
-    logf("SD: %d ----------------- ", state::sd::init);
-    logf("Current File: %d\n\n", state::sd::current_file);
 
     logf("MAV: %d%s", state::mav::open, "                  ");
     logf("SV: %d\n\n", state::sv::open);
