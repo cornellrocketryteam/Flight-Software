@@ -45,6 +45,7 @@ namespace state {
 
         float pressure = -1;
         float altitude = -1;
+        float temp = -1;
 
         float ref_pressure = -1;
     } // namespace alt

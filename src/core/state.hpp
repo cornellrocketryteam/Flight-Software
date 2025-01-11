@@ -60,6 +60,7 @@ namespace state {
 
         extern float pressure;
         extern float altitude;
+        extern float temp;
 
         extern float ref_pressure;
     } // namespace alt
