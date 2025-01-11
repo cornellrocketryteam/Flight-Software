@@ -231,6 +231,7 @@ void DrogueDeployedMode::transition() {
         main_cycle_count++;
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         ssa.trigger(Chute::main);
+        sv.open();
         state::flight::hold_start = to_ms_since_boot(get_absolute_time());
         state::blims::curr_action_duration = blims.action_arr[state::blims::curr_action_index].duration;
         to_mode(state::flight::main_deployed);
