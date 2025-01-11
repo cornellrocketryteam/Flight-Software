@@ -16,3 +16,6 @@
 [submodule "lib/BMP388-Pico"]
 	path = lib/BMP388-Pico
 	url = git@github.com:cornellrocketryteam/BMP388-Pico.git
+[submodule "lib/ublox-MX-Pico"]
+	path = lib/ublox-MX-Pico
+	url = git@github.com:cornellrocketryteam/ublox-MX-Pico.git
