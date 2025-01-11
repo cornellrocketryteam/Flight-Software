@@ -69,4 +69,11 @@ void init_pins() {
     pwm_set_clkdiv_int_frac(mav_slice_num, mav_divider, 12);
     pwm_set_wrap(mav_slice_num, 65535);
     pwm_set_enabled(mav_slice_num, true);
+
+    uint sv_slice_num = pwm_gpio_to_slice_num(RELAY);
+    
+    pwm_config config = pwm_get_default_config();
+    pwm_config_set_clkdiv(&config, 2);
+    pwm_config_set_wrap(&config, 4095);
+    pwm_init(sv_slice_num, &config, true);
 }
