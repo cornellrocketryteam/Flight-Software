@@ -47,8 +47,8 @@ void Flight::execute() {
     logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
     logf("ADC: %d ---------------- ", state::adc::status);
-    logf("PT 3 (kPa): %.3f\n%s", state::adc::pressure_pt3, SPACER);
-    logf("PT 4 (kPa): %.3f\n%s", state::adc::pressure_pt4, SPACER);
+    logf("PT 3 (PSI): %.3f\n%s", state::adc::pressure_pt3, SPACER);
+    logf("PT 4 (PSI): %.3f\n%s", state::adc::pressure_pt4, SPACER);
     logf("RTD (C): %.3f\n\n", state::adc::temp_rtd);
 
     logf("SD: %d ----------------- ", state::sd::init);
