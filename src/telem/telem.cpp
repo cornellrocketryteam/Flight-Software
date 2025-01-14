@@ -79,7 +79,7 @@ void Umbilical::transmit() {
     memcpy(&packet[11], &state::rfm::init, sizeof(bool));
 
     for (uint i = 0; i < constants::umb_packet_size; ++i) {
-        printf("%s ", std::bitset<8>(static_cast<uint8_t>(packet[i])).to_string().c_str());
+        printf("%s", std::bitset<8>(static_cast<uint8_t>(packet[i])).to_string().c_str());
     }
     printf("\n");
 }

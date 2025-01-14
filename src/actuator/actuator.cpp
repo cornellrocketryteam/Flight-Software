@@ -27,7 +27,7 @@ int64_t SSA::time_off(alarm_id_t id, void *user_data) {
 
 void MAV::open(uint duration) {
     state::mav::open = true;
-    set_position(0.5);
+    set_position(1.0);
 
     if (duration) {
         add_alarm_in_ms(duration, time_close, NULL, true);
