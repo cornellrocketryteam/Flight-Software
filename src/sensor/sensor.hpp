@@ -47,6 +47,7 @@ class GPS : Sensor {
 public:
     GPS();
     bool begin() override;
+    void read_data();
 
 private:
     GNSS gnss;

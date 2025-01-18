@@ -17,6 +17,7 @@ void FlightMode::execute() {
         altimeter.read_altitude();
     }
     if (state::gps::status != OFF) {
+        gps.read_data();
     }
     if (state::imu::status != OFF) {
         imu.read_gyro();

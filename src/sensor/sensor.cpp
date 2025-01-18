@@ -64,6 +64,9 @@ bool GPS::begin() {
     return true;
 }
 
+void GPS::read_data() {
+}
+
 Accel::Accel() : accel(I2C_PORT) {}
 
 bool Accel::begin() {
