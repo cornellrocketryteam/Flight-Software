@@ -78,11 +78,9 @@ void Umbilical::transmit() {
     memcpy(&packet[10], &state::rfm::init, sizeof(bool));
     memcpy(&packet[11], &state::rfm::init, sizeof(bool));
 
-    uint32_t test = 0b01000010001010000000000000000001;
-
-    memcpy(&packet[12], &test, sizeof(float));
-    memcpy(&packet[16], &test, sizeof(float));
-    memcpy(&packet[20], &test, sizeof(float));
+    memcpy(&packet[12], &state::adc::pressure_pt3, sizeof(float));
+    memcpy(&packet[16], &state::adc::pressure_pt4, sizeof(float));
+    memcpy(&packet[20], &state::adc::temp_rtd, sizeof(float));
 
     for (uint i = 0; i < constants::umb_packet_size; ++i) {
         printf("%c", packet[i]);
