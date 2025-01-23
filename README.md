@@ -1,5 +1,5 @@
 # Flight-Software
-Flight software for the Cornell Rocketry Team.
+Flight software for _Andromeda_, a student-designed hybrid-propellant rocket. Handles parachute deployment, data collection, and telemetry. Also serves as a platform for the [BLiMS](https://github.com/cornellrocketryteam/BLiMS) project.
 
 [Confluence](https://confluence.cornell.edu/display/crt/Flight+Software)
 
