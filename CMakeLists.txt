@@ -29,7 +29,6 @@ add_definitions(-DUSBD_PRODUCT="FSW Pico")
 set(SOURCES
     src/main.cpp
     src/pins.cpp
-    src/blims/blims.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp

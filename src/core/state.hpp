@@ -146,6 +146,9 @@ namespace state {
         extern bool open;
 
     } // namespace sv
+    namespace blims {
+        extern float motor_position;
+    }
 
 }; // namespace state
 

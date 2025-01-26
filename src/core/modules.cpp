@@ -22,5 +22,3 @@ Umbilical umb;
 MAV mav;
 SV sv;
 SSA ssa;
-
-BLIMS blims;

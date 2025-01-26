@@ -128,4 +128,7 @@ namespace state {
         bool open = true;
 
     } // namespace sv
+    namespace blims {
+        float motor_position = 0;
+    } // namespace blims
 }; // namespace state

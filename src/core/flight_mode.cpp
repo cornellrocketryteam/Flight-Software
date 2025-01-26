@@ -233,7 +233,6 @@ void DrogueDeployedMode::transition() {
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         ssa.trigger(Chute::main);
         sv.open();
-        state::flight::hold_start = to_ms_since_boot(get_absolute_time());
         to_mode(state::flight::main_deployed);
     }
 }
