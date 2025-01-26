@@ -6,7 +6,6 @@
 #include "lis3dh.hpp"
 #include "ublox_mx.hpp"
 
-#include "../blims/blims.hpp"
 #include "../rfm/rfm.hpp"
 #include "../sd/sd.hpp"
 

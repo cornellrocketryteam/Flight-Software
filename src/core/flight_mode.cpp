@@ -220,7 +220,6 @@ void StartupMode::execute() {
             }
         }
     }
-    modules::blims.pwm_setup();
 }
 
 void StartupMode::transition() {
@@ -316,7 +315,6 @@ void DrogueDeployedMode::transition() {
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         gpio_put(SSA_MAIN, 1);
         state::flight::ematch_start = to_ms_since_boot(get_absolute_time());
-        add_alarm_in_ms(constants::initial_hold_threshold, BLIMS::execute, NULL, true);
         to_mode(state::flight::main_deployed);
     }
 }

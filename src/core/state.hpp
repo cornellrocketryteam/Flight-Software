@@ -50,8 +50,6 @@ namespace state {
         extern uint32_t ematch_start;
 
         extern std::vector<Event> events;
-        // blims add
-        extern uint32_t hold_start;
     } // namespace flight
     namespace alt {
         extern enum SensorState status;
@@ -118,11 +116,7 @@ namespace state {
 
     } // namespace rfm
     namespace blims {
-        extern int32_t curr_action_duration;
-        volatile extern int curr_action_index;
-        extern bool below_brake_alt;
         extern float motor_position;
-
     } // namespace blims
 }; // namespace state
 

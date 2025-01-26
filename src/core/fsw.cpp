@@ -38,7 +38,7 @@ void Flight::execute() {
     logf("Accel Y (G): %.3f\n", state::accel::accel_y);
     logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
-    logf("BLiMS: %f\n\n", state::blims::motor_position);
+    // logf("BLiMS: %f\n\n", state::blims::motor_position);
 
     logf("SD: %d\n", state::sd::init);
     logf("RFM: %d\n\n", state::rfm::init);

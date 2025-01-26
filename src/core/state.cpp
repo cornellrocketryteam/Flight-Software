@@ -35,8 +35,6 @@ namespace state {
         uint32_t ematch_start = 0;
 
         std::vector<Event> events = {};
-        // blims add
-        uint32_t hold_start = 0;
     } // namespace flight
     namespace alt {
         enum SensorState status = OFF;
@@ -103,9 +101,6 @@ namespace state {
 
     } // namespace rfm
     namespace blims {
-        int32_t curr_action_duration = 0;
-        volatile int curr_action_index = -1;
-        bool below_brake_alt = false;
         float motor_position = 0;
     } // namespace blims
 }; // namespace state
