@@ -55,7 +55,7 @@ void StartupMode::execute() {
     // Check to see if the arming key has been turned
     if (gpio_get(ARM_IN)) {
         state::flight::key_armed = true;
-        gpio_put(ARM_OUT, 1);
+        pwm_set_enabled(buzzer_slice_num, true);
     }
 
     // Attempt to initialize all modules
@@ -110,7 +110,7 @@ void StandbyMode::execute() {
     // Check to see if the arming key has been turned off
     if (!gpio_get(ARM_IN)) {
         state::flight::key_armed = false;
-        gpio_put(ARM_OUT, 0);
+        pwm_set_enabled(buzzer_slice_num, false);
     }
 
     // Check the umbilical connection

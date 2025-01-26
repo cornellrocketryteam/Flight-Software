@@ -1,11 +1,16 @@
+/**
+ * @file buzzer.cpp
+ * @author csg83
+ * 
+ * @brief Unit test of the CFC's buzzer
+ */
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "hardware/clocks.h"
 #include "hardware/pwm.h"
 #include "pins.hpp"
-
-uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
 
 void buzz(const uint32_t length) {
 	pwm_set_enabled(buzzer_slice_num, true);

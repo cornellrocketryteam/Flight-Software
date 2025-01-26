@@ -7,9 +7,9 @@
 
 #include "pins.hpp"
 #include "constants.hpp"
+#include "hardware/clocks.h"
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
-#include "hardware/pwm.h"
 #include "hardware/spi.h"
 #include "hardware/uart.h"
 #include "pico/stdlib.h"
@@ -22,13 +22,11 @@ void init_pins() {
 
     // Init GPIO pins
     gpio_init(ARM_IN);
-    gpio_init(ARM_OUT);
     gpio_init(SSA_DROGUE);
     gpio_init(SSA_MAIN);
     gpio_init(FRAM_CS);
 
     gpio_set_dir(ARM_IN, GPIO_IN);
-    gpio_set_dir(ARM_OUT, GPIO_OUT);
     gpio_set_dir(SSA_DROGUE, GPIO_OUT);
     gpio_set_dir(SSA_MAIN, GPIO_OUT);
     gpio_set_dir(FRAM_CS, GPIO_OUT);
@@ -59,18 +57,25 @@ void init_pins() {
     uart_set_fifo_enabled(UART_PORT, true);
 
     // Init PWM pins
+    gpio_set_function(ARM_OUT, GPIO_FUNC_PWM);
     gpio_set_function(RELAY, GPIO_FUNC_PWM);
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
 
-    uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
+    uint32_t f_sys = clock_get_hz(clk_sys);
+    float divider = f_sys / 1000000;
+    pwm_set_clkdiv(buzzer_slice_num, divider);
 
-    uint8_t mav_divider = 125000000 / 330 / 65535;
+    const uint32_t top = 1000000 / 2048 - 1;
+    pwm_set_wrap(buzzer_slice_num, top);
+
+    uint16_t level = (top + 1) * 50 / 100 - 1;
+    pwm_set_chan_level(buzzer_slice_num, 1, level);
+
+    const uint8_t mav_divider = 125000000 / 330 / 65535;
     pwm_set_clkdiv_int_frac(mav_slice_num, mav_divider, 12);
     pwm_set_wrap(mav_slice_num, 65535);
     pwm_set_enabled(mav_slice_num, true);
-
-    uint sv_slice_num = pwm_gpio_to_slice_num(RELAY);
 
     pwm_config config = pwm_get_default_config();
     pwm_config_set_clkdiv(&config, 2);
