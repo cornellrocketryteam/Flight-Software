@@ -22,3 +22,6 @@
 [submodule "lib/BLiMS"]
 	path = lib/BLiMS
 	url = git@github.com:cornellrocketryteam/BLiMS.git
+[submodule "lib/ADS1015-Pico"]
+	path = lib/ADS1015-Pico
+	url = git@github.com:cornellrocketryteam/ADS1015-Pico.git
