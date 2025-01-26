@@ -205,6 +205,9 @@ private:
      * Tracks the number of cycles over which to log data in this mode.
      */
     uint16_t log_cycle_count = 0;
+
+    // Data to send to the blims module
+    BLIMSDataIn data_in = {0, 0, 0, 0, 0};
 };
 
 /**

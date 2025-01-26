@@ -220,6 +220,8 @@ void StartupMode::execute() {
             }
         }
     }
+
+    modules::blims.begin(MVP_Flight);
 }
 
 void StartupMode::transition() {
@@ -336,4 +338,5 @@ void MainDeployedMode::execute() {
         log_cycle_count++;
     }
     FlightMode::execute();
+    // blims_data = blims.execute();
 }

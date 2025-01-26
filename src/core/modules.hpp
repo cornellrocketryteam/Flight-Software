@@ -1,6 +1,7 @@
 #ifndef MODULES_HPP
 #define MODULES_HPP
 
+#include "blims.hpp"
 #include "bmp388.hpp"
 #include "bno055.hpp"
 #include "lis3dh.hpp"
