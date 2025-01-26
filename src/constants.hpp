@@ -77,6 +77,8 @@ namespace constants {
     constexpr uint32_t interrupt_delay = 750;       // ms
     constexpr uint8_t packet_size = 86;             // bytes
 
+    constexpr BLIMSMode blims_mode = MVP_Flight;
+
 }; // namespace constants
 
 #endif // CONSTANTS_HPP

@@ -207,7 +207,8 @@ private:
     uint16_t log_cycle_count = 0;
 
     // Data to send to the blims module
-    BLIMSDataIn data_in = {0, 0, 0, 0, 0};
+    BLIMSDataIn to_blims_data = {0, 0, 0, 0, 0};
+    BLIMSDataOut blims_data = {0};
 };
 
 /**

@@ -23,7 +23,6 @@ add_definitions(-DLAUNCH)
 # Add source files from src/
 set(SOURCES
     src/main.cpp
-    src/blims/blims.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp
     src/core/state.cpp
@@ -54,6 +53,7 @@ add_custom_target(upload
 
 # Add external libraries
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/RadioLib)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BLiMS)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/no-OS-FatFS-SD-SDIO-SPI-RPi-Pico/src build)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BMP388-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
@@ -70,6 +70,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico
+    ${PROJECT_SOURCE_DIR}/lib/src/BLiMS
 )
 
 # Pull in common dependencies
@@ -84,6 +85,7 @@ target_link_libraries(${PROJECT_NAME}
     BNO055-Pico
     LIS3DH-Pico 
     ublox-MX-Pico
+    BLIMS
 )
 
 # Enable serial over USB
