@@ -19,3 +19,6 @@
 [submodule "lib/ublox-MX-Pico"]
 	path = lib/ublox-MX-Pico
 	url = git@github.com:cornellrocketryteam/ublox-MX-Pico.git
+[submodule "lib/BLiMS"]
+	path = lib/BLiMS
+	url = git@github.com:cornellrocketryteam/BLiMS.git
