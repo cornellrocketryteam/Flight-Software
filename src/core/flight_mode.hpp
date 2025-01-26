@@ -177,6 +177,9 @@ private:
      * Tracks the number of cycles over which to log data in this mode.
      */
     uint16_t log_cycle_count = 0;
+
+    // add comment later
+    BLIMSDataIn data_in = {0, 0, 0, 0, 0};
 };
 
 /**
