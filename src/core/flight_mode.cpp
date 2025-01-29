@@ -125,30 +125,30 @@ void StandbyMode::execute() {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
             mav.open(constants::mav_open_time);
-            printf("LAUNCH LAUNCH LAUNCH\n\n\n");
+            // printf("LAUNCH LAUNCH LAUNCH\n\n\n");
             gpio_put(LED, 0);
             state::flight::launch_commanded = true;
-            printf("before emplace back\n");
+            // printf("before emplace back\n");
             state::flight::events.emplace_back(Event::launch_command_received);
             break;
         case static_cast<char>(Command::mav_open):
             mav.open();
-            printf("MAV OPEN MAV OPEN MAV OPEN\n\n\n");
+            // printf("MAV OPEN MAV OPEN MAV OPEN\n\n\n");
             state::flight::events.emplace_back(Event::mav_command_received);
             break;
         case static_cast<char>(Command::mav_close):
             mav.close();
-            printf("MAV CLOSE MAV CLOSE MAV CLOSE\n\n\n");
+            // printf("MAV CLOSE MAV CLOSE MAV CLOSE\n\n\n");
             state::flight::events.emplace_back(Event::mav_command_received);
             break;
         case static_cast<char>(Command::sv_open):
             sv.open();
-            printf("SV OPEN SV OPEN SV OPEN\n\n\n");
+            // printf("SV OPEN SV OPEN SV OPEN\n\n\n");
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::sv_close):
             sv.close();
-            printf("SV CLOSE SV CLOSE SV CLOSE\n\n\n");
+            // printf("SV CLOSE SV CLOSE SV CLOSE\n\n\n");
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
         case static_cast<char>(Command::clear_card):
@@ -156,7 +156,7 @@ void StandbyMode::execute() {
             state::flight::events.emplace_back(Event::clear_card_command_received);
             break;
         default:
-            printf("COMMAND RECEIVED: %c\n\n\n", (char)c);
+            // printf("COMMAND RECEIVED: %c\n\n\n", (char)c);
             state::flight::events.emplace_back(Event::unknown_command_received);
         }
     }
