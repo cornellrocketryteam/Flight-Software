@@ -338,5 +338,13 @@ void MainDeployedMode::execute() {
         log_cycle_count++;
     }
     FlightMode::execute();
-    blims_data = modules::blims.execute(to_blims_data);
+
+    MainDeployedMode::to_blims_data = {
+        .longitude = 0,
+        .latitude = 0,
+        .speed = 0,
+        .track_angle = 0,
+        .heading = 0,
+    };
+    MainDeployedMode::from_blims_data = modules::blims.execute(to_blims_data);
 }

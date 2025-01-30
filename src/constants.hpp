@@ -1,6 +1,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include "blims.hpp"
 #include <cstdint>
 
 #ifdef VERBOSE

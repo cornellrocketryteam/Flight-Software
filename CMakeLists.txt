@@ -70,7 +70,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/BNO055-Pico
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/ublox-MX-Pico
-    ${PROJECT_SOURCE_DIR}/lib/src/BLiMS
+    ${PROJECT_SOURCE_DIR}/lib/BLiMS/src
 )
 
 # Pull in common dependencies
@@ -85,7 +85,7 @@ target_link_libraries(${PROJECT_NAME}
     BNO055-Pico
     LIS3DH-Pico 
     ublox-MX-Pico
-    BLIMS
+    BLiMS
 )
 
 # Enable serial over USB
