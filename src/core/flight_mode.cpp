@@ -263,6 +263,7 @@ void MainDeployedMode::execute() {
         .heading = 0,
     };
     MainDeployedMode::from_blims_data = blims_obj.execute(to_blims_data);
+    printf("BLiMS Motor Position: %f\n", MainDeployedMode::from_blims_data.motor_position);
     // blims_data = blims.execute();
     // reassign blims vars in fsw_state
 }
