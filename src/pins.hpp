@@ -8,6 +8,8 @@
 #ifndef PINS_HPP
 #define PINS_HPP
 
+#include "hardware/pwm.h"
+
 #define I2C_PORT i2c0
 #define I2C_SDA 12
 #define I2C_SCL 13
@@ -42,6 +44,10 @@
 #define BLIMS_MOTOR 28
 
 #define LED 25
+
+inline const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
+inline const uint sv_slice_num = pwm_gpio_to_slice_num(RELAY);
+inline const uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
 
 /**
  * Initializes all GPIO, I2C, SPI, UART, and PWM pins

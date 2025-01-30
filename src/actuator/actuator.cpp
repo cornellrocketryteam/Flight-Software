@@ -41,7 +41,7 @@ void MAV::close() {
 
 void MAV::set_position(float position) {
     uint16_t dc = (uint16_t)(21845 + position * 21845);
-    pwm_set_chan_level(slice_num, pwm_gpio_to_channel(MAV_SIGNAL), dc);
+    pwm_set_chan_level(mav_slice_num, pwm_gpio_to_channel(MAV_SIGNAL), dc);
 }
 
 int64_t MAV::time_close(alarm_id_t id, void *user_data) {
