@@ -80,7 +80,7 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         sd.begin();
     }
-    blims.begin(MVP_Flight);
+    blims_obj.begin(MVP_Flight);
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
@@ -255,6 +255,14 @@ void MainDeployedMode::execute() {
 
     // }
     FlightMode::execute();
+    MainDeployedMode::to_blims_data = {
+        .longitude = 0,
+        .latitude = 0,
+        .speed = 0,
+        .track_angle = 0,
+        .heading = 0,
+    };
+    MainDeployedMode::from_blims_data = blims_obj.execute(to_blims_data);
     // blims_data = blims.execute();
     // reassign blims vars in fsw_state
 }

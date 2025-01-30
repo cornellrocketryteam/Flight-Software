@@ -8,6 +8,7 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
+#include "modules.hpp"
 #include <cstdint>
 #include <string>
 
@@ -179,7 +180,8 @@ private:
     uint16_t log_cycle_count = 0;
 
     // add comment later
-    BLIMSDataIn data_in = {0, 0, 0, 0, 0};
+    BLIMSDataIn to_blims_data = {0, 0, 0, 0, 0};
+    BLIMSDataOut from_blims_data = {0};
 };
 
 /**

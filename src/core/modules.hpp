@@ -14,6 +14,7 @@
 #include "sd.hpp"
 #include "sensor.hpp"
 #include "telem.hpp"
+
 extern Altimeter altimeter;
 extern GPS gps;
 extern Accel accel;
@@ -30,6 +31,6 @@ extern MAV mav;
 extern SV sv;
 extern SSA ssa;
 
-extern BLIMS blims;
+extern BLIMS blims_obj;
 
 #endif // MODULES_HPP

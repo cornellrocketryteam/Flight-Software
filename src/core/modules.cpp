@@ -23,4 +23,4 @@ MAV mav;
 SV sv;
 SSA ssa;
 
-BLIMS blims;
+BLIMS blims_obj;
