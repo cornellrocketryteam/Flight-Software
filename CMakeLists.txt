@@ -17,8 +17,9 @@ add_compile_options(
     -Wno-unused-function
 )
 
-# add_definitions(-DVERBOSE)
+add_definitions(-DVERBOSE)
 add_definitions(-DLAUNCH)
+add_definitions(-DSIM)
 
 # Add source files from src/
 set(SOURCES
