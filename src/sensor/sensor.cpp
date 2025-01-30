@@ -56,6 +56,9 @@ void Altimeter::read_altitude() {
             // to_mode(state::flight::fault);
         }
     }
+#ifdef SIM
+    state::alt::altitude = sim_data.get_alt();
+#endif
 }
 
 GPS::GPS() : gnss(I2C_PORT) {};

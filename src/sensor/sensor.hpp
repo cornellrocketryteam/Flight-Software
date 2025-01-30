@@ -16,7 +16,7 @@
 #include "ublox_mx.hpp"
 #include <vector>
 #ifdef SIM
-#include "hitl.hpp"
+#include "sim_data.hpp"
 #endif
 
 class Sensor {
@@ -34,11 +34,12 @@ public:
     void read_altitude();
 
 private:
-#ifndef SIM
-    BMP388 alt;
-#else
-    HITL alt;
+#ifdef SIM
+    SimData sim_data;
 #endif
+    // TODO: Change
+    BMP388 alt;
+
     float pressure;
     const float alpha = 0.1;
 };
