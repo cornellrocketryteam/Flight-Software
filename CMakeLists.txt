@@ -20,7 +20,7 @@ add_compile_options(
 
 add_definitions(-DVERBOSE)
 # add_definitions(-DLAUNCH)
-# add_definitions(-DSIM)
+add_definitions(-DSIM)
 
 # Set custom USB product descriptor
 add_definitions(-DUSBD_PRODUCT="FSW Pico")
@@ -43,7 +43,7 @@ set(SOURCES
 
 # Add source files from sim/
 set(SIM
-    sim/hitl.cpp
+    sim/sim_data.cpp
 )
 
 # Add all executables
