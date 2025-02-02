@@ -1,11 +1,15 @@
 #include "flight_mode.hpp"
-// #include "../../sim/sim_data.hpp"
+#ifdef SIM
+#include "../../sim/sim_data.hpp"
+#endif
 #include "../constants.hpp"
 #include "../pins.hpp"
 #include "hardware/gpio.h"
 #include "modules.hpp"
 #include "state.hpp"
-// SimData sim_data;
+#ifdef SIM
+SimData sim_data;
+#endif
 
 void FlightMode::execute() {
     if (!state::alt::status == OFF) {
@@ -13,7 +17,9 @@ void FlightMode::execute() {
         ret = modules::altimeter.read_pressure(&state::alt::pressure);
         check_sensor(ALT);
     }
-    // state::alt::altitude = sim_data.get_alt();
+#ifdef SIM
+    state::alt::altitude = sim_data.get_alt();
+#endif
 
     if (!state::gps::status == OFF) {
         ret = modules::gps.read_data(&state::gps::data);
@@ -55,7 +61,9 @@ void FlightMode::execute() {
         );
         check_sensor(ACCEL);
     }
-    // state::accel::accel_z = sim_data.get_accel();
+#ifdef SIM
+    state::accel::accel_z = sim_data.get_accel();
+#endif
 
     if (state::rfm::init) {
         modules::rfm.transmit();
