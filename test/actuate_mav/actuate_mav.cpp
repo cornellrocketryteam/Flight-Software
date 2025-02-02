@@ -30,9 +30,6 @@ int main() {
         set_position(0.0);
         sleep_ms(5000);
 
-        set_position(0.5);
-        sleep_ms(5000);
-
         set_position(1.0);
         sleep_ms(5000);
     }

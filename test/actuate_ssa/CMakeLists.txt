@@ -16,6 +16,8 @@ add_compile_options(
     -Wno-unused-function
 )
 
+# add_definitions(-DVERBOSE)
+
 add_executable(${PROJECT_NAME}
     ${PROJECT_NAME}.cpp
 )
@@ -29,6 +31,7 @@ target_include_directories(${PROJECT_NAME}
 target_link_libraries(${PROJECT_NAME}
     pico_stdlib 
     hardware_gpio
+    hardware_pwm
 )
 
 # Enable serial over USB

@@ -19,13 +19,17 @@ enum class Chute : uint8_t {
 int64_t callback(alarm_id_t id, void *user_data) {
     Chute chute = static_cast<Chute>(reinterpret_cast<uintptr_t>(user_data));
     gpio_put(static_cast<uint8_t>(chute), 0);
+#ifdef VERBOSE
     printf("Ematch set LOW\n");
+#endif
     return 0;
 }
 
 void trigger(Chute chute) {
     gpio_put(static_cast<uint8_t>(chute), 1);
+#ifdef VERBOSE
     printf("Ematch set HIGH\n");
+#endif
     add_alarm_in_ms(constants::ematch_threshold, callback, reinterpret_cast<void *>(static_cast<uintptr_t>(chute)), true);
 }
 
@@ -38,10 +42,12 @@ int main() {
     gpio_set_dir(SSA_DROGUE, GPIO_OUT);
     gpio_set_dir(SSA_MAIN, GPIO_OUT);
 
+#ifdef VERBOSE
     while (!tud_cdc_connected()) {
         sleep_ms(500);
     }
     printf("Connected\n");
+#endif
 
     sleep_ms(10000);
     trigger(Chute::drogue);
