@@ -10,6 +10,7 @@
 
 // clang-format off
 #include "flight_mode.hpp"
+#include "ublox_nav_pvt.hpp"
 #include "sensor.hpp"
 #include "constants.hpp"
 #include "sd.hpp"
@@ -78,7 +79,7 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern bool valid;
-        extern gnss_data_t data;
+        extern UbxNavPvt data;
     } // namespace gps
     namespace imu {
         extern enum SensorState status;

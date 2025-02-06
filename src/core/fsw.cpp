@@ -20,9 +20,9 @@ void Flight::execute() {
     logf("Temperature (C): %.3f\n\n", state::alt::temp);
 
     logf("GPS: %d, Message: %d ---- ", state::gps::status, state::gps::data.valid);
-    logf("Latitude: %f\n%s", state::gps::data.latitude, SPACER);
-    logf("Longitude: %f\n%s", state::gps::data.longitude, SPACER);
-    logf("Num Satellites: %d\n\n", state::gps::data.num_satellites);
+    logf("Latitude: %f\n%s", state::gps::data.lat, SPACER);
+    logf("Longitude: %f\n%s", state::gps::data.lon, SPACER);
+    logf("Num Satellites: %d\n\n", state::gps::data.numSV);
 
     logf("IMU: %d ---------------- ", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n%s", state::imu::gyro_x, SPACER);

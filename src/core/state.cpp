@@ -60,7 +60,7 @@ namespace state {
         uint8_t failed_reads = 0;
 
         bool valid = false;
-        gnss_data_t data;
+        UbxNavPvt data = {};
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;
