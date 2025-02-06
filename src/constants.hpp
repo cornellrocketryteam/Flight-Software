@@ -96,7 +96,7 @@ namespace constants {
     constexpr uint8_t channel_pt4 = 2;
     constexpr uint8_t channel_rtd = 1;
 
-    constexpr uint mav_open_time = 15000;           // ms
+    constexpr uint mav_open_time = 7500;            // ms
 
     constexpr float arming_altitude = 1526;         // meters
     constexpr float main_deploy_altitude = 260;     // meters
@@ -113,13 +113,6 @@ namespace constants {
 
     constexpr uint8_t rfm_packet_size = 103;        // bytes
     constexpr uint8_t umb_packet_size = 24;         // bytes
-
-    // BLIMS Constants
-    constexpr float brake_alt = 10; // To be updated for when we want BLiMS to brake
-    constexpr uint32_t initial_hold_threshold = 10000;
-    constexpr uint32_t turn_hold_threshold = 5000;
-    constexpr uint32_t neutral_hold_threshold = 2000;
-    constexpr float neutral_pos = 0.5;
 
 }; // namespace constants
 

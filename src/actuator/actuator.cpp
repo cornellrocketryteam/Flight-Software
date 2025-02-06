@@ -45,6 +45,8 @@ void MAV::set_position(float position) {
 }
 
 int64_t MAV::time_close(alarm_id_t id, void *user_data) {
+    state::mav::open = false;
+    pwm_set_chan_level(mav_slice_num, pwm_gpio_to_channel(MAV_SIGNAL), 21845);
     return 0;
 }
 
