@@ -56,9 +56,9 @@ bool SD::log() {
         + std::to_string(state::alt::pressure) + ","
 
         + std::to_string(state::gps::status) + ","
-        + state::gps::data.latitude + ","
-        + state::gps::data.longitude + ","
-        + state::gps::data.num_satellites + ","
+        + std::to_string(state::gps::data.lat) + ","
+        + std::to_string(state::gps::data.lon) + ","
+        + std::to_string(state::gps::data.numSV) + ","
 
         + std::to_string(state::imu::status) + ","
         + std::to_string(state::imu::gyro_x) + ","

@@ -1,6 +1,5 @@
 #include "state.hpp"
 #include "../pins.hpp"
-
 #include <stdint.h>
 
 class FlightMode;
@@ -52,8 +51,8 @@ namespace state {
         bool failed_init = false;
         uint8_t failed_reads = 0;
 
-        gnss_data_t data = {};
-
+        // gnss_data_t data = {};
+        UbxNavPvt data = {};
     } // namespace gps
     namespace imu {
         enum SensorState status = OFF;

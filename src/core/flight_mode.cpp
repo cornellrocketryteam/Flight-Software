@@ -22,7 +22,7 @@ void FlightMode::execute() {
 #endif
 
     if (!state::gps::status == OFF) {
-        ret = modules::gps.read_data(&state::gps::data);
+        ret = modules::gps.read_PVT_data(&state::gps::data);
         check_sensor(GPS);
     }
 
@@ -181,7 +181,7 @@ void StartupMode::execute() {
         state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
     }
     if (state::gps::status == OFF) {
-        if (modules::gps.begin()) {
+        if (modules::gps.begin_PVT(40)) {
             state::gps::status = VALID;
         } else {
             if (!state::gps::failed_init) {

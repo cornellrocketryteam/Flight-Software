@@ -4,6 +4,8 @@
 // clang-format off
 #include "flight_mode.hpp"
 #include "../constants.hpp"
+#include "ublox_nav_pvt.hpp"
+
 #include <stdint.h>
 #include <vector>
 // clang-format on
@@ -67,7 +69,7 @@ namespace state {
         extern bool failed_init;
         extern uint8_t failed_reads;
 
-        extern gnss_data_t data;
+        extern UbxNavPvt data;
 
     } // namespace gps
     namespace imu {
