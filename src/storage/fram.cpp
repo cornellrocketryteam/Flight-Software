@@ -7,6 +7,7 @@
 
 #include "fram.hpp"
 #include "hardware/watchdog.h"
+#include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
 
@@ -18,6 +19,8 @@ bool FRAM::begin() {
         load(Data::boot_count);
         load(Data::old_mode);
         load(Data::watchdog_boot_count);
+        load(Data::mav_state);
+        load(Data::sv_state);
 
         state::flight::boot_count++;
         store(Data::boot_count);
@@ -30,6 +33,15 @@ bool FRAM::begin() {
         if (state::flight::old_mode > 1) {
             load(Data::ref_pressure);
         }
+
+        if (state::mav::open) {
+            mav.open();
+        }
+
+        if (!state::sv::open) {
+            sv.close();
+        }
+
         return true;
     } else {
         state::flight::events.emplace_back(Event::fram_init_fail);
@@ -78,6 +90,22 @@ void FRAM::load(Data data) {
         }
         break;
     }
+    case Data::mav_state: {
+        uint8_t mav_state;
+        if (fram.read_bytes(static_cast<uint8_t>(Data::mav_state), &mav_state, 1)) {
+            state::mav::open = (bool)mav_state;
+            return;
+        }
+        break;
+    }
+    case Data::sv_state: {
+        uint8_t sv_state;
+        if (fram.read_bytes(static_cast<uint8_t>(Data::sv_state), &sv_state, 1)) {
+            state::sv::open = (bool)sv_state;
+            return;
+        }
+        break;
+    }
     default:
         break;
     }
@@ -102,7 +130,6 @@ void FRAM::store(Data data) {
         if (fram.write_bytes(static_cast<uint8_t>(Data::watchdog_boot_count), &state::flight::watchdog_boot_count, 1)) {
             return;
         }
-
         break;
     case Data::alt_armed:
         if (fram.write_bytes(static_cast<uint8_t>(Data::alt_armed), reinterpret_cast<uint8_t *>(&state::flight::alt_armed), 1)) {
@@ -111,6 +138,16 @@ void FRAM::store(Data data) {
         break;
     case Data::ref_pressure:
         if (fram.write_bytes(static_cast<uint8_t>(Data::ref_pressure), reinterpret_cast<uint8_t *>(&state::alt::ref_pressure), 4)) {
+            return;
+        }
+        break;
+    case Data::mav_state:
+        if (fram.write_bytes(static_cast<uint8_t>(Data::mav_state), reinterpret_cast<uint8_t *>(&state::mav::open), 1)) {
+            return;
+        }
+        break;
+    case Data::sv_state:
+        if (fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::sv::open), 1)) {
             return;
         }
         break;

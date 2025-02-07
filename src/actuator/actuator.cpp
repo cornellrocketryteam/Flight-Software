@@ -8,6 +8,7 @@
 #include "actuator.hpp"
 #include "constants.hpp"
 #include "hardware/timer.h"
+#include "modules.hpp"
 #include "state.hpp"
 
 // SSA
@@ -26,17 +27,20 @@ int64_t SSA::time_off(alarm_id_t id, void *user_data) {
 // MAV
 
 void MAV::open(uint duration) {
-    state::mav::open = true;
     set_position(1.0);
 
     if (duration) {
         add_alarm_in_ms(duration, time_close, NULL, true);
     }
+
+    state::mav::open = true;
+    fram.store(Data::mav_state);
 }
 
 void MAV::close() {
-    state::mav::open = false;
     set_position(0);
+    state::mav::open = false;
+    fram.store(Data::mav_state);
 }
 
 void MAV::set_position(float position) {
@@ -53,14 +57,16 @@ int64_t MAV::time_close(alarm_id_t id, void *user_data) {
 // SV
 
 void SV::open() {
-    state::sv::open = true;
     pwm_set_gpio_level(RELAY, 0);
+    state::sv::open = true;
+    fram.store(Data::sv_state);
 }
 
 void SV::close() {
-    state::sv::open = false;
     pwm_set_gpio_level(RELAY, 4095);
     add_alarm_in_ms(constants::sv_peak_threshold, hold_pwm, NULL, true);
+    state::sv::open = false;
+    fram.store(Data::sv_state);
 }
 
 int64_t SV::hold_pwm(alarm_id_t id, void *user_data) {
