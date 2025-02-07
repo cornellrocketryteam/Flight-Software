@@ -16,6 +16,8 @@ enum class Data : uint8_t {
     watchdog_boot_count = 3,
     alt_armed = 4,
     ref_pressure = 5,
+    mav_state = 6,
+    sv_state = 7,
     // TODO: PT data during ascent upon SD failure
 };
 

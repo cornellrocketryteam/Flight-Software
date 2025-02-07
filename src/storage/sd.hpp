@@ -19,15 +19,13 @@ class SD {
 public:
     /**
      * Begins the SD card interface by mounting the SD card.
-     * @return True on successful mount, false on mount failure
      */
-    bool begin();
+    void begin();
 
     /**
      * Logs the current state to the SD card.
-     * @return True on successful log, false on file open, write, or close failures
      */
-    bool log();
+    void log();
 
     /**
      * Clears all data from the SD card.

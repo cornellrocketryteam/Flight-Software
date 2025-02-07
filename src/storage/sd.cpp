@@ -11,7 +11,7 @@
 #include <cstdio>
 #include <sstream>
 
-bool SD::begin() {
+void SD::begin() {
     fr = f_mount(&fs, "", 1);
 
     if (fr != FR_OK) {
@@ -19,15 +19,13 @@ bool SD::begin() {
         if (!state::sd::failed_init) {
             state::flight::events.emplace_back(Event::sd_init_fail);
             state::sd::failed_init = true;
+            return;
         }
-        return false;
     }
-
     state::sd::init = true;
-    return true;
 }
 
-bool SD::log() {
+void SD::log() {
     if (writes_count == constants::file_writes_threshold) {
         state::sd::current_file++;
         writes_count = 0;
@@ -84,25 +82,21 @@ bool SD::log() {
 
     if (fr != FR_OK && fr != FR_EXIST) {
         logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
-        return false;
+        state::flight::events.emplace_back(Event::sd_write_fail);
     }
 
     if (f_printf(&log_file, "%s\n", log.c_str()) < 0) {
         logf("SD Print Error: %s (%d)\n", FRESULT_str(fr), fr);
-        return false;
+        state::flight::events.emplace_back(Event::sd_write_fail);
     }
 
     fr = f_close(&log_file);
     if (FR_OK != fr) {
         logf("SD Close Error: %s (%d)\n", FRESULT_str(fr), fr);
-        return false;
+        state::flight::events.emplace_back(Event::sd_write_fail);
     }
 
     writes_count++;
-
-    // logf("SD: Log success\n");
-
-    return true;
 }
 
 bool SD::clear_card() {
@@ -112,6 +106,7 @@ bool SD::clear_card() {
     fr = f_opendir(&dir, "/");
     if (fr != FR_OK && fr != FR_EXIST) {
         logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
+        state::flight::events.emplace_back(Event::sd_write_fail);
         return false;
     }
 
@@ -123,6 +118,7 @@ bool SD::clear_card() {
         fr = f_unlink(fno.fname);
         if (fr != FR_OK) {
             logf("SD Delete Error: Failed to delete %s\n", fno.fname);
+            state::flight::events.emplace_back(Event::sd_write_fail);
             return false;
         }
     }
