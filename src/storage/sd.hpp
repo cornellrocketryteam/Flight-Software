@@ -11,6 +11,7 @@
 #include "f_util.h"
 #include "ff.h"
 #include "hw_config.h"
+#include <sstream>
 
 /**
  * Container for SD card-related functionality.
@@ -34,6 +35,11 @@ public:
     bool clear_card();
 
 private:
+    /**
+     * The string to which all logged data will be appended
+     */
+    std::string data;
+
     /**
      * Tracks the number of writes made to the current log file. Resets upon hitting
      * the file writes threshold.

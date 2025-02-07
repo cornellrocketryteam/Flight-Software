@@ -100,6 +100,7 @@ namespace constants {
 
     constexpr float arming_altitude = 1526;         // meters
     constexpr float main_deploy_altitude = 260;     // meters
+    constexpr uint8_t max_failed_writes = 20;
     constexpr uint8_t max_failed_reads = 10;
 
     constexpr uint8_t ematch_threshold = 200;       // ms
