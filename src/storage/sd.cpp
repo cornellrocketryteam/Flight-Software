@@ -30,6 +30,8 @@ void SD::log() {
         writes_count = 0;
     }
 
+    data.clear();
+
     // clang-format off
     data += std::to_string(state::flight::timestamp) + ","
          + std::to_string(state::flight::cycle_count) + ","
