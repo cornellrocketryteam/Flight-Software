@@ -85,6 +85,9 @@ void StartupMode::execute() {
     if (state::alt::status == VALID) {
         altimeter.update_ref_pressure();
     }
+#ifdef LAUNCH
+    umb.transmit();
+#endif
 }
 
 void StartupMode::transition() {
@@ -94,7 +97,8 @@ void StartupMode::transition() {
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID) {
             // Transition to Fault Mode if the altimeter is non-operational
-            to_mode(state::flight::fault);
+            // to_mode(state::flight::fault);
+            to_mode(state::flight::standby); // TODO Change
         } else {
             // Transition to Standby Mode otherwise
             to_mode(state::flight::standby);
