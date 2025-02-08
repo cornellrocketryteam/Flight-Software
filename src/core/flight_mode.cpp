@@ -348,11 +348,23 @@ void MainDeployedMode::execute() {
     FlightMode::execute();
 
     MainDeployedMode::to_blims_data = {
-        .longitude = 0,
-        .latitude = 0,
-        .speed = 0,
-        .track_angle = 0,
-        .heading = 0,
+                                        // in future: let's send gps struct
+        .lon = state::gps::data.lon,
+        .lat = state::gps::data.lat,
+        .hAcc = state::gps::data.hAcc,
+        .vAcc = state::gps::data.vAcc,
+        .velN = state::gps::data.velN,
+        .velE = state::gps::data.velE,
+        .velD = state::gps::data.velD,
+        .gSpeed = state::gps::data.gSpeed,
+        .headMot = state::gps::data.headMot,
+        .sAcc = state::gps::data.sAcc,
+        .headAcc = state::gps::data.headAcc
+
     };
     MainDeployedMode::from_blims_data = modules::blims.execute(to_blims_data);
+    // save motor position in fsw
+    state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
+
+    // hi
 }

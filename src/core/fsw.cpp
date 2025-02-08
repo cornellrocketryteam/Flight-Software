@@ -12,9 +12,18 @@ void Flight::execute() {
     logf("Pressure (hPa): %.3f\n\n", state::alt::pressure);
 
     logf("GPS: %d, Message: %d\n", state::gps::status, state::gps::data.valid);
-    logf("Latitude: %d\n", state::gps::data.lat);
-    logf("Longitude: %d\n", state::gps::data.lon);
     logf("Num Satellites: %d\n\n", state::gps::data.numSV);
+    logf("Longitude: %d\n", state::gps::data.lon);
+    logf("Latitude: %d\n", state::gps::data.lat);
+    logf("Horizontal Acc. Est.: %d\n", state::gps::data.hAcc);
+    logf("Vertical Acc. Est.: %d\n", state::gps::data.vAcc);
+    logf("North Velocity: %d\n", state::gps::data.velN);
+    logf("East Velocity: %d\n", state::gps::data.velE);
+    logf("Down Velocity: %d\n", state::gps::data.velD);
+    logf("Ground Speed: %d\n", state::gps::data.gSpeed);
+    logf("Heading of Motion: %d\n", state::gps::data.headMot);
+    logf("Speed Acc. Est: %d\n", state::gps::data.sAcc);
+    logf("Heading Accuracy: %d\n", state::gps::data.headAcc);
 
     logf("IMU: %d\n", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n", state::imu::gyro_x);
@@ -38,7 +47,7 @@ void Flight::execute() {
     logf("Accel Y (G): %.3f\n", state::accel::accel_y);
     logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
 
-    // logf("BLiMS: %f\n\n", state::blims::motor_position);
+    logf("BLiMS: %f\n\n", state::blims::motor_position);
 
     logf("SD: %d\n", state::sd::init);
     logf("RFM: %d\n\n", state::rfm::init);
