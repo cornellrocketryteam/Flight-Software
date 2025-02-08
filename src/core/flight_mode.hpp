@@ -194,8 +194,8 @@ public:
      * Checks for commands in addition to sensor reading.
      */
     void execute() override;
-    
-    /**
+
+        /**
      * Flight functionality is disabled. No transition criteria.
      */
     void transition() {};

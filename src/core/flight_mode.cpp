@@ -257,7 +257,7 @@ void MainDeployedMode::execute() {
 
 void FaultMode::execute() {
     FlightMode::execute();
-    
+
     check_command();
 
 #ifdef LAUNCH
