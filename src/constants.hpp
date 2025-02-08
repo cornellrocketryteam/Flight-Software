@@ -54,7 +54,7 @@ namespace constants {
     constexpr uint8_t cycle_time = 50;              // ms
 
     constexpr float arming_altitude = 305;          // meters
-    constexpr float main_deploy_altitude = 366;     // meters
+    constexpr float main_deploy_altitude = 610;     // meters
     constexpr uint8_t max_failed_reads = 10;
 
     constexpr float accel_threshold = 4;            // G
