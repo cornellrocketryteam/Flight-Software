@@ -15,11 +15,8 @@ void SD::begin() {
 
     if (fr != FR_OK) {
         logf("SD Mount Error: %s (%d)\n", FRESULT_str(fr), fr);
-        if (!state::sd::failed_init) {
-            state::flight::events.emplace_back(Event::sd_init_fail);
-            state::sd::failed_init = true;
-            return;
-        }
+        state::flight::events.emplace_back(Event::sd_init_fail);
+        return;
     }
     state::sd::init = true;
 }

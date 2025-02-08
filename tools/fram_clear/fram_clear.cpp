@@ -44,5 +44,9 @@ int main() {
         printf("Error: FRAM clear unsuccessful\n");
     }
 
+    uint8_t sv_on = 1;
+
+    fram.write_bytes(10, &sv_on, 1);
+
     return 0;
 }

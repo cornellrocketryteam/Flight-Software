@@ -106,7 +106,6 @@ namespace state {
     } // namespace adc
     namespace sd {
         bool init = false;
-        bool failed_init = false;
         uint8_t failed_writes = 0;
 
         int current_file = 0;

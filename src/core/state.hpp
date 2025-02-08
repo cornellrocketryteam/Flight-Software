@@ -125,7 +125,6 @@ namespace state {
     } // namespace adc
     namespace sd {
         extern bool init;
-        extern bool failed_init;
         extern uint8_t failed_writes;
 
         extern int current_file;
