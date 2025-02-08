@@ -44,6 +44,12 @@ public:
      * A verbose name for debugging purposes.
      */
     virtual std::string name() = 0;
+
+protected:
+    /**
+     * Checks the umbilical for any incoming commands.
+     */
+    void check_command();
 };
 
 /**
@@ -184,6 +190,11 @@ private:
  */
 class FaultMode : public FlightMode {
 public:
+    /**
+     * Checks for commands in addition to sensor reading.
+     */
+    void execute() override;
+    
     /**
      * Flight functionality is disabled. No transition criteria.
      */
