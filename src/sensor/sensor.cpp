@@ -134,6 +134,11 @@ void IMU::read_gyro() {
             &state::imu::gyro_y,
             &state::imu::gyro_z
         )) {
+        if (state::imu::status == INVALID) {
+            state::imu::status = VALID;
+        }
+    } else {
+        failed_read();
     }
 }
 
@@ -143,6 +148,11 @@ void IMU::read_accel() {
             &state::imu::accel_y,
             &state::imu::accel_z
         )) {
+        if (state::imu::status == INVALID) {
+            state::imu::status = VALID;
+        }
+    } else {
+        failed_read();
     }
 }
 
@@ -152,6 +162,11 @@ void IMU::read_orientation() {
             &state::imu::orientation_y,
             &state::imu::orientation_z
         )) {
+        if (state::imu::status == INVALID) {
+            state::imu::status = VALID;
+        }
+    } else {
+        failed_read();
     }
 }
 
@@ -161,6 +176,20 @@ void IMU::read_gravity() {
             &state::imu::gravity_y,
             &state::imu::gravity_z
         )) {
+        if (state::imu::status == INVALID) {
+            state::imu::status = VALID;
+        }
+    } else {
+        failed_read();
+    }
+}
+
+void IMU::failed_read() {
+    state::imu::failed_reads++;
+    state::imu::status = INVALID;
+    state::flight::events.emplace_back(Event::imu_read_fail);
+    if (state::imu::failed_reads >= constants::max_failed_reads) {
+        state::imu::status = OFF;
     }
 }
 

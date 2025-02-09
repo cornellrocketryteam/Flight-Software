@@ -73,6 +73,7 @@ public:
     void read_gravity();
 
 private:
+    void failed_read();
     BNO055 imu;
 };
 
