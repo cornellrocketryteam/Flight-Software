@@ -362,7 +362,12 @@ void MainDeployedMode::execute() {
         .headAcc = state::gps::data.headAcc
 
     };
-    MainDeployedMode::from_blims_data = modules::blims.execute(to_blims_data);
+    MainDeployedMode::from_blims_data = modules::blims.execute(&to_blims_data);
+    // pointers -> keeps data same size
+    // takes two params = *to_blimsdata, *from_blims_data
+    // function returns void
+    // alter motor position by using address passeed in within blims module
+
     // save motor position in fsw
     state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
 
