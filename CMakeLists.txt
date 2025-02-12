@@ -17,9 +17,9 @@ add_compile_options(
     -Wno-unused-function
 )
 
-add_definitions(-DVERBOSE)
-# add_definitions(-DLAUNCH)
-add_definitions(-DSIM)
+add_definitions(-DVERBOSE) #when you want to see data printed out, when on, won't start until serial monitor connected
+# add_definitions(-DLAUNCH) # only for launch 
+add_definitions(-DSIM) # when running sim, should be uncommented
 
 # Add source files from src/
 set(SOURCES
