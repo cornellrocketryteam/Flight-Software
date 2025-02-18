@@ -133,6 +133,8 @@ namespace state {
     namespace fram {
         extern bool init;
 
+        extern uint16_t pt_index;
+
     } // namespace fram
     namespace rfm {
         extern bool init;

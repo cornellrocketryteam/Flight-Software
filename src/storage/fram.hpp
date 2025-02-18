@@ -18,7 +18,8 @@ enum class Data : uint8_t {
     ref_pressure = 5,
     mav_state = 9,
     sv_state = 10,
-    // TODO: PT data during ascent upon SD failure
+    pt_index = 11,
+    pt = 13
 };
 
 class FRAM {

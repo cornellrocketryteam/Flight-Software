@@ -106,6 +106,13 @@ void FRAM::load(Data data) {
         }
         break;
     }
+    case Data::pt_index: {
+        uint8_t pt_index[2];
+        if (fram.read_bytes(static_cast<uint8_t>(Data::pt_index), pt_index, 2)) {
+            state::fram::pt_index = (pt_index[1] << 8) | pt_index[0];
+            return;
+        }
+    }
     default:
         break;
     }
@@ -151,6 +158,23 @@ void FRAM::store(Data data) {
             return;
         }
         break;
+    case Data::pt: {
+        // Write PT3 and PT4 values
+        if (!fram.write_bytes(state::fram::pt_index, reinterpret_cast<uint8_t *>(&state::adc::pressure_pt3), 4)) {
+            state::flight::events.emplace_back(Event::fram_rw_fail);
+        }
+        if (!fram.write_bytes(state::fram::pt_index + sizeof(float), reinterpret_cast<uint8_t *>(&state::adc::pressure_pt4), 4)) {
+            state::flight::events.emplace_back(Event::fram_rw_fail);
+        }
+
+        // Update PT index in both state and FRAM
+        state::fram::pt_index += 2 * sizeof(float);
+        if (!fram.write_bytes(static_cast<uint8_t>(Data::pt_index), reinterpret_cast<uint8_t *>(&state::fram::pt_index), 2)) {
+            state::flight::events.emplace_back(Event::fram_rw_fail);
+        }
+
+        return;
+    }
     default:
         break;
     }

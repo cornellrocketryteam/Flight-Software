@@ -192,6 +192,11 @@ void AscentMode::execute() {
         state::flight::alt_armed = true;
         state::flight::events.emplace_back(Event::alt_armed);
     }
+
+    // Write PT data to FRAM upon SD failure
+    if (!state::sd::init) {
+        fram.store(Data::pt);
+    }
 }
 
 void AscentMode::transition() {

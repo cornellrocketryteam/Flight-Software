@@ -6,6 +6,7 @@
  */
 
 #include "state.hpp"
+#include "fram.hpp"
 #include "pins.hpp"
 
 class FlightMode;
@@ -113,6 +114,8 @@ namespace state {
     } // namespace sd
     namespace fram {
         bool init = false;
+
+        uint16_t pt_index = static_cast<uint8_t>(Data::pt_index);
 
     } // namespace fram
     namespace rfm {
