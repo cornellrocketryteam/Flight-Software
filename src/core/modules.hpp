@@ -9,6 +9,7 @@
 #define MODULES_HPP
 
 #include "actuator.hpp"
+#include "blims.hpp"
 #include "fram.hpp"
 #include "sd.hpp"
 #include "sensor.hpp"
@@ -29,5 +30,7 @@ extern Umbilical umb;
 extern MAV mav;
 extern SV sv;
 extern SSA ssa;
+
+extern BLIMS blims_obj;
 
 #endif // MODULES_HPP

@@ -62,6 +62,8 @@ void Flight::execute() {
     logf("MAV: %d%s", state::mav::open, "                  ");
     logf("SV: %d\n\n", state::sv::open);
 
+    logf("BLiMS: %f\n\n", state::blims::motor_position);
+
     cycle_start = to_ms_since_boot(get_absolute_time());
 
     // Execute the current flight mode

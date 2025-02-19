@@ -8,6 +8,7 @@
 #ifndef FLIGHT_MODE_HPP
 #define FLIGHT_MODE_HPP
 
+#include "modules.hpp"
 #include <cstdint>
 #include <string>
 
@@ -183,6 +184,10 @@ private:
      * Tracks the number of cycles over which to log data in this mode.
      */
     uint16_t log_cycle_count = 0;
+
+    // Data to send to the blims module
+    BLIMSDataIn to_blims_data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+    BLIMSDataOut from_blims_data = {0}; // will fix to
 };
 
 /**

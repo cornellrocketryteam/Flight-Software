@@ -118,6 +118,8 @@ void StartupMode::execute() {
         sd.begin();
     }
 
+    blims_obj.begin(constants::blims_mode);
+
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
         altimeter.update_ref_pressure();
@@ -256,6 +258,30 @@ void MainDeployedMode::execute() {
     }
 
     FlightMode::execute();
+
+    MainDeployedMode::to_blims_data = {
+                                        // in future: let's send gps struct
+        .lon = state::gps::data.lon,
+        .lat = state::gps::data.lat,
+        .hAcc = state::gps::data.hAcc,
+        .vAcc = state::gps::data.vAcc,
+        .velN = state::gps::data.velN,
+        .velE = state::gps::data.velE,
+        .velD = state::gps::data.velD,
+        .gSpeed = state::gps::data.gSpeed,
+        .headMot = state::gps::data.headMot,
+        .sAcc = state::gps::data.sAcc,
+        .headAcc = state::gps::data.headAcc
+
+    };
+    MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);
+    // pointers -> keeps data same size
+    // takes two params = *to_blimsdata, *from_blims_data
+    // function returns void
+    // alter motor position by using address passeed in within blims module
+
+    // save motor position in fsw
+    state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
 }
 
 // Fault Mode

@@ -8,6 +8,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
+#include "blims.hpp"
 #include "pico/stdlib.h"
 
 #ifdef VERBOSE
@@ -114,6 +115,8 @@ namespace constants {
 
     constexpr uint8_t rfm_packet_size = 102;        // bytes
     constexpr uint8_t umb_packet_size = 24;         // bytes
+
+    constexpr BLIMSMode blims_mode = MVP_Flight;
 
 }; // namespace constants
 
