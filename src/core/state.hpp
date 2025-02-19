@@ -24,27 +24,82 @@ enum SensorState {
     INVALID
 };
 
+// struct state {
+//     struct flight {
+//         extern FlightMode *mode;
+//         extern uint32_t cycle_count;
+//         extern uint32_t timestamp;
+
+//         extern bool alt_armed;
+//     };
+//     struct alt {
+//         extern enum SensorState status;
+
+//         extern float altitude;
+//         extern float temp;
+//         extern float ref_pressure;
+//     };
+//     struct gps {
+//         extern enum SensorState status;
+
+//         // TODO struct
+//         extern bool fresh;
+//     };
+//     struct imu {
+//         extern enum SensorState status;
+
+//         extern float accel_x;
+//         extern float accel_y;
+//         extern float accel_z;
+
+//         extern float gyro_x;
+//         extern float gyro_y;
+//         extern float gyro_z;
+
+//         extern float orientation_x;
+//         extern float orientation_y;
+//         extern float orientation_z;
+
+//         extern float gravity_x;
+//         extern float gravity_y;
+//         extern float gravity_z;
+//     };
+//     struct accel {
+//         extern enum SensorState status;
+
+//         extern float accel_x;
+//         extern float accel_y;
+//         extern float accel_z;
+//     };
+//     struct adc {
+//         extern enum SensorState status;
+
+//         extern float pressure_pt3;
+//         extern float pressure_pt4;
+//         extern float temp_rtd;
+//     };
+//     struct sd {
+//         extern bool init;
+//     };
+//     struct fram {
+//         extern bool init;
+//     };
+//     struct actuator {
+//         extern bool mav_open;
+//         extern bool sv_open;
+//     };
+//     struct blims {
+//         extern float motor_position;
+//     };
+// };
+
 /**
  * Container for the current flight state. Contains sensor data,
  * sensor statuses, and flight level data.
  */
 namespace state {
     namespace flight {
-        extern StartupMode startup_class;
-        extern StandbyMode standby_class;
-        extern AscentMode ascent_class;
-        extern DrogueDeployedMode drogue_deployed_class;
-        extern MainDeployedMode main_deployed_class;
-        extern FaultMode fault_class;
-
-        extern FlightMode *startup;
-        extern FlightMode *standby;
-        extern FlightMode *ascent;
-        extern FlightMode *drogue_deployed;
-        extern FlightMode *main_deployed;
-        extern FlightMode *fault;
-
-        extern FlightMode *mode;
+        extern uint8_t mode_id; // TODO enum?
 
         extern uint32_t cycle_count;
         extern uint32_t timestamp;

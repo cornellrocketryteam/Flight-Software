@@ -7,6 +7,7 @@
 
 #include "flight_mode.hpp"
 #include "constants.hpp"
+#include "mode_manager.hpp"
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
@@ -39,13 +40,6 @@ void FlightMode::execute() {
     // Clear this cycle's events
     if (!state::flight::events.empty()) {
         state::flight::events.clear();
-    }
-}
-
-void FlightMode::to_mode(FlightMode *mode) {
-    state::flight::mode = mode;
-    if (state::fram::init) {
-        fram.store(Data::old_mode);
     }
 }
 
@@ -130,15 +124,15 @@ void StartupMode::execute() {
 void StartupMode::transition() {
     if (state::flight::old_mode == 5) {
         // Transition to Fault Mode if we faulted in the last boot
-        to_mode(state::flight::fault);
+        manager.to_mode(5);
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID) {
             // Transition to Fault Mode if the altimeter is non-operational
             // to_mode(state::flight::fault);
-            to_mode(state::flight::standby); // TODO Change
+            manager.to_mode(1); // TODO Change
         } else {
             // Transition to Standby Mode otherwise
-            to_mode(state::flight::standby);
+            manager.to_mode(1);
         }
     }
 }
@@ -169,16 +163,16 @@ void StandbyMode::execute() {
 void StandbyMode::transition() {
     // Transition to Ascent Mode if launch was commanded through the umbilical
     if (state::flight::launch_commanded) {
-        to_mode(state::flight::ascent);
+        manager.to_mode(2);
     }
     // Transition to Fault Mode if the umbilical is disconnected
     else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
         sv.open();
-        to_mode(state::flight::fault);
+        manager.to_mode(5);
     }
     // Transition to Startup Mode if the arming key was turned off
     else if (!state::flight::key_armed) {
-        to_mode(state::flight::startup);
+        manager.to_mode(0);
     }
 }
 
@@ -221,7 +215,7 @@ void AscentMode::transition() {
         if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
             filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             ssa.trigger(Chute::drogue);
-            to_mode(state::flight::drogue_deployed);
+            manager.to_mode(3);
         }
     }
 }
@@ -238,7 +232,7 @@ void DrogueDeployedMode::transition() {
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         ssa.trigger(Chute::main);
         sv.open();
-        to_mode(state::flight::main_deployed);
+        manager.to_mode(4);
     }
 }
 

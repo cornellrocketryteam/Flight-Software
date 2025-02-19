@@ -9,26 +9,9 @@
 #include "fram.hpp"
 #include "pins.hpp"
 
-class FlightMode;
-
 namespace state {
     namespace flight {
-        StartupMode startup_class;
-        StandbyMode standby_class;
-        AscentMode ascent_class;
-        DrogueDeployedMode drogue_deployed_class;
-        MainDeployedMode main_deployed_class;
-        FaultMode fault_class;
-
-        FlightMode *startup = &startup_class;
-        FlightMode *standby = &standby_class;
-        FlightMode *ascent = &ascent_class;
-        FlightMode *drogue_deployed = &drogue_deployed_class;
-        FlightMode *main_deployed = &main_deployed_class;
-        FlightMode *fault = &fault_class;
-
-        FlightMode *mode = startup;
-
+        uint8_t mode_id = 0;
         uint32_t cycle_count = 0;
         uint32_t timestamp = 0;
 

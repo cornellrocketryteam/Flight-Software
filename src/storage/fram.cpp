@@ -127,7 +127,7 @@ void FRAM::store(Data data) {
         }
         break;
     case Data::old_mode: {
-        uint8_t mode = state::flight::mode->id();
+        uint8_t mode = state::flight::mode_id;
         if (fram.write_bytes(static_cast<uint8_t>(Data::old_mode), &mode, 1)) {
             return;
         }

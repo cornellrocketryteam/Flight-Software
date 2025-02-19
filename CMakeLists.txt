@@ -31,6 +31,7 @@ set(SOURCES
     src/pins.cpp
     src/core/fsw.cpp
     src/core/flight_mode.cpp
+    src/core/mode_manager.cpp
     src/core/state.cpp
     src/core/modules.cpp
     src/telem/telem.cpp

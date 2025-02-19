@@ -7,6 +7,7 @@
 
 #include "fsw.hpp"
 #include "hardware/watchdog.h"
+#include "mode_manager.hpp"
 
 void Flight::execute() {
 
@@ -65,8 +66,8 @@ void Flight::execute() {
     cycle_start = to_ms_since_boot(get_absolute_time());
 
     // Execute the current flight mode
-    state::flight::mode->execute();
-    state::flight::mode->transition();
+    manager.mode->execute();
+    manager.mode->transition();
 
     // Sleep until the fixed cycle time is reached
     cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;

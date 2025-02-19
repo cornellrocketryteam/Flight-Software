@@ -12,7 +12,7 @@
 
 void Telem::pack_data() {
     metadata = 0;
-    metadata |= (state::flight::mode->id() & 0b111) << 13;
+    metadata |= (state::flight::mode_id & 0b111) << 13;
 
     metadata |= (static_cast<uint8_t>(state::sv::open) & 0b1) << 12;
     metadata |= (static_cast<uint8_t>(state::mav::open) & 0b1) << 11;

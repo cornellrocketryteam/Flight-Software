@@ -29,13 +29,6 @@ public:
     virtual void transition() = 0;
 
     /**
-     * Switches to the specified flight mode and updates
-     * the boot file, if able.
-     * @param mode The flight mode to switch to
-     */
-    void to_mode(FlightMode *mode);
-
-    /**
      * A short integer ID for storage and transmission purposes.
      */
     virtual uint8_t id() = 0;
