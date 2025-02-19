@@ -9,6 +9,14 @@
 #include "pins.hpp"
 #include "state.hpp"
 
+#ifdef SIM
+#include "sim_data.hpp"
+#endif
+
+#ifdef SIM
+SimData sim_data;
+#endif
+
 Altimeter::Altimeter() : alt(I2C_PORT) {}
 
 bool Altimeter::begin() {
@@ -56,6 +64,9 @@ void Altimeter::read_altitude() {
             // to_mode(state::flight::fault);
         }
     }
+#ifdef SIM
+    state::alt::altitude = sim_data.get_alt();
+#endif
 }
 
 GPS::GPS() : gnss(I2C_PORT) {};

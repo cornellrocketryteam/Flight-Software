@@ -43,6 +43,7 @@ set(SOURCES
 
 # Add source files from sim/
 set(SIM
+    sim/sim_data.cpp
     sim/hitl.cpp
 )
 
