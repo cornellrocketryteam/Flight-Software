@@ -33,38 +33,33 @@ enum class Event : uint8_t {
     accel_init_fail = 7,
     accel_read_fail = 8,
 
-    therm_init_fail = 9,
-    therm_read_fail = 10,
+    adc_init_fail = 9,
+    adc_read_fail = 10,
 
-    voltage_init_fail = 11,
-    voltage_read_fail = 12,
+    fram_init_fail = 11,
+    fram_read_fail = 12,
+    fram_write_fail = 13,
 
-    adc_init_fail = 13,
-    adc_read_fail = 14,
+    sd_init_fail = 14,
+    sd_write_fail = 15,
 
-    fram_init_fail = 15,
-    fram_rw_fail = 16,
+    mav_actuated = 16,
+    sv_actuated = 17,
 
-    sd_init_fail = 17,
-    sd_write_fail = 18,
+    main_deploy_wait_end = 18,
+    main_log_shutoff = 19,
+    cycle_overflow = 20,
 
-    mav_actuated = 19,
-    sv_actuated = 20,
+    unknown_command_received = 21,
+    launch_command_received = 22,
+    mav_command_received = 23,
+    sv_command_received = 24,
+    safe_command_received = 25,
+    reset_card_command_received = 26,
+    reset_fram_command_received = 27,
+    state_change_command_received = 28,
 
-    main_deploy_wait_end = 21,
-    main_log_shutoff = 22,
-    cycle_overflow = 23,
-
-    rfm_init_fail = 24,
-    rfm_tx_fail = 25,
-
-    launch_command_received = 26,
-    mav_command_received = 27,
-    sv_command_received = 28,
-    clear_card_command_received = 29,
-    unknown_command_received = 30,
-
-    umbilical_disconnected = 31
+    umbilical_disconnected = 29
 };
 
 enum class Command : char {
@@ -74,7 +69,12 @@ enum class Command : char {
     sv_open = '3',
     sv_close = '4',
 
-    clear_card = '5'
+    safe = '5',
+
+    reset_card = '6',
+    reset_fram = '7',
+
+    // TODO: State change command
 };
 
 /**
@@ -113,7 +113,7 @@ namespace constants {
     constexpr uint16_t main_deploy_wait = 160;      // cycles
     constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
-    constexpr uint8_t rfm_packet_size = 102;        // bytes
+    constexpr uint8_t rfm_packet_size = 106;        // bytes
     constexpr uint8_t umb_packet_size = 24;         // bytes
 
     constexpr BLIMSMode blims_mode = MVP_Flight;

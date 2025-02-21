@@ -76,9 +76,9 @@ void FlightMode::check_command() {
             sv.close();
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
-        case static_cast<char>(Command::clear_card):
+        case static_cast<char>(Command::reset_card):
             sd.clear_card();
-            state::flight::events.emplace_back(Event::clear_card_command_received);
+            state::flight::events.emplace_back(Event::reset_card_command_received);
             break;
         default:
             state::flight::events.emplace_back(Event::unknown_command_received);
