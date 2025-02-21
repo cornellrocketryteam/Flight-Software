@@ -18,9 +18,9 @@ add_compile_options(
     # -O3
 )
 
-# add_definitions(-DVERBOSE)
-add_definitions(-DLAUNCH)
-# add_definitions(-DSIM)
+add_definitions(-DVERBOSE)
+# add_definitions(-DLAUNCH)
+add_definitions(-DSIM)
 
 # Set custom USB product descriptor
 add_definitions(-DUSBD_PRODUCT="FSW Pico")
@@ -44,6 +44,7 @@ set(SOURCES
 
 # Add source files from sim/
 set(SIM
+    sim/sim_data.cpp
     sim/hitl.cpp
 )
 
@@ -68,6 +69,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BNO055-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/ADS1015-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
+add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BLiMS)
 
 # Include project and library headers
 target_include_directories(${PROJECT_NAME}
@@ -88,6 +90,7 @@ target_include_directories(${PROJECT_NAME}
     ${PROJECT_SOURCE_DIR}/lib/LIS3DH-Pico
     ${PROJECT_SOURCE_DIR}/lib/ADS1015-Pico
     ${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico
+    ${PROJECT_SOURCE_DIR}/lib/BLiMS/src
 )
 
 # Pull in common dependencies
@@ -104,6 +107,7 @@ target_link_libraries(${PROJECT_NAME}
     LIS3DH-Pico
     ADS1015-Pico
     MB85RS-Pico
+    BLiMS
 )
 
 # Enable serial over USB

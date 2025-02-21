@@ -70,9 +70,9 @@ void FlightMode::check_command() {
             sv.close();
             state::flight::events.emplace_back(Event::sv_command_received);
             break;
-        case static_cast<char>(Command::clear_card):
+        case static_cast<char>(Command::reset_card):
             sd.clear_card();
-            state::flight::events.emplace_back(Event::clear_card_command_received);
+            state::flight::events.emplace_back(Event::reset_card_command_received);
             break;
         default:
             state::flight::events.emplace_back(Event::unknown_command_received);
@@ -111,6 +111,8 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         sd.begin();
     }
+
+    blims_obj.begin(constants::blims_mode);
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
@@ -250,6 +252,30 @@ void MainDeployedMode::execute() {
     }
 
     FlightMode::execute();
+
+    MainDeployedMode::to_blims_data = {
+                                        // in future: let's send gps struct
+        .lon = state::gps::data.lon,
+        .lat = state::gps::data.lat,
+        .hAcc = state::gps::data.hAcc,
+        .vAcc = state::gps::data.vAcc,
+        .velN = state::gps::data.velN,
+        .velE = state::gps::data.velE,
+        .velD = state::gps::data.velD,
+        .gSpeed = state::gps::data.gSpeed,
+        .headMot = state::gps::data.headMot,
+        .sAcc = state::gps::data.sAcc,
+        .headAcc = state::gps::data.headAcc
+
+    };
+    MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);
+    // pointers -> keeps data same size
+    // takes two params = *to_blimsdata, *from_blims_data
+    // function returns void
+    // alter motor position by using address passeed in within blims module
+
+    // save motor position in fsw
+    state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
 }
 
 // Fault Mode

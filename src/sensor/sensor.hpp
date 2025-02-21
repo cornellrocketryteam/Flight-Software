@@ -34,11 +34,7 @@ public:
     void read_altitude();
 
 private:
-#ifndef SIM
     BMP388 alt;
-#else
-    HITL alt;
-#endif
     float pressure;
     const float alpha = 0.1;
 };

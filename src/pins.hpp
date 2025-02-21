@@ -41,7 +41,7 @@
 #define RELAY 21
 #define MAV_SIGNAL 22
 
-#define BLIMS_MOTOR 28
+#define BLIMS_MOTOR 26
 
 #define LED 25
 
