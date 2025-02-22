@@ -3,6 +3,7 @@
 #define UTIL_HPP
 
 #include "constants.hpp"
+#include "types.hpp"
 
 #ifdef VERBOSE
 #define logf(...) printf(__VA_ARGS__)

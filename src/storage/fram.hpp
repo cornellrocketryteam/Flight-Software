@@ -9,18 +9,7 @@
 #define FRAM_HPP
 
 #include "mb85rs.hpp"
-
-enum class Data : uint8_t {
-    boot_count = 0,
-    old_mode = 2,
-    watchdog_boot_count = 3,
-    alt_armed = 4,
-    ref_pressure = 5,
-    mav_state = 9,
-    sv_state = 10,
-    pt_index = 11,
-    pt = 13
-};
+#include "types.hpp"
 
 class FRAM {
 public:

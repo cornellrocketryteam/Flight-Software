@@ -18,12 +18,6 @@
 #include "util.hpp"
 // clang-format on
 
-enum SensorState {
-    OFF = 0,
-    VALID,
-    INVALID
-};
-
 extern EventBuffer events;
 
 /**
