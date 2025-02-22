@@ -30,7 +30,7 @@ set(SOURCES
     src/main.cpp
     src/pins.cpp
     src/util.cpp
-    src/core/fsw.cpp
+    src/core/flight_loop.cpp
     src/core/flight_mode.cpp
     src/core/mode_manager.cpp
     src/core/state.cpp

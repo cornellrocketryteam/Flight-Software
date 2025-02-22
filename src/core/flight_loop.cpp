@@ -1,11 +1,11 @@
 /**
- * @file fsw.cpp
+ * @file flight_loop.cpp
  * @author csg83
  *
  * @brief The main flight loop
  */
 
-#include "fsw.hpp"
+#include "flight_loop.hpp"
 #include "hardware/watchdog.h"
 #include "mode_manager.hpp"
 

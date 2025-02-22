@@ -1,12 +1,12 @@
 /**
- * @file fsw.hpp
+ * @file flight_loop.hpp
  * @author csg83
  *
  * @brief The main flight loop
  */
 
-#ifndef FSW_HPP
-#define FSW_HPP
+#ifndef FLIGHT_LOOP_HPP
+#define FLIGHT_LOOP_HPP
 
 // clang-format off
 #include "flight_mode.hpp"
@@ -37,4 +37,4 @@ private:
     uint32_t cycle_duration;
 };
 
-#endif // FSW_HPP
+#endif // FLIGHT_LOOP_HPP
