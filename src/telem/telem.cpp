@@ -67,7 +67,6 @@ void RFM::transmit() {
     memcpy(&packet[102], &state::blims::motor_position, sizeof(float));
 
     uart_write_blocking(UART_PORT, (const uint8_t *)packet, constants::rfm_packet_size);
-    sleep_ms(1000);
 }
 
 void Umbilical::transmit() {

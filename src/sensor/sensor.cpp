@@ -218,8 +218,8 @@ bool ADC::begin() {
 
 void ADC::read_data() {
     if (adc.read_data(channels, sizeof(channels), data)) {
-        state::adc::pressure_pt3 = ((float)data[0]) * 1000 / 1667;
-        state::adc::pressure_pt4 = ((float)data[1]) * 1000 / 1667;
+        state::adc::pressure_pt3 = ((float)data[0]) * 1500 / 1667;
+        state::adc::pressure_pt4 = ((float)data[1]) * 1500 / 1667;
         state::adc::temp_rtd = data[2];
     } else {
         state::adc::failed_reads++;

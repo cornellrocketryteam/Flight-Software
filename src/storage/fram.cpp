@@ -34,10 +34,6 @@ bool FRAM::begin() {
             load(Data::ref_pressure);
         }
 
-        if (state::mav::open) {
-            mav.open();
-        }
-
         if (!state::sv::open) {
             sv.close();
         }
