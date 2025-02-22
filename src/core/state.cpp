@@ -6,9 +6,8 @@
  */
 
 #include "state.hpp"
-#include "fram.hpp"
-#include "pins.hpp"
 
 EventBuffer events;
 
 FlightState *state;
+FlightState *storage_state;

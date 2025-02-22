@@ -122,5 +122,6 @@ struct FlightState {
 };
 
 extern FlightState *state;
+extern FlightState *storage_state;
 
 #endif // STATE_HPP
