@@ -19,17 +19,10 @@
 #include "hitl.hpp"
 #endif
 
-class Sensor {
-public:
-    virtual bool begin() = 0;
-
-private:
-};
-
-class Altimeter : Sensor {
+class Altimeter {
 public:
     Altimeter();
-    bool begin() override;
+    void begin();
     void update_ref_pressure();
     void read_altitude();
 
@@ -39,30 +32,30 @@ private:
     const float alpha = 0.1;
 };
 
-class GPS : Sensor {
+class GPS {
 public:
     GPS();
-    bool begin() override;
+    void begin();
     void read_data();
 
 private:
     GNSS gnss;
 };
 
-class Accel : Sensor {
+class Accel {
 public:
     Accel();
-    bool begin() override;
+    void begin();
     void read_accel();
 
 private:
     LIS3DH accel;
 };
 
-class IMU : Sensor {
+class IMU {
 public:
     IMU();
-    bool begin() override;
+    void begin();
     void read_gyro();
     void read_accel();
     void read_orientation();
@@ -73,10 +66,10 @@ private:
     BNO055 imu;
 };
 
-class ADC : Sensor {
+class ADC {
 public:
     ADC();
-    bool begin() override;
+    void begin();
     void read_data();
 
 private:

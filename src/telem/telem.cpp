@@ -6,9 +6,7 @@
  */
 
 #include "telem.hpp"
-#include "pins.hpp"
 #include "state.hpp"
-#include <bitset>
 
 void Telem::pack_data() {
     metadata_bitfield = 0;

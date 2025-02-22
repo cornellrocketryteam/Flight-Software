@@ -19,17 +19,15 @@ SimData sim_data;
 
 Altimeter::Altimeter() : alt(I2C_PORT) {}
 
-bool Altimeter::begin() {
+void Altimeter::begin() {
     if (alt.begin()) {
         state->alt.status = VALID;
         // The first reading of the BMP388 is always garbage
         alt.read_pressure(&state->alt.ref_pressure);
         sleep_ms(100);
         alt.read_pressure(&state->alt.ref_pressure);
-        return true;
     } else {
         events.push(Event::alt_init_fail);
-        return false;
     }
 }
 
@@ -71,13 +69,11 @@ void Altimeter::read_altitude() {
 
 GPS::GPS() : gnss(I2C_PORT) {};
 
-bool GPS::begin() {
+void GPS::begin() {
     if (gnss.begin_PVT(40)) { // TODO: Change to Hz
         state->gps.status = VALID;
-        return true;
     } else {
         events.push(Event::gps_init_fail);
-        return false;
     }
 }
 
@@ -98,13 +94,11 @@ void GPS::read_data() {
 
 Accel::Accel() : accel(I2C_PORT) {}
 
-bool Accel::begin() {
+void Accel::begin() {
     if (accel.begin()) {
         state->accel.status = VALID;
-        return true;
     } else {
         events.push(Event::accel_init_fail);
-        return false;
     }
 }
 
@@ -129,13 +123,11 @@ void Accel::read_accel() {
 
 IMU::IMU() : imu(I2C_PORT) {}
 
-bool IMU::begin() {
+void IMU::begin() {
     if (imu.begin()) {
         state->imu.status = VALID;
-        return true;
     } else {
         events.push(Event::imu_init_fail);
-        return false;
     }
 }
 
@@ -206,13 +198,11 @@ void IMU::failed_read() {
 
 ADC::ADC() : adc(I2C_PORT) {}
 
-bool ADC::begin() {
+void ADC::begin() {
     if (adc.begin()) {
         state->adc.status = VALID;
-        return true;
     } else {
         events.push(Event::adc_init_fail);
-        return false;
     }
 }
 
