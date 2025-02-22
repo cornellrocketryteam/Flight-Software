@@ -13,7 +13,7 @@ void Flight::execute() {
 
     logf("----------------BEGIN LOOP %d----------------\n", state::flight::cycle_count);
     logf("Time: %d ms\n", state::flight::timestamp);
-    // logf("Mode: %s           ", state::flight::mode->name().c_str());
+    logf("Mode: %s           ", state::flight::mode_id);
     logf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     logf("ALTIMETER: %d ---------- ", state::alt::status);
