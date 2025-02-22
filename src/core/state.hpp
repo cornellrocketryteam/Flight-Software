@@ -26,182 +26,101 @@ enum SensorState {
 
 extern EventBuffer events;
 
-// struct state {
-//     struct flight {
-//         extern FlightMode *mode;
-//         extern uint32_t cycle_count;
-//         extern uint32_t timestamp;
-
-//         extern bool alt_armed;
-//     };
-//     struct alt {
-//         extern enum SensorState status;
-
-//         extern float altitude;
-//         extern float temp;
-//         extern float ref_pressure;
-//     };
-//     struct gps {
-//         extern enum SensorState status;
-
-//         // TODO struct
-//         extern bool fresh;
-//     };
-//     struct imu {
-//         extern enum SensorState status;
-
-//         extern float accel_x;
-//         extern float accel_y;
-//         extern float accel_z;
-
-//         extern float gyro_x;
-//         extern float gyro_y;
-//         extern float gyro_z;
-
-//         extern float orientation_x;
-//         extern float orientation_y;
-//         extern float orientation_z;
-
-//         extern float gravity_x;
-//         extern float gravity_y;
-//         extern float gravity_z;
-//     };
-//     struct accel {
-//         extern enum SensorState status;
-
-//         extern float accel_x;
-//         extern float accel_y;
-//         extern float accel_z;
-//     };
-//     struct adc {
-//         extern enum SensorState status;
-
-//         extern float pressure_pt3;
-//         extern float pressure_pt4;
-//         extern float temp_rtd;
-//     };
-//     struct sd {
-//         extern bool init;
-//     };
-//     struct fram {
-//         extern bool init;
-//     };
-//     struct actuator {
-//         extern bool mav_open;
-//         extern bool sv_open;
-//     };
-//     struct blims {
-//         extern float motor_position;
-//     };
-// };
-
 /**
  * Container for the current flight state. Contains sensor data,
  * sensor statuses, and flight level data.
  */
-namespace state {
-    namespace flight {
-        extern uint8_t mode_id; // TODO enum?
+struct FlightState {
+    struct {
+        uint8_t mode_id = 0;
+        uint32_t cycle_count = 0;
+        uint32_t timestamp = 0;
 
-        extern uint32_t cycle_count;
-        extern uint32_t timestamp;
+        bool alt_armed = false;
 
-        extern bool launch_commanded;
+        // TODO: Move these
+        bool key_armed = false;
+        int usb_failed_reads = 0;
+        uint16_t boot_count = 0;
+        uint8_t watchdog_boot_count = 0;
+        int old_mode = -1;
 
-        // TODO: Move from state?
-        extern uint16_t boot_count;
-        extern uint8_t watchdog_boot_count;
-        extern int old_mode;
+        bool launch_commanded = false;
 
-        extern int usb_failed_reads;
+    } flight;
+    struct {
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
 
-        extern bool key_armed;
-        extern bool alt_armed;
+        float altitude = -1;
+        float temp = -1;
+        float ref_pressure = -1;
+    } alt;
+    struct {
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
 
-    } // namespace flight
-    namespace alt {
-        extern enum SensorState status;
-        extern uint8_t failed_reads;
+        // TODO struct
+        bool fresh = false;
+    } gps;
+    struct {
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
 
-        extern float altitude;
-        extern float ref_pressure;
-        extern float temp;
-    } // namespace alt
-    namespace gps {
-        extern enum SensorState status;
-        extern uint8_t failed_reads;
+        float accel_x = -1;
+        float accel_y = -1;
+        float accel_z = -1;
 
-        extern bool valid;
-        extern UbxNavPvt data;
-    } // namespace gps
-    namespace imu {
-        extern enum SensorState status;
-        extern uint8_t failed_reads;
+        float gyro_x = -1;
+        float gyro_y = -1;
+        float gyro_z = -1;
 
-        extern float accel_x;
-        extern float accel_y;
-        extern float accel_z;
+        float orientation_x = -1;
+        float orientation_y = -1;
+        float orientation_z = -1;
 
-        extern float gyro_x;
-        extern float gyro_y;
-        extern float gyro_z;
+        float gravity_x = -1;
+        float gravity_y = -1;
+        float gravity_z = -1;
+    } imu;
+    struct {
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
 
-        extern float orientation_x;
-        extern float orientation_y;
-        extern float orientation_z;
+        float accel_x = -1;
+        float accel_y = -1;
+        float accel_z = -1;
+    } accel;
+    struct {
+        enum SensorState status = OFF;
+        uint8_t failed_reads = 0;
 
-        extern float gravity_x;
-        extern float gravity_y;
-        extern float gravity_z;
+        float pressure_pt3 = -1;
+        float pressure_pt4 = -1;
+        float temp_rtd = -1;
 
-    } // namespace imu
-    namespace accel {
-        extern enum SensorState status;
-        extern uint8_t failed_reads;
+        float battery_voltage;
+    } adc;
+    struct {
+        bool init = false;
+        uint8_t failed_writes = 0;
 
-        extern float accel_x;
-        extern float accel_y;
-        extern float accel_z;
+        int current_file = 0;
+    } sd;
+    struct {
+        bool init = false;
 
-    } // namespace accel
-    namespace adc {
-        extern enum SensorState status;
-        extern uint8_t failed_reads;
+        uint8_t pt_index = 0;
+    } fram;
+    struct {
+        bool mav_open = false;
+        bool sv_open = true;
+    } actuator;
+    struct {
+        float motor_position = -1;
+    } blims;
+};
 
-        extern float pressure_pt3;
-        extern float pressure_pt4;
-        extern float temp_rtd;
-
-    } // namespace adc
-    namespace sd {
-        extern bool init;
-        extern uint8_t failed_writes;
-
-        extern int current_file;
-
-    } // namespace sd
-    namespace fram {
-        extern bool init;
-
-        extern uint16_t pt_index;
-
-    } // namespace fram
-    namespace rfm {
-        extern bool init;
-
-    } // namespace rfm
-    namespace mav {
-        extern bool open;
-
-    } // namespace mav
-    namespace sv {
-        extern bool open;
-
-    } // namespace sv
-    namespace blims {
-        extern float motor_position;
-    }
-
-}; // namespace state
+extern FlightState *state;
 
 #endif // STATE_HPP

@@ -30,9 +30,9 @@ void ModeManager::to_mode(int new_mode) {
         break;
     }
 
-    state::flight::mode_id = new_mode;
+    state->flight.mode_id = new_mode;
 
-    if (state::fram::init) {
+    if (state->fram.init) {
         fram.store(Data::old_mode);
     }
 }
