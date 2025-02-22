@@ -118,7 +118,7 @@ void StartupMode::execute() {
         sd.begin();
     }
 
-    blims_obj.begin(constants::blims_mode);
+    // blims_obj.begin(constants::blims_mode);
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
