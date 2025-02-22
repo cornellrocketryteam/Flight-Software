@@ -11,13 +11,6 @@
 #include "blims.hpp"
 #include "pico/stdlib.h"
 
-#ifdef VERBOSE
-#define logf(...) printf(__VA_ARGS__)
-#define SPACER ("                        ")
-#else
-#define logf(...)
-#endif
-
 enum class Event : uint8_t {
     alt_armed = 0,
 
