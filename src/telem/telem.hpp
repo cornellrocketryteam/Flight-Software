@@ -18,8 +18,8 @@ public:
 protected:
     void pack_data();
 
-    uint16_t metadata = 0;
-    uint32_t events = 0;
+    uint16_t metadata_bitfield = 0;
+    uint32_t events_bitfield = 0;
 };
 
 class RFM : Telem {

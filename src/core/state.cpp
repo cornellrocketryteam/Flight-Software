@@ -9,6 +9,8 @@
 #include "fram.hpp"
 #include "pins.hpp"
 
+EventBuffer events;
+
 namespace state {
     namespace flight {
         uint8_t mode_id = 0;
@@ -25,8 +27,6 @@ namespace state {
 
         bool key_armed = false;
         bool alt_armed = false;
-
-        std::vector<Event> events = {};
 
     } // namespace flight
     namespace alt {

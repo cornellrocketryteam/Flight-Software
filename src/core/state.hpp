@@ -15,7 +15,7 @@
 #include "constants.hpp"
 #include "sd.hpp"
 #include <stdint.h>
-#include <vector>
+#include "util.hpp"
 // clang-format on
 
 enum SensorState {
@@ -23,6 +23,8 @@ enum SensorState {
     VALID,
     INVALID
 };
+
+extern EventBuffer events;
 
 // struct state {
 //     struct flight {
@@ -115,8 +117,6 @@ namespace state {
 
         extern bool key_armed;
         extern bool alt_armed;
-
-        extern std::vector<Event> events;
 
     } // namespace flight
     namespace alt {

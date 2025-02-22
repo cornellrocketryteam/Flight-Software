@@ -13,7 +13,7 @@ void Flight::execute() {
 
     logf("----------------BEGIN LOOP %d----------------\n", state::flight::cycle_count);
     logf("Time: %d ms\n", state::flight::timestamp);
-    logf("Mode: %s           ", state::flight::mode->name().c_str());
+    // logf("Mode: %s           ", state::flight::mode->name().c_str());
     logf("Altitude armed: %d\n\n", state::flight::alt_armed);
 
     logf("ALTIMETER: %d ---------- ", state::alt::status);
@@ -82,7 +82,7 @@ void Flight::execute() {
 
     // Check for any cycle overflows
     if (state::flight::timestamp - cycle_start > constants::cycle_time) {
-        state::flight::events.emplace_back(Event::cycle_overflow);
+        events.push(Event::cycle_overflow);
     }
 
     watchdog_update();

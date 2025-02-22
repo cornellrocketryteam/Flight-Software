@@ -11,24 +11,24 @@
 #include <bitset>
 
 void Telem::pack_data() {
-    metadata = 0;
-    metadata |= (state::flight::mode_id & 0b111) << 13;
+    metadata_bitfield = 0;
+    metadata_bitfield |= (state::flight::mode_id & 0b111) << 13;
 
-    metadata |= (static_cast<uint8_t>(state::sv::open) & 0b1) << 12;
-    metadata |= (static_cast<uint8_t>(state::mav::open) & 0b1) << 11;
+    metadata_bitfield |= (static_cast<uint8_t>(state::sv::open) & 0b1) << 12;
+    metadata_bitfield |= (static_cast<uint8_t>(state::mav::open) & 0b1) << 11;
 
-    metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 10;
-    metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 9;
-    metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 8;
-    metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 7;
-    metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
-    metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
-    metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
-    metadata |= (static_cast<uint8_t>(state::alt::status) & 0b1) << 1;
-    metadata |= (static_cast<uint8_t>(state::flight::alt_armed) & 0b1);
+    metadata_bitfield |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 10;
+    metadata_bitfield |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 9;
+    metadata_bitfield |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 8;
+    metadata_bitfield |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 7;
+    metadata_bitfield |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
+    metadata_bitfield |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
+    metadata_bitfield |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
+    metadata_bitfield |= (static_cast<uint8_t>(state::alt::status) & 0b1) << 1;
+    metadata_bitfield |= (static_cast<uint8_t>(state::flight::alt_armed) & 0b1);
 
-    for (Event event : state::flight::events) {
-        events |= (1 << static_cast<uint8_t>(event));
+    while (!events.is_empty()) {
+        events_bitfield |= (1 << events.pop_id());
     }
 }
 
@@ -37,7 +37,7 @@ void RFM::transmit() {
 
     uint32_t temp = 0x3E5D5967;
     memcpy(&packet[0], &temp, sizeof(uint32_t));
-    memcpy(&packet[4], &metadata, sizeof(uint16_t));
+    memcpy(&packet[4], &metadata_bitfield, sizeof(uint16_t));
     memcpy(&packet[6], &state::flight::timestamp, sizeof(uint32_t));
     memcpy(&packet[10], &events, sizeof(uint32_t));
 
@@ -73,7 +73,7 @@ void RFM::transmit() {
 void Umbilical::transmit() {
     pack_data();
 
-    memcpy(&packet[0], &metadata, sizeof(uint16_t));
+    memcpy(&packet[0], &metadata_bitfield, sizeof(uint16_t));
     memcpy(&packet[2], &state::flight::timestamp, sizeof(uint32_t));
     memcpy(&packet[6], &events, sizeof(uint32_t));
 
