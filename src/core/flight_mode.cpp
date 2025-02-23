@@ -10,6 +10,7 @@
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
+#include "tusb.h"
 
 void FlightMode::execute() {
     // Execute the primary functionality of every module
@@ -118,6 +119,9 @@ void StartupMode::execute() {
         sd.begin();
     }
 
+    // TODO: Temporary fix until events is reworked from a vector
+    state::flight::events.clear();
+
     // blims_obj.begin(constants::blims_mode);
 
     // Continuously update reference pressure before launch
@@ -157,9 +161,11 @@ void StandbyMode::execute() {
     }
 
     // Check the umbilical connection
-    // if (!stdio_usb_connected()) {
-    //     state::flight::usb_failed_reads++;
-    // }
+    if (!tud_cdc_connected()) {
+        state::flight::usb_failed_reads++;
+    } else if (state::flight::usb_failed_reads > 0) {
+        state::flight::usb_failed_reads = 0;
+    }
 
     check_command();
 
@@ -176,7 +182,10 @@ void StandbyMode::transition() {
     // Transition to Fault Mode if the umbilical is disconnected
     else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
         sv.open();
-        to_mode(state::flight::fault);
+        state::flight::events.emplace_back(Event::umbilical_disconnected);
+        state::flight::usb_failed_reads = 0; // TODO remove
+        gpio_put(LED, 0); // TODO remove
+        // to_mode(state::flight::fault); // TODO add back in
     }
     // Transition to Startup Mode if the arming key was turned off
     else if (!state::flight::key_armed) {
