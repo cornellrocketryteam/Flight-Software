@@ -161,11 +161,11 @@ void StandbyMode::execute() {
     }
 
     // Check the umbilical connection
-    if (!tud_cdc_connected()) {
-        state::flight::usb_failed_reads++;
-    } else if (state::flight::usb_failed_reads > 0) {
-        state::flight::usb_failed_reads = 0;
-    }
+    // if (!tud_cdc_connected()) {
+    //     state::flight::usb_failed_reads++;
+    // } else if (state::flight::usb_failed_reads > 0) {
+    //     state::flight::usb_failed_reads = 0;
+    // }
 
     check_command();
 

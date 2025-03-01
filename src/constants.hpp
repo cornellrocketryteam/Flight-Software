@@ -91,7 +91,7 @@ namespace constants {
 
     constexpr uint8_t cycle_time = 50;              // ms
 
-    constexpr uint8_t max_usb_failed_reads = 200;
+    constexpr uint8_t max_usb_failed_reads = 250;
 
     constexpr uint8_t channel_pt3 = 3;
     constexpr uint8_t channel_pt4 = 2;
