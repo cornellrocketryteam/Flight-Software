@@ -181,7 +181,7 @@ void StartupMode::execute() {
         state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
     }
     if (state::gps::status == OFF) {
-        if (modules::gps.begin_PVT(40)) {
+        if (modules::gps.begin_PVT(constants::gps_pull_rate)) {
             state::gps::status = VALID;
         } else {
             if (!state::gps::failed_init) {

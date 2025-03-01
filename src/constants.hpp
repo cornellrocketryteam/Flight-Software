@@ -80,6 +80,8 @@ namespace constants {
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
 
+    constexpr int gps_pull_rate = 20;
+
 }; // namespace constants
 
 #endif // CONSTANTS_HPP
