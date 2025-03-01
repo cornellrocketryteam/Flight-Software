@@ -16,11 +16,11 @@ void Telem::pack_data() {
 
     metadata |= (static_cast<uint8_t>(state::sv::open) & 0b1) << 12;
     metadata |= (static_cast<uint8_t>(state::mav::open) & 0b1) << 11;
-
-    metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 10;
-    metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 9;
-    metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 8;
-    metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 7;
+    // metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 9; TODO safed
+    metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 9;
+    metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 8;
+    metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 7;
+    metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 6;
     metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
     metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
     metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
