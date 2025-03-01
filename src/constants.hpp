@@ -113,7 +113,7 @@ namespace constants {
     constexpr uint16_t main_deploy_wait = 160;      // cycles
     constexpr uint16_t main_log_shutoff = 30000;    // cycles
 
-    constexpr uint8_t rfm_packet_size = 106;        // bytes
+    constexpr uint8_t rfm_packet_size = 107;        // bytes
     constexpr uint8_t umb_packet_size = 24;         // bytes
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
