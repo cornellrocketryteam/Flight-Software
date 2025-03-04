@@ -1,9 +1,15 @@
-
+/**
+ * @file events.hpp
+ * @author csg83
+ *
+ * @brief Events structure and definitions
+ */
 
 #ifndef EVENTS_HPP
 #define EVENTS_HPP
 
 #include <stdint.h>
+
 enum class Event : uint8_t {
     alt_armed = 0,
 
@@ -50,10 +56,18 @@ enum class Event : uint8_t {
 
 class EventBuffer {
 public:
-    void push(Event event);
-    uint32_t get();
-    void clear();
-    bool is_empty();
+    inline void push(Event event) {
+        buffer |= (1u << static_cast<uint8_t>(event));
+    }
+    inline uint32_t get() {
+        return buffer;
+    }
+    inline void clear() {
+        buffer = 0;
+    }
+    inline bool is_empty() {
+        return buffer == 0;
+    }
 
 private:
     uint32_t buffer = 0;
