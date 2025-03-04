@@ -67,7 +67,7 @@ void SD::log() {
 
     uint32_t events_bitfield = events.get();
     for (uint i = 0; i < sizeof(events_bitfield) * 8; i++) {
-        if (events_bitfield & (1U << i)) {
+        if (events_bitfield & (1u << i)) {
             data += std::to_string(i) + ",";
         }
     }

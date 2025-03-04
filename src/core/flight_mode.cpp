@@ -7,10 +7,10 @@
 
 #include "flight_mode.hpp"
 #include "constants.hpp"
+#include "events.hpp"
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
-#include "events.hpp"
 #include "tusb.h"
 
 void FlightMode::execute() {

@@ -56,7 +56,7 @@ public:
     bool is_empty();
 
 private:
-    uint32_t buffer;
+    uint32_t buffer = 0;
 };
 
-#endif //EVENTS_HPP
+#endif // EVENTS_HPP

@@ -6,8 +6,8 @@
  */
 
 #include "flight_loop.hpp"
-#include "hardware/watchdog.h"
 #include "events.hpp"
+#include "hardware/watchdog.h"
 
 void Flight::execute() {
 

@@ -3,7 +3,7 @@
 #include "events.hpp"
 
 void EventBuffer::push(Event event) {
-    buffer |= (1 << static_cast<uint8_t>(event));
+    buffer |= (1u << static_cast<uint8_t>(event));
 }
 
 uint32_t EventBuffer::get() {
@@ -15,5 +15,5 @@ void EventBuffer::clear() {
 }
 
 bool EventBuffer::is_empty() {
-    return buffer > 0;
+    return buffer == 0;
 }

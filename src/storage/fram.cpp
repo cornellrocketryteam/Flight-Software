@@ -6,11 +6,11 @@
  */
 
 #include "fram.hpp"
+#include "events.hpp"
 #include "hardware/watchdog.h"
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
-#include "events.hpp"
 
 FRAM::FRAM() : fram(SPI_PORT, FRAM_CS) {}
 

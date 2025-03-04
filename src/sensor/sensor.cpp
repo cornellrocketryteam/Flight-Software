@@ -6,9 +6,9 @@
  */
 
 #include "sensor.hpp"
+#include "events.hpp"
 #include "pins.hpp"
 #include "state.hpp"
-#include "events.hpp"
 
 #ifdef SIM
 #include "sim_data.hpp"
