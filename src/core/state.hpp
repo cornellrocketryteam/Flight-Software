@@ -15,8 +15,10 @@
 #include "constants.hpp"
 #include "sd.hpp"
 #include <stdint.h>
-#include <vector>
+#include "events.hpp"
 // clang-format on
+
+extern EventBuffer events;
 
 enum SensorState {
     OFF = 0,
@@ -60,8 +62,6 @@ namespace state {
 
         extern bool key_armed;
         extern bool alt_armed;
-
-        extern std::vector<Event> events;
 
     } // namespace flight
     namespace alt {

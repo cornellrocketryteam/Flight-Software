@@ -10,6 +10,7 @@
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
+#include "events.hpp"
 
 FRAM::FRAM() : fram(SPI_PORT, FRAM_CS) {}
 
@@ -40,7 +41,7 @@ bool FRAM::begin() {
 
         return true;
     } else {
-        state::flight::events.emplace_back(Event::fram_init_fail);
+        events.push(Event::fram_init_fail);
         return false;
     }
 }
@@ -112,7 +113,7 @@ void FRAM::load(Data data) {
     default:
         break;
     }
-    state::flight::events.emplace_back(Event::fram_read_fail);
+    events.push(Event::fram_read_fail);
 }
 
 void FRAM::store(Data data) {
@@ -157,16 +158,16 @@ void FRAM::store(Data data) {
     case Data::pt: {
         // Write PT3 and PT4 values
         if (!fram.write_bytes(state::fram::pt_index, reinterpret_cast<uint8_t *>(&state::adc::pressure_pt3), 4)) {
-            state::flight::events.emplace_back(Event::fram_write_fail);
+            events.push(Event::fram_write_fail);
         }
         if (!fram.write_bytes(state::fram::pt_index + sizeof(float), reinterpret_cast<uint8_t *>(&state::adc::pressure_pt4), 4)) {
-            state::flight::events.emplace_back(Event::fram_write_fail);
+            events.push(Event::fram_write_fail);
         }
 
         // Update PT index in both state and FRAM
         state::fram::pt_index += 2 * sizeof(float);
         if (!fram.write_bytes(static_cast<uint8_t>(Data::pt_index), reinterpret_cast<uint8_t *>(&state::fram::pt_index), 2)) {
-            state::flight::events.emplace_back(Event::fram_write_fail);
+            events.push(Event::fram_write_fail);
         }
 
         return;
@@ -174,5 +175,5 @@ void FRAM::store(Data data) {
     default:
         break;
     }
-    state::flight::events.emplace_back(Event::fram_write_fail);
+    events.push(Event::fram_write_fail);
 }

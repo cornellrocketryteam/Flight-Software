@@ -11,6 +11,8 @@
 
 class FlightMode;
 
+EventBuffer events;
+
 namespace state {
     namespace flight {
         StartupMode startup_class;
@@ -42,8 +44,6 @@ namespace state {
 
         bool key_armed = false;
         bool alt_armed = false;
-
-        std::vector<Event> events = {};
 
     } // namespace flight
     namespace alt {

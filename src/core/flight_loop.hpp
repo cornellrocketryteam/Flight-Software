@@ -1,5 +1,5 @@
 /**
- * @file fsw.hpp
+ * @file flight_loop.hpp
  * @author csg83
  *
  * @brief The main flight loop

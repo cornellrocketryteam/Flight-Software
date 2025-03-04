@@ -8,6 +8,7 @@
 #include "sensor.hpp"
 #include "pins.hpp"
 #include "state.hpp"
+#include "events.hpp"
 
 #ifdef SIM
 #include "sim_data.hpp"
@@ -28,7 +29,7 @@ bool Altimeter::begin() {
         alt.read_pressure(&state::alt::ref_pressure);
         return true;
     } else {
-        state::flight::events.emplace_back(Event::alt_init_fail);
+        events.push(Event::alt_init_fail);
         return false;
     }
 }
@@ -42,7 +43,7 @@ void Altimeter::update_ref_pressure() {
     } else {
         state::alt::failed_reads++;
         state::alt::status = INVALID;
-        state::flight::events.emplace_back(Event::alt_read_fail);
+        events.push(Event::alt_read_fail);
         if (state::alt::failed_reads >= constants::max_failed_reads) {
             state::alt::status = OFF;
             // to_mode(state::flight::fault);
@@ -58,7 +59,7 @@ void Altimeter::read_altitude() {
     } else {
         state::alt::failed_reads++;
         state::alt::status = INVALID;
-        state::flight::events.emplace_back(Event::alt_read_fail);
+        events.push(Event::alt_read_fail);
         if (state::alt::failed_reads >= constants::max_failed_reads) {
             state::alt::status = OFF;
             // to_mode(state::flight::fault);
@@ -76,7 +77,7 @@ bool GPS::begin() {
         state::gps::status = VALID;
         return true;
     } else {
-        state::flight::events.emplace_back(Event::gps_init_fail);
+        events.push(Event::gps_init_fail);
         return false;
     }
 }
@@ -89,7 +90,7 @@ void GPS::read_data() {
     // } else {
     //     state::gps::failed_reads++;
     //     state::gps::status = INVALID;
-    //     state::flight::events.emplace_back(Event::gps_read_fail);
+    //     events.push(Event::gps_read_fail);
     //     if (state::gps::failed_reads >= constants::max_failed_reads) {
     //         state::gps::status = OFF;
     //     }
@@ -103,7 +104,7 @@ bool Accel::begin() {
         state::accel::status = VALID;
         return true;
     } else {
-        state::flight::events.emplace_back(Event::accel_init_fail);
+        events.push(Event::accel_init_fail);
         return false;
     }
 }
@@ -120,7 +121,7 @@ void Accel::read_accel() {
     } else {
         state::accel::failed_reads++;
         state::accel::status = INVALID;
-        state::flight::events.emplace_back(Event::accel_read_fail);
+        events.push(Event::accel_read_fail);
         if (state::accel::failed_reads >= constants::max_failed_reads) {
             state::accel::status = OFF;
         }
@@ -134,7 +135,7 @@ bool IMU::begin() {
         state::imu::status = VALID;
         return true;
     } else {
-        state::flight::events.emplace_back(Event::imu_init_fail);
+        events.push(Event::imu_init_fail);
         return false;
     }
 }
@@ -198,7 +199,7 @@ void IMU::read_gravity() {
 void IMU::failed_read() {
     state::imu::failed_reads++;
     state::imu::status = INVALID;
-    state::flight::events.emplace_back(Event::imu_read_fail);
+    events.push(Event::imu_read_fail);
     if (state::imu::failed_reads >= constants::max_failed_reads) {
         state::imu::status = OFF;
     }
@@ -211,7 +212,7 @@ bool ADC::begin() {
         state::adc::status = VALID;
         return true;
     } else {
-        state::flight::events.emplace_back(Event::adc_init_fail);
+        events.push(Event::adc_init_fail);
         return false;
     }
 }
@@ -224,7 +225,7 @@ void ADC::read_data() {
     } else {
         state::adc::failed_reads++;
         state::adc::status = INVALID;
-        state::flight::events.emplace_back(Event::adc_read_fail);
+        events.push(Event::adc_read_fail);
         if (state::adc::failed_reads >= constants::max_failed_reads) {
             state::adc::status = OFF;
         }

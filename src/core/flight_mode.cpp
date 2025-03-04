@@ -10,6 +10,7 @@
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
+#include "events.hpp"
 #include "tusb.h"
 
 void FlightMode::execute() {
@@ -38,8 +39,8 @@ void FlightMode::execute() {
     rfm.transmit();
 
     // Clear this cycle's events
-    if (!state::flight::events.empty()) {
-        state::flight::events.clear();
+    if (!events.is_empty()) {
+        events.clear();
     }
 }
 
@@ -59,30 +60,30 @@ void FlightMode::check_command() {
             mav.open(constants::mav_open_time);
             gpio_put(LED, 0);
             state::flight::launch_commanded = true;
-            state::flight::events.emplace_back(Event::launch_command_received);
+            events.push(Event::launch_command_received);
             break;
         case static_cast<char>(Command::mav_open):
             mav.open();
-            state::flight::events.emplace_back(Event::mav_command_received);
+            events.push(Event::mav_command_received);
             break;
         case static_cast<char>(Command::mav_close):
             mav.close();
-            state::flight::events.emplace_back(Event::mav_command_received);
+            events.push(Event::mav_command_received);
             break;
         case static_cast<char>(Command::sv_open):
             sv.open();
-            state::flight::events.emplace_back(Event::sv_command_received);
+            events.push(Event::sv_command_received);
             break;
         case static_cast<char>(Command::sv_close):
             sv.close();
-            state::flight::events.emplace_back(Event::sv_command_received);
+            events.push(Event::sv_command_received);
             break;
         case static_cast<char>(Command::reset_card):
             sd.clear_card();
-            state::flight::events.emplace_back(Event::reset_card_command_received);
+            events.push(Event::reset_card_command_received);
             break;
         default:
-            state::flight::events.emplace_back(Event::unknown_command_received);
+            events.push(Event::unknown_command_received);
         }
     }
 }
@@ -118,9 +119,6 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         sd.begin();
     }
-
-    // TODO: Temporary fix until events is reworked from a vector
-    state::flight::events.clear();
 
     // blims_obj.begin(constants::blims_mode);
 
@@ -182,7 +180,7 @@ void StandbyMode::transition() {
     // Transition to Fault Mode if the umbilical is disconnected
     else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
         sv.open();
-        state::flight::events.emplace_back(Event::umbilical_disconnected);
+        events.push(Event::umbilical_disconnected);
         state::flight::usb_failed_reads = 0; // TODO remove
         gpio_put(LED, 0); // TODO remove
         // to_mode(state::flight::fault); // TODO add back in
@@ -201,7 +199,7 @@ void AscentMode::execute() {
     // Check for arming altitude
     if (state::alt::status == VALID && !state::flight::alt_armed && state::alt::altitude > constants::arming_altitude) {
         state::flight::alt_armed = true;
-        state::flight::events.emplace_back(Event::alt_armed);
+        events.push(Event::alt_armed);
     }
 
     // Write PT data to FRAM upon SD failure
@@ -244,7 +242,7 @@ void DrogueDeployedMode::transition() {
     if (main_cycle_count < constants::main_deploy_wait) {
         main_cycle_count++;
     } else if (main_cycle_count == constants::main_deploy_wait) {
-        state::flight::events.emplace_back(Event::main_deploy_wait_end);
+        events.push(Event::main_deploy_wait_end);
         main_cycle_count++;
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         ssa.trigger(Chute::main);
@@ -262,7 +260,7 @@ void MainDeployedMode::execute() {
     // Turn off data logging after a certain period of time to not overwrite data after landing
     if (log_cycle_count == constants::main_log_shutoff) {
         state::sd::init = false;
-        state::flight::events.emplace_back(Event::main_log_shutoff);
+        events.push(Event::main_log_shutoff);
         log_cycle_count++;
     }
 

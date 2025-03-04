@@ -15,7 +15,7 @@ void SD::begin() {
 
     if (fr != FR_OK) {
         logf("SD Mount Error: %s (%d)\n", FRESULT_str(fr), fr);
-        state::flight::events.emplace_back(Event::sd_init_fail);
+        events.push(Event::sd_init_fail);
         return;
     }
     state::sd::init = true;
@@ -62,12 +62,14 @@ void SD::log() {
 
          + std::to_string(state::alt::temp) + ","
 
-         + std::to_string(state::fram::init) + ","
-         + std::to_string(state::rfm::init) + ",";
+         + std::to_string(state::fram::init) + ",";
     // clang-format on
 
-    for (Event event : state::flight::events) {
-        data += std::to_string(static_cast<uint8_t>(event)) + ",";
+    uint32_t events_bitfield = events.get();
+    for (uint i = 0; i < sizeof(events_bitfield) * 8; i++) {
+        if (events_bitfield & (1U << i)) {
+            data += std::to_string(i) + ",";
+        }
     }
 
     char filename[10];
@@ -78,7 +80,7 @@ void SD::log() {
     if (fr != FR_OK && fr != FR_EXIST) {
         logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
         state::sd::failed_writes++;
-        state::flight::events.emplace_back(Event::sd_write_fail);
+        events.push(Event::sd_write_fail);
         if (state::sd::failed_writes == constants::max_failed_writes) {
             state::sd::init = false;
         }
@@ -87,7 +89,7 @@ void SD::log() {
     if (f_printf(&log_file, "%s\n", data.c_str()) < 0) {
         logf("SD Print Error: %s (%d)\n", FRESULT_str(fr), fr);
         state::sd::failed_writes++;
-        state::flight::events.emplace_back(Event::sd_write_fail);
+        events.push(Event::sd_write_fail);
         if (state::sd::failed_writes == constants::max_failed_writes) {
             state::sd::init = false;
         }
@@ -97,7 +99,7 @@ void SD::log() {
     if (FR_OK != fr) {
         logf("SD Close Error: %s (%d)\n", FRESULT_str(fr), fr);
         state::sd::failed_writes++;
-        state::flight::events.emplace_back(Event::sd_write_fail);
+        events.push(Event::sd_write_fail);
         if (state::sd::failed_writes == constants::max_failed_writes) {
             state::sd::init = false;
         }
@@ -113,7 +115,7 @@ bool SD::clear_card() {
     fr = f_opendir(&dir, "/");
     if (fr != FR_OK && fr != FR_EXIST) {
         logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
-        state::flight::events.emplace_back(Event::sd_write_fail);
+        events.push(Event::sd_write_fail);
         return false;
     }
 
@@ -125,7 +127,7 @@ bool SD::clear_card() {
         fr = f_unlink(fno.fname);
         if (fr != FR_OK) {
             logf("SD Delete Error: Failed to delete %s\n", fno.fname);
-            state::flight::events.emplace_back(Event::sd_write_fail);
+            events.push(Event::sd_write_fail);
             return false;
         }
     }

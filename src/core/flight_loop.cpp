@@ -5,8 +5,9 @@
  * @brief The main flight loop
  */
 
-#include "fsw.hpp"
+#include "flight_loop.hpp"
 #include "hardware/watchdog.h"
+#include "events.hpp"
 
 void Flight::execute() {
 
@@ -81,7 +82,7 @@ void Flight::execute() {
 
     // Check for any cycle overflows
     if (state::flight::timestamp - cycle_start > constants::cycle_time) {
-        state::flight::events.emplace_back(Event::cycle_overflow);
+        events.push(Event::cycle_overflow);
     }
 
     watchdog_update();
