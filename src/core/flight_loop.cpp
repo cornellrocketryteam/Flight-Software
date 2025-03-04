@@ -81,7 +81,7 @@ void Flight::execute() {
     state::flight::timestamp = to_ms_since_boot(get_absolute_time());
 
     // Check for any cycle overflows
-    if (state::flight::timestamp - cycle_start > constants::cycle_time) {
+    if (state::flight::timestamp - cycle_start > constants::cycle_time + 3) {
         events.push(Event::cycle_overflow);
     }
 
