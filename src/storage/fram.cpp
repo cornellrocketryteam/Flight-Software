@@ -14,7 +14,7 @@
 
 FRAM::FRAM() : fram(SPI_PORT, FRAM_CS) {}
 
-bool FRAM::begin() {
+void FRAM::begin() {
     if (fram.begin()) {
         state::fram::init = true;
         load(Data::boot_count);
@@ -38,11 +38,8 @@ bool FRAM::begin() {
         if (!state::sv::open) {
             sv.close();
         }
-
-        return true;
     } else {
         events.push(Event::fram_init_fail);
-        return false;
     }
 }
 

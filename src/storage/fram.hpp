@@ -32,7 +32,7 @@ public:
     /**
      * Begins the FRAM module and loads metadata to state
      */
-    bool begin();
+    void begin();
 
     /**
      * Loads data from FRAM into state
