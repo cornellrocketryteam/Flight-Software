@@ -18,9 +18,26 @@ add_compile_options(
     # -O3
 )
 
-add_definitions(-DVERBOSE)
-# add_definitions(-DLAUNCH)
-# add_definitions(-DSIM)
+# Build options
+set(VERBOSE OFF)
+set(SIM OFF)
+
+# Add build flags and change executable name based on options
+if(VERBOSE AND NOT SIM)
+    add_definitions(-DVERBOSE)
+    set(EXEC_NAME "fsw_verbose")
+elseif(NOT VERBOSE AND SIM)
+    add_definitions(-DLAUNCH)
+    add_definitions(-DSIM)
+    set(EXEC_NAME "fsw_sim")
+elseif(VERBOSE AND SIM)
+    add_definitions(-DVERBOSE)
+    add_definitions(-DSIM)
+    set(EXEC_NAME "fsw_sim_verbose")
+else()
+    add_definitions(-DLAUNCH)
+    set(EXEC_NAME "fsw")
+endif()
 
 # Set custom USB product descriptor
 add_definitions(-DUSBD_PRODUCT="FSW Pico")
@@ -42,15 +59,15 @@ set(SOURCES
 )
 
 # Add source files from sim/
-set(SIM
+set(SIM_SRC
     sim/sim_data.cpp
     sim/hitl.cpp
 )
 
 # Add all executables
-add_executable(${PROJECT_NAME}
+add_executable(${EXEC_NAME}
     ${SOURCES}
-    ${SIM}
+    ${SIM_SRC}
 )
 
 # Add a "upload" target that automatically uploads the uf2 to a Pico in boot-select mode
@@ -71,7 +88,7 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/lib/MB85RS-Pico)
 add_subdirectory(${PROJECT_SOURCE_DIR}/lib/BLiMS)
 
 # Include project and library headers
-target_include_directories(${PROJECT_NAME}
+target_include_directories(${EXEC_NAME}
     PRIVATE
     ${PROJECT_SOURCE_DIR}/sim
     ${PROJECT_SOURCE_DIR}/src
@@ -93,7 +110,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # Pull in common dependencies
-target_link_libraries(${PROJECT_NAME} 
+target_link_libraries(${EXEC_NAME} 
     pico_stdlib 
     hardware_i2c 
     hardware_pwm
@@ -110,8 +127,8 @@ target_link_libraries(${PROJECT_NAME}
 )
 
 # Enable serial over USB
-pico_enable_stdio_usb(${PROJECT_NAME} 1)
-pico_enable_stdio_uart(${PROJECT_NAME} 0)
+pico_enable_stdio_usb(${EXEC_NAME} 1)
+pico_enable_stdio_uart(${EXEC_NAME} 0)
 
 # Create uf2 file
-pico_add_uf2_output(${PROJECT_NAME})
+pico_add_uf2_output(${EXEC_NAME})
