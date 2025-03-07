@@ -4,12 +4,12 @@ Flight software for _Andromeda_, a student-designed hybrid-propellant rocket. Ha
 [Confluence](https://confluence.cornell.edu/display/crt/Flight+Software)
 
 ## Getting Started
-### Required Dependencies
+### Required dependencies
 * ```cmake```
 * ```gcc-arm-embedded``` (for macOS)
 * ```gcc-arm-none-eabi``` (for Linux)
 
-### Optional Dependencies
+### Optional dependencies
 * ```doxygen```: For documentation generation
 * ```clang-format```: For formatting code
 
@@ -21,12 +21,22 @@ _These dependencies can be install via [Homebrew](https://brew.sh/) on macOS or 
 3. Run ```git submodule update --init``` from within ```lib/pico-sdk/```
 
 ## Running
-1. Create a top-level ```build/``` directory
-2. Run ```cmake ..``` from within ```build/```
-3. Run ```make```
-4. Move ```fsw.uf2``` to a Pico in boot select mode
+### Build options
+By default, FSW builds in ```LAUNCH``` mode. There are 2 build options you can set: 
+* ```VERBOSE```: Displays state information over serial. FSW will only start running once a serial connection is made. 
+* ```SIM```: FSW will execute a simulated flight path once the launch command is sent.
 
-_Note: You can also run_ ```make upload``` _to automatically make and move_ ```fsw.uf2``` _to a Pico in boot select mode_
+You can set these options in ```CMakeLists.txt```. The executable name will change based on which build option(s) are set. 
+
+### Building
+
+1. _(First-time setup only)_ Create a top-level ```build/``` directory    
+2. _(First-time setup only)_ Run ```cmake ..``` from within ```build/```  
+3. Set build options (see above)
+4. Run ```make```
+5. Move ```fsw.uf2``` to a Pico in boot select mode
+
+_Note: You can also run_ ```make upload``` _to automatically make and move the uf2 to a Pico in boot select mode_
 
 ## Contributing
 1. Create a new branch with ```git checkout -b YOUR_BRANCH_NAME```
