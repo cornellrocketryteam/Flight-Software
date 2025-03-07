@@ -73,7 +73,7 @@ add_executable(${EXEC_NAME}
 # Add a "upload" target that automatically uploads the uf2 to a Pico in boot-select mode
 add_custom_target(upload
     COMMAND ${CMAKE_COMMAND} --build . --target all
-    COMMAND cp -X ${PROJECT_NAME}.uf2 /Volumes/RPI-RP2/
+    COMMAND cp -X ${EXEC_NAME}.uf2 /Volumes/RPI-RP2/
     DEPENDS ${PROJECT_NAME}
 )
 
