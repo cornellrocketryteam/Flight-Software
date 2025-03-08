@@ -8,6 +8,7 @@
 #include "flight_mode.hpp"
 #include "constants.hpp"
 #include "events.hpp"
+#include "hardware/watchdog.h"
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
@@ -81,6 +82,9 @@ void FlightMode::check_command() {
         case static_cast<char>(Command::reset_card):
             sd.clear_card();
             events.push(Event::reset_card_command_received);
+            break;
+        case static_cast<char>(Command::reboot):
+            watchdog_reboot(0, 0, 0);
             break;
         default:
             events.push(Event::unknown_command_received);

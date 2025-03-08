@@ -30,6 +30,8 @@ enum class Command : char {
     reset_card = '6',
     reset_fram = '7',
 
+    reboot = '8',
+
     // TODO: State change command
 };
 
