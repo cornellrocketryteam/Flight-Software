@@ -23,7 +23,7 @@ Altimeter::Altimeter() : alt(I2C_PORT) {}
 void Altimeter::begin() {
     if (alt.begin()) {
         state::alt::status = VALID;
-        // The first reading of the BMP388 is always garbage
+        // The first reading of the BMP390 is always garbage
         alt.read_pressure(&state::alt::ref_pressure);
         sleep_ms(100);
         alt.read_pressure(&state::alt::ref_pressure);
@@ -64,7 +64,9 @@ void Altimeter::read_altitude() {
         }
     }
 #ifdef SIM
-    state::alt::altitude = sim_data.get_alt();
+    if (state::flight::mode->id() >= 2) {
+        state::alt::altitude = sim_data.get_alt();
+    }
 #endif
 }
 
