@@ -31,11 +31,13 @@ void FRAM::begin() {
         }
         store(Data::watchdog_boot_count);
 
+        // Load old reference pressure if we're in flight
         if (state::flight::old_mode > 1) {
             load(Data::ref_pressure);
         }
 
-        if (!state::sv::open) {
+        // Set SV state from previous boot
+        if (!state::actuator::sv_open) {
             sv.close();
         }
     } else {
@@ -87,7 +89,7 @@ void FRAM::load(Data data) {
     case Data::mav_state: {
         uint8_t mav_state;
         if (fram.read_bytes(static_cast<uint8_t>(Data::mav_state), &mav_state, 1)) {
-            state::mav::open = (bool)mav_state;
+            state::actuator::mav_open = (bool)mav_state;
             return;
         }
         break;
@@ -95,7 +97,7 @@ void FRAM::load(Data data) {
     case Data::sv_state: {
         uint8_t sv_state;
         if (fram.read_bytes(static_cast<uint8_t>(Data::sv_state), &sv_state, 1)) {
-            state::sv::open = (bool)sv_state;
+            state::actuator::sv_open = (bool)sv_state;
             return;
         }
         break;
@@ -143,12 +145,12 @@ void FRAM::store(Data data) {
         }
         break;
     case Data::mav_state:
-        if (fram.write_bytes(static_cast<uint8_t>(Data::mav_state), reinterpret_cast<uint8_t *>(&state::mav::open), 1)) {
+        if (fram.write_bytes(static_cast<uint8_t>(Data::mav_state), reinterpret_cast<uint8_t *>(&state::actuator::mav_open), 1)) {
             return;
         }
         break;
     case Data::sv_state:
-        if (fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::sv::open), 1)) {
+        if (fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::actuator::sv_open), 1)) {
             return;
         }
         break;

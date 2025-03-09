@@ -119,14 +119,10 @@ namespace state {
         bool init = false;
 
     } // namespace rfm
-    namespace mav {
-        bool open = false;
-
-    } // namespace mav
-    namespace sv {
-        bool open = true;
-
-    } // namespace sv
+    namespace actuator {
+        bool mav_open = false;
+        bool sv_open = true;
+    } // namespace actuator
     namespace blims {
         float motor_position = 0;
     } // namespace blims

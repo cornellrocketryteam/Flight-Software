@@ -33,13 +33,13 @@ void MAV::open(uint duration) {
         add_alarm_in_ms(duration, time_close, NULL, true);
     }
 
-    state::mav::open = true;
+    state::actuator::mav_open = true;
     fram.store(Data::mav_state);
 }
 
 void MAV::close() {
     set_position(1.0);
-    state::mav::open = false;
+    state::actuator::mav_open = false;
     fram.store(Data::mav_state);
 }
 
@@ -49,7 +49,7 @@ void MAV::set_position(float position) {
 }
 
 int64_t MAV::time_close(alarm_id_t id, void *user_data) {
-    state::mav::open = false;
+    state::actuator::mav_open = false;
     pwm_set_chan_level(mav_slice_num, pwm_gpio_to_channel(MAV_SIGNAL), 21845);
     return 0;
 }
@@ -58,14 +58,14 @@ int64_t MAV::time_close(alarm_id_t id, void *user_data) {
 
 void SV::open() {
     pwm_set_gpio_level(RELAY, 0);
-    state::sv::open = true;
+    state::actuator::sv_open = true;
     fram.store(Data::sv_state);
 }
 
 void SV::close() {
     pwm_set_gpio_level(RELAY, 4095);
     add_alarm_in_ms(constants::sv_peak_threshold, hold_pwm, NULL, true);
-    state::sv::open = false;
+    state::actuator::sv_open = false;
     fram.store(Data::sv_state);
 }
 

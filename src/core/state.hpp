@@ -137,14 +137,10 @@ namespace state {
         extern bool init;
 
     } // namespace rfm
-    namespace mav {
-        extern bool open;
-
-    } // namespace mav
-    namespace sv {
-        extern bool open;
-
-    } // namespace sv
+    namespace actuator {
+        extern bool mav_open;
+        extern bool sv_open;
+    } // namespace actuator
     namespace blims {
         extern float motor_position;
     }

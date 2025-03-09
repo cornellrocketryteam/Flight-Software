@@ -60,8 +60,8 @@ void Flight::execute() {
     logf("Watchdog Boot Count: %d\n%s", state::flight::watchdog_boot_count, SPACER);
     logf("Old Mode: %d\n\n", state::flight::old_mode);
 
-    logf("MAV: %d%s", state::mav::open, "                  ");
-    logf("SV: %d\n\n", state::sv::open);
+    logf("MAV: %d%s", state::actuator::mav_open, "                  ");
+    logf("SV: %d\n\n", state::actuator::sv_open);
 
     logf("BLiMS: %f\n\n", state::blims::motor_position);
 

@@ -14,8 +14,8 @@ void Telem::pack_data() {
     packed_metadata = 0;
     packed_metadata |= (state::flight::mode->id() & 0b111) << 13;
 
-    packed_metadata |= (static_cast<uint8_t>(state::sv::open) & 0b1) << 12;
-    packed_metadata |= (static_cast<uint8_t>(state::mav::open) & 0b1) << 11;
+    packed_metadata |= (static_cast<uint8_t>(state::actuator::sv_open) & 0b1) << 12;
+    packed_metadata |= (static_cast<uint8_t>(state::actuator::mav_open) & 0b1) << 11;
     // packed_metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 9; TODO safed
     packed_metadata |= (static_cast<uint8_t>(state::gps::valid) & 0b1) << 9;
     packed_metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 8;
