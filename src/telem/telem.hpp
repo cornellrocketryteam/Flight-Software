@@ -27,6 +27,7 @@ public:
     void transmit();
 
 private:
+    uint32_t sync_word = constants::sync_word;
     uint8_t packet[constants::rfm_packet_size];
 };
 

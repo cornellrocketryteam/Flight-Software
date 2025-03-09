@@ -33,8 +33,7 @@ void Telem::pack_data() {
 void RFM::transmit() {
     pack_data();
 
-    uint32_t temp = 0x3E5D5967;
-    memcpy(&packet[0], &temp, sizeof(uint32_t));
+    memcpy(&packet[0], &sync_word, sizeof(uint32_t));
     memcpy(&packet[4], &packed_metadata, sizeof(uint16_t));
     memcpy(&packet[6], &state::flight::timestamp, sizeof(uint32_t));
     memcpy(&packet[10], &events, sizeof(uint32_t));
@@ -45,10 +44,9 @@ void RFM::transmit() {
     memcpy(&packet[22], &state::gps::data.lat, sizeof(int32_t));
     memcpy(&packet[26], &state::gps::data.lon, sizeof(int32_t));
     memcpy(&packet[30], &state::gps::data.numSV, sizeof(uint8_t));
-    // memcpy(&packet[31], &state::gps::data.unix_time, sizeof(uint32_t));
+    memcpy(&packet[31], &state::gps::unix_time, sizeof(uint32_t));
     memcpy(&packet[35], &state::gps::data.hAcc, sizeof(uint32_t));
 
-    // memcpy(&packet[23], &state::gps::data.utc_time, sizeof(uint32_t));
     memcpy(&packet[39], &state::imu::accel_x, sizeof(float));
     memcpy(&packet[43], &state::imu::accel_y, sizeof(float));
     memcpy(&packet[47], &state::imu::accel_z, sizeof(float));
@@ -58,6 +56,7 @@ void RFM::transmit() {
     memcpy(&packet[63], &state::imu::orientation_x, sizeof(float));
     memcpy(&packet[67], &state::imu::orientation_y, sizeof(float));
     memcpy(&packet[71], &state::imu::orientation_z, sizeof(float));
+
     memcpy(&packet[75], &state::accel::accel_x, sizeof(float));
     memcpy(&packet[79], &state::accel::accel_y, sizeof(float));
     memcpy(&packet[83], &state::accel::accel_z, sizeof(float));
@@ -66,6 +65,7 @@ void RFM::transmit() {
     memcpy(&packet[91], &state::adc::pressure_pt3, sizeof(float));
     memcpy(&packet[95], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[99], &state::adc::temp_rtd, sizeof(float));
+
     memcpy(&packet[103], &state::blims::motor_position, sizeof(float));
 
     uart_write_blocking(UART_PORT, (const uint8_t *)packet, constants::rfm_packet_size);

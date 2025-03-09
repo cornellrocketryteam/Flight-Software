@@ -82,6 +82,7 @@ void GPS::begin() {
 
 void GPS::read_data() {
     if (gnss.read_PVT_data(&state::gps::data)) {
+        state::gps::unix_time = gnss.get_unix_time(&state::gps::data);
         if (state::gps::status == INVALID) {
             state::gps::status = VALID;
         }

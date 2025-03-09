@@ -77,7 +77,9 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern bool valid;
+
         extern UbxNavPvt data;
+        extern uint32_t unix_time;
     } // namespace gps
     namespace imu {
         extern enum SensorState status;
