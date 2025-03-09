@@ -20,10 +20,11 @@ void Flight::execute() {
     logf("Altitude (m): %.3f\n%s", state::alt::altitude, SPACER);
     logf("Temperature (C): %.3f\n\n", state::alt::temp);
 
-    logf("GPS: %d, Message: %d ---- ", state::gps::status, state::gps::data.valid);
+    logf("GPS: %d, Message: %d ---- ", state::gps::status, state::gps::fresh);
     logf("Latitude: %f\n%s", state::gps::data.lat, SPACER);
     logf("Longitude: %f\n%s", state::gps::data.lon, SPACER);
-    logf("Num Satellites: %d\n\n", state::gps::data.numSV);
+    logf("Unix time: %d\n%s", state::gps::unix_time, SPACER);
+    logf("Num satellites: %d\n\n", state::gps::data.numSV);
 
     logf("IMU: %d ---------------- ", state::imu::status);
     logf("Gyro X (deg/s): %.3f\n%s", state::imu::gyro_x, SPACER);
@@ -36,16 +37,12 @@ void Flight::execute() {
 
     logf("Orientation X (deg): %.3f\n%s", state::imu::orientation_x, SPACER);
     logf("Orientation Y (deg): %.3f\n%s", state::imu::orientation_y, SPACER);
-    logf("Orientation Z (deg): %.3f\n\n%s", state::imu::orientation_z, SPACER);
-
-    logf("Gravity X (m/s^2): %.3f\n%s", state::imu::gravity_x, SPACER);
-    logf("Gravity Y (m/s^2): %.3f\n%s", state::imu::gravity_y, SPACER);
-    logf("Gravity Z (m/s^2): %.3f\n\n", state::imu::gravity_z);
+    logf("Orientation Z (deg): %.3f\n\n", state::imu::orientation_z);
 
     logf("ACCELEROMETER: %d ------ ", state::accel::status);
-    logf("Accel X (G): %.3f\n%s", state::accel::accel_x, SPACER);
-    logf("Accel Y (G): %.3f\n%s", state::accel::accel_y, SPACER);
-    logf("Accel Z (G): %.3f\n\n", state::accel::accel_z);
+    logf("Accel X (g): %.3f\n%s", state::accel::accel_x, SPACER);
+    logf("Accel Y (g): %.3f\n%s", state::accel::accel_y, SPACER);
+    logf("Accel Z (g): %.3f\n\n", state::accel::accel_z);
 
     logf("ADC: %d ---------------- ", state::adc::status);
     logf("PT 3 (PSI): %.3f\n%s", state::adc::pressure_pt3, SPACER);
@@ -54,12 +51,12 @@ void Flight::execute() {
     logf("Battery (V): %.3f\n\n", state::adc::battery_voltage);
 
     logf("SD: %d ----------------- ", state::sd::init);
-    logf("Current File: %d\n\n", state::sd::current_file);
+    logf("Current file: %d_%d.csv\n\n", state::flight::boot_count, state::sd::current_file);
 
     logf("FRAM: %d --------------- ", state::fram::init);
-    logf("Boot Count: %d\n%s", state::flight::boot_count, SPACER);
-    logf("Watchdog Boot Count: %d\n%s", state::flight::watchdog_boot_count, SPACER);
-    logf("Old Mode: %d\n\n", state::flight::old_mode);
+    logf("Boot count: %d\n%s", state::flight::boot_count, SPACER);
+    logf("Watchdog boot count: %d\n%s", state::flight::watchdog_boot_count, SPACER);
+    logf("Old mode: %d\n\n", state::flight::old_mode);
 
     logf("MAV: %d%s", state::actuator::mav_open, "                  ");
     logf("SV: %d\n\n", state::actuator::sv_open);

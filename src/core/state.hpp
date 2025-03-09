@@ -75,7 +75,7 @@ namespace state {
         extern enum SensorState status;
         extern uint8_t failed_reads;
 
-        extern bool valid;
+        extern bool fresh;
 
         extern UbxNavPvt data;
         extern uint32_t unix_time;

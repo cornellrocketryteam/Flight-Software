@@ -57,7 +57,7 @@ namespace state {
         enum SensorState status = OFF;
         uint8_t failed_reads = 0;
 
-        bool valid = false;
+        bool fresh = false;
 
         UbxNavPvt data = {};
         uint32_t unix_time = 0;
