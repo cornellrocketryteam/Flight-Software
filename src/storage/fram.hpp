@@ -46,11 +46,15 @@ public:
      */
     void store(Data data);
 
+    void reset_data();
+
 private:
     /**
      * The FRAM module
      */
     MB85RS fram;
+
+    uint8_t clear[11] = {0};
 };
 
 #endif // FRAM_HPP

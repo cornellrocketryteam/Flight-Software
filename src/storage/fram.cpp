@@ -176,3 +176,12 @@ void FRAM::store(Data data) {
     }
     events.push(Event::fram_write_fail);
 }
+
+void FRAM::reset_data() {
+    if (!fram.write_bytes(0, clear, sizeof(clear))) {
+        events.push(Event::fram_write_fail);
+        return;
+    }
+
+    fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::actuator::sv_open), 1);
+}

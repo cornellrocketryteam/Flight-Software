@@ -59,9 +59,16 @@ void FlightMode::check_command() {
     if (c != PICO_ERROR_TIMEOUT) {
         switch ((char)c) {
         case static_cast<char>(Command::launch):
+            if (state::flight::mode->id() != 1) {
+                return;
+            }
+
             mav.open(constants::mav_open_time);
+            altimeter.update_ref_pressure();
+            fram.store(Data::ref_pressure);
             gpio_put(LED, 0);
             launch_commanded = true;
+
             events.push(Event::launch_command_received);
             break;
         case static_cast<char>(Command::mav_open):
@@ -81,8 +88,12 @@ void FlightMode::check_command() {
             events.push(Event::sv_command_received);
             break;
         case static_cast<char>(Command::reset_card):
-            sd.clear_card();
+            sd.reset_data();
             events.push(Event::reset_card_command_received);
+            break;
+        case static_cast<char>(Command::reset_fram):
+            fram.reset_data();
+            events.push(Event::reset_fram_command_received);
             break;
         case static_cast<char>(Command::reboot):
             watchdog_reboot(0, 0, 0);

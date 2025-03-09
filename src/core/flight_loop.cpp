@@ -11,6 +11,28 @@
 
 void Flight::execute() {
 
+    cycle_start = to_ms_since_boot(get_absolute_time());
+
+    // Execute the current flight mode
+    state::flight::mode->execute();
+    state::flight::mode->transition();
+
+    // Sleep until the cycle time is reached
+    cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;
+    if (cycle_duration < constants::cycle_time) {
+        sleep_ms(constants::cycle_time - cycle_duration);
+    }
+
+    state::flight::cycle_count++;
+    state::flight::timestamp = to_ms_since_boot(get_absolute_time());
+
+    // Check for any major cycle overflows
+    if (state::flight::timestamp - cycle_start > constants::cycle_time + 3) {
+        events.push(Event::cycle_overflow);
+    }
+
+    watchdog_update();
+
     logf("----------------BEGIN LOOP %d----------------\n", state::flight::cycle_count);
     logf("Time: %d ms\n", state::flight::timestamp);
     logf("Mode: %s           ", state::flight::mode->name().c_str());
@@ -62,26 +84,4 @@ void Flight::execute() {
     logf("SV: %d\n\n", state::actuator::sv_open);
 
     logf("BLiMS: %f\n\n", state::blims::motor_position);
-
-    cycle_start = to_ms_since_boot(get_absolute_time());
-
-    // Execute the current flight mode
-    state::flight::mode->execute();
-    state::flight::mode->transition();
-
-    // Sleep until the fixed cycle time is reached
-    cycle_duration = to_ms_since_boot(get_absolute_time()) - cycle_start;
-    if (cycle_duration < constants::cycle_time) {
-        sleep_ms(constants::cycle_time - cycle_duration);
-    }
-
-    state::flight::cycle_count++;
-    state::flight::timestamp = to_ms_since_boot(get_absolute_time());
-
-    // Check for any cycle overflows
-    if (state::flight::timestamp - cycle_start > constants::cycle_time + 3) {
-        events.push(Event::cycle_overflow);
-    }
-
-    watchdog_update();
 }

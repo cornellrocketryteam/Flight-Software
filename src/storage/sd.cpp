@@ -108,7 +108,7 @@ void SD::log() {
     writes_count++;
 }
 
-bool SD::clear_card() {
+void SD::reset_data() {
     DIR dir;
     FILINFO fno;
 
@@ -116,7 +116,7 @@ bool SD::clear_card() {
     if (fr != FR_OK && fr != FR_EXIST) {
         logf("SD Open Error: %s (%d)\n", FRESULT_str(fr), fr);
         events.push(Event::sd_write_fail);
-        return false;
+        return;
     }
 
     while (true) {
@@ -128,9 +128,7 @@ bool SD::clear_card() {
         if (fr != FR_OK) {
             logf("SD Delete Error: Failed to delete %s\n", fno.fname);
             events.push(Event::sd_write_fail);
-            return false;
+            return;
         }
     }
-
-    return true;
 }

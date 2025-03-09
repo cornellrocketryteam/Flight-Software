@@ -30,9 +30,8 @@ public:
 
     /**
      * Clears all data from the SD card.
-     * @return True on successful clear, false on file open or close failures
      */
-    bool clear_card();
+    void reset_data();
 
 private:
     /**
