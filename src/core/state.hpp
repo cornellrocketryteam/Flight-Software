@@ -119,6 +119,8 @@ namespace state {
         extern float pressure_pt4;
         extern float temp_rtd;
 
+        extern float battery_voltage;
+
     } // namespace adc
     namespace sd {
         extern bool init;

@@ -101,6 +101,8 @@ namespace state {
         float pressure_pt4 = -1;
         float temp_rtd = -1;
 
+        float battery_voltage = -1;
+
     } // namespace adc
     namespace sd {
         bool init = false;
@@ -124,6 +126,6 @@ namespace state {
         bool sv_open = true;
     } // namespace actuator
     namespace blims {
-        float motor_position = 0;
+        float motor_position = -1;
     } // namespace blims
 }; // namespace state

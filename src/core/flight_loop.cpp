@@ -50,7 +50,8 @@ void Flight::execute() {
     logf("ADC: %d ---------------- ", state::adc::status);
     logf("PT 3 (PSI): %.3f\n%s", state::adc::pressure_pt3, SPACER);
     logf("PT 4 (PSI): %.3f\n%s", state::adc::pressure_pt4, SPACER);
-    logf("RTD (C): %.3f\n\n", state::adc::temp_rtd);
+    logf("RTD (C): %.3f\n%s", state::adc::temp_rtd, SPACER);
+    logf("Battery (V): %.3f\n\n", state::adc::battery_voltage);
 
     logf("SD: %d ----------------- ", state::sd::init);
     logf("Current File: %d\n\n", state::sd::current_file);

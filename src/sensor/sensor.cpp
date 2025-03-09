@@ -7,6 +7,7 @@
 
 #include "sensor.hpp"
 #include "events.hpp"
+#include "hardware/adc.h"
 #include "pins.hpp"
 #include "state.hpp"
 
@@ -223,4 +224,11 @@ void ADC::read_data() {
             state::adc::status = OFF;
         }
     }
+}
+
+void ADC::read_internal() {
+    adc_select_input(3);
+
+    battery_voltage_raw = adc_read();
+    state::adc::battery_voltage = battery_voltage_raw * constants::bv_conversion_factor;
 }

@@ -37,6 +37,7 @@ void FlightMode::execute() {
     if (state::sd::init) {
         sd.log();
     }
+    adc.read_internal();
     rfm.transmit();
 
     // Clear this cycle's events

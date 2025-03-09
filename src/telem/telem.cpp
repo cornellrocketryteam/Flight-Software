@@ -61,7 +61,7 @@ void RFM::transmit() {
     memcpy(&packet[79], &state::accel::accel_y, sizeof(float));
     memcpy(&packet[83], &state::accel::accel_z, sizeof(float));
 
-        // memcpy(&packet[87], &state::adc::pressure_pt3, sizeof(float));
+    memcpy(&packet[87], &state::adc::battery_voltage, sizeof(float));
     memcpy(&packet[91], &state::adc::pressure_pt3, sizeof(float));
     memcpy(&packet[95], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[99], &state::adc::temp_rtd, sizeof(float));
@@ -78,9 +78,7 @@ void Umbilical::transmit() {
     memcpy(&packet[2], &state::flight::timestamp, sizeof(uint32_t));
     memcpy(&packet[6], &events, sizeof(uint32_t));
 
-    float battery_voltage_temp = 42;
-    memcpy(&packet[10], &battery_voltage_temp, sizeof(float));
-
+    memcpy(&packet[10], &state::adc::battery_voltage, sizeof(float));
     memcpy(&packet[14], &state::adc::pressure_pt3, sizeof(float));
     memcpy(&packet[18], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[22], &state::adc::temp_rtd, sizeof(float));

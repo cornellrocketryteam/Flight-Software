@@ -71,11 +71,14 @@ public:
     ADC();
     void begin();
     void read_data();
+    void read_internal();
 
 private:
     ADS1015 adc;
     uint8_t channels[3] = {constants::channel_pt3, constants::channel_pt4, constants::channel_rtd};
     uint16_t data[3];
+
+    uint16_t battery_voltage_raw;
 };
 
 #endif // SENSOR_HPP

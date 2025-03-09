@@ -7,6 +7,7 @@
 
 #include "pins.hpp"
 #include "constants.hpp"
+#include "hardware/adc.h"
 #include "hardware/clocks.h"
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
@@ -81,4 +82,8 @@ void init_pins() {
     pwm_config_set_clkdiv(&config, 2);
     pwm_config_set_wrap(&config, 4095);
     pwm_init(sv_slice_num, &config, true);
+
+    // Init internal ADC
+    adc_init();
+    adc_gpio_init(ADC_VSYS);
 }

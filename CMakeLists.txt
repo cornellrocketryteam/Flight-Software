@@ -19,7 +19,7 @@ add_compile_options(
 )
 
 # Build options
-set(VERBOSE OFF)
+set(VERBOSE ON)
 set(SIM OFF)
 
 # Add build flags and change executable name based on options
@@ -112,9 +112,10 @@ target_include_directories(${EXEC_NAME}
 # Pull in common dependencies
 target_link_libraries(${EXEC_NAME} 
     pico_stdlib 
+    hardware_adc
+    hardware_gpio
     hardware_i2c 
     hardware_pwm
-    hardware_gpio
     hardware_uart
     no-OS-FatFS-SD-SDIO-SPI-RPi-Pico 
     BMP388-Pico
