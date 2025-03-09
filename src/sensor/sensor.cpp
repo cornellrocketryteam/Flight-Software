@@ -73,7 +73,7 @@ void Altimeter::read_altitude() {
 GPS::GPS() : gnss(I2C_PORT) {};
 
 void GPS::begin() {
-    if (gnss.begin_PVT(40)) { // TODO: Change to Hz
+    if (gnss.begin_PVT(constants::gps_data_rate)) {
         state::gps::status = VALID;
     } else {
         events.push(Event::gps_init_fail);
@@ -81,18 +81,18 @@ void GPS::begin() {
 }
 
 void GPS::read_data() {
-    // if (gnss.read_PVT_data(&state::gps::data)) {
-    //     if (state::gps::status == INVALID) {
-    //         state::gps::status = VALID;
-    //     }
-    // } else {
-    //     state::gps::failed_reads++;
-    //     state::gps::status = INVALID;
-    //     events.push(Event::gps_read_fail);
-    //     if (state::gps::failed_reads >= constants::max_failed_reads) {
-    //         state::gps::status = OFF;
-    //     }
-    // }
+    if (gnss.read_PVT_data(&state::gps::data)) {
+        if (state::gps::status == INVALID) {
+            state::gps::status = VALID;
+        }
+    } else {
+        state::gps::failed_reads++;
+        state::gps::status = INVALID;
+        events.push(Event::gps_read_fail);
+        if (state::gps::failed_reads >= constants::max_failed_reads) {
+            state::gps::status = OFF;
+        }
+    }
 }
 
 Accel::Accel() : accel(I2C_PORT) {}

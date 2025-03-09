@@ -62,6 +62,8 @@ namespace constants {
     constexpr uint8_t max_failed_writes = 20;
     constexpr uint8_t max_failed_reads = 10;
 
+    constexpr int gps_data_rate = 20;               // Hz
+
     constexpr uint8_t ematch_threshold = 200;       // ms
     constexpr uint8_t sv_peak_threshold = 150;      // ms
 
