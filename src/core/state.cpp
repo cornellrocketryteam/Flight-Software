@@ -34,8 +34,6 @@ namespace state {
         uint32_t cycle_count = 0;
         uint32_t timestamp = 0;
 
-        bool launch_commanded = false;
-
         uint16_t boot_count = 0;
         uint8_t watchdog_boot_count = 0;
         int old_mode = -1;
@@ -44,6 +42,7 @@ namespace state {
 
         bool key_armed = false;
         bool alt_armed = false;
+        bool safed = false;
 
     } // namespace flight
     namespace alt {

@@ -19,7 +19,7 @@ add_compile_options(
 )
 
 # Build options
-set(VERBOSE ON)
+set(VERBOSE OFF)
 set(SIM OFF)
 
 # Add build flags and change executable name based on options

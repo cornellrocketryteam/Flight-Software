@@ -14,7 +14,6 @@
 #include "constants.hpp"
 #include "lis3dh.hpp"
 #include "ublox_mx.hpp"
-#include <vector>
 #ifdef SIM
 #include "hitl.hpp"
 #endif

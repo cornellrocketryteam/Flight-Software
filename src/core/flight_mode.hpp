@@ -51,6 +51,8 @@ protected:
      * Checks the umbilical for any incoming commands.
      */
     void check_command();
+
+    bool launch_commanded = false;
 };
 
 /**

@@ -51,8 +51,6 @@ namespace state {
         extern uint32_t cycle_count;
         extern uint32_t timestamp;
 
-        extern bool launch_commanded;
-
         // TODO: Move from state?
         extern uint16_t boot_count;
         extern uint8_t watchdog_boot_count;
@@ -62,6 +60,7 @@ namespace state {
 
         extern bool key_armed;
         extern bool alt_armed;
+        extern bool safed;
 
     } // namespace flight
     namespace alt {

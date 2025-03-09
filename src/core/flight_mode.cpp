@@ -61,7 +61,7 @@ void FlightMode::check_command() {
         case static_cast<char>(Command::launch):
             mav.open(constants::mav_open_time);
             gpio_put(LED, 0);
-            state::flight::launch_commanded = true;
+            launch_commanded = true;
             events.push(Event::launch_command_received);
             break;
         case static_cast<char>(Command::mav_open):
@@ -179,7 +179,7 @@ void StandbyMode::execute() {
 
 void StandbyMode::transition() {
     // Transition to Ascent Mode if launch was commanded through the umbilical
-    if (state::flight::launch_commanded) {
+    if (launch_commanded) {
         to_mode(state::flight::ascent);
     }
     // Transition to Fault Mode if the umbilical is disconnected
