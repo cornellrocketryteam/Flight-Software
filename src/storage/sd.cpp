@@ -36,10 +36,13 @@ void SD::log() {
 
          + std::to_string(state::alt::status) + ","
          + std::to_string(state::alt::altitude) + ","
+         + std::to_string(state::alt::temperature) + ","
 
          + std::to_string(state::gps::status) + ","
+         + std::to_string(state::gps::fresh) + ","
          + std::to_string(state::gps::data.lat) + ","
          + std::to_string(state::gps::data.lon) + ","
+         + std::to_string(state::gps::unix_time) + ","
 
          + std::to_string(state::imu::status) + ","
          + std::to_string(state::imu::gyro_x) + ","
@@ -60,15 +63,25 @@ void SD::log() {
          + std::to_string(state::accel::accel_y) + ","
          + std::to_string(state::accel::accel_z) + ","
 
-         + std::to_string(state::alt::temp) + ","
+         + std::to_string(state::adc::status) + ","
+         + std::to_string(state::adc::pressure_pt3) + ","
+         + std::to_string(state::adc::pressure_pt4) + ","
+         + std::to_string(state::adc::temp_rtd) + ","
 
-         + std::to_string(state::fram::init) + ",";
+         + std::to_string(state::adc::battery_voltage) + ","
+
+         + std::to_string(state::fram::init) + ","
+
+         + std::to_string(state::blims::motor_position) + ",";
+
     // clang-format on
 
-    uint32_t events_bitfield = events.get();
-    for (uint i = 0; i < sizeof(events_bitfield) * 8; i++) {
-        if (events_bitfield & (1u << i)) {
-            data += std::to_string(i) + ",";
+    if (!events.is_empty()) {
+        uint32_t events_bitfield = events.get();
+        for (uint i = 0; i < sizeof(events_bitfield) * 8; i++) {
+            if (events_bitfield & (1u << i)) {
+                data += std::to_string(i) + ",";
+            }
         }
     }
 

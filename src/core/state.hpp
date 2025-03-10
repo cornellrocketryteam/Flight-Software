@@ -69,7 +69,7 @@ namespace state {
 
         extern float altitude;
         extern float ref_pressure;
-        extern float temp;
+        extern float temperature;
     } // namespace alt
     namespace gps {
         extern enum SensorState status;

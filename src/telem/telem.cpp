@@ -39,7 +39,7 @@ void RFM::transmit() {
     memcpy(&packet[10], &events, sizeof(uint32_t));
 
     memcpy(&packet[14], &state::alt::altitude, sizeof(float));
-    memcpy(&packet[18], &state::alt::temp, sizeof(float));
+    memcpy(&packet[18], &state::alt::temperature, sizeof(float));
 
     memcpy(&packet[22], &state::gps::data.lat, sizeof(int32_t));
     memcpy(&packet[26], &state::gps::data.lon, sizeof(int32_t));

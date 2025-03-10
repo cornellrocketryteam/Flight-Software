@@ -40,7 +40,7 @@ void Flight::execute() {
 
     logf("ALTIMETER: %d ---------- ", state::alt::status);
     logf("Altitude (m): %.3f\n%s", state::alt::altitude, SPACER);
-    logf("Temperature (C): %.3f\n\n", state::alt::temp);
+    logf("Temperature (C): %.3f\n\n", state::alt::temperature);
 
     logf("GPS: %d, Message: %d ---- ", state::gps::status, state::gps::fresh);
     logf("Latitude: %f\n%s", state::gps::data.lat, SPACER);
