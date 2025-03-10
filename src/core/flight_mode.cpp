@@ -87,6 +87,11 @@ void FlightMode::check_command() {
             sv.close();
             events.push(Event::sv_command_received);
             break;
+        case static_cast<char>(Command::safe):
+            sv.open();
+            state::flight::safed = true;
+            events.push(Event::safe_command_received);
+            break;
         case static_cast<char>(Command::reset_card):
             sd.reset_data();
             events.push(Event::reset_card_command_received);
