@@ -49,7 +49,7 @@ namespace constants {
 
     constexpr uint8_t cycle_time = 50;                           // ms
 
-    constexpr uint8_t max_usb_failed_reads = 250;
+    constexpr uint16_t max_usb_failed_reads = 250;
 
     constexpr uint8_t channel_pt3 = 3;
     constexpr uint8_t channel_pt4 = 2;
@@ -64,6 +64,7 @@ namespace constants {
 
     constexpr int gps_data_rate = 20;                            // Hz
 
+    constexpr float pt_conversion_factor = 0.9;
     constexpr float bv_conversion_factor = 3.3f / (1 << 12) * 3;
 
     constexpr uint8_t ematch_threshold = 200;                    // ms
@@ -76,7 +77,6 @@ namespace constants {
     constexpr uint16_t main_log_shutoff = 30000;                 // cycles
 
     constexpr uint32_t sync_word = 0x3E5D5967;
-
     constexpr uint8_t rfm_packet_size = 107;                     // bytes
     constexpr uint8_t umb_packet_size = 24;                      // bytes
 

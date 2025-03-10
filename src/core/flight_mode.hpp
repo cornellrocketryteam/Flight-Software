@@ -91,6 +91,12 @@ public:
 
     uint8_t id() { return 1; }
     std::string name() { return "Standby"; };
+
+private:
+    /**
+     * The current number of consecutive failed umbilical reads.
+     */
+    uint16_t usb_failed_reads = 0;
 };
 
 /**

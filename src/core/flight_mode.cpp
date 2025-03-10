@@ -175,11 +175,11 @@ void StandbyMode::execute() {
     }
 
     // Check the umbilical connection
-    // if (!tud_cdc_connected()) {
-    //     state::flight::usb_failed_reads++;
-    // } else if (state::flight::usb_failed_reads > 0) {
-    //     state::flight::usb_failed_reads = 0;
-    // }
+    if (!tud_cdc_connected()) {
+        usb_failed_reads++;
+    } else if (usb_failed_reads > 0) {
+        usb_failed_reads = 0;
+    }
 
     check_command();
 
@@ -194,10 +194,10 @@ void StandbyMode::transition() {
         to_mode(state::flight::ascent);
     }
     // Transition to Fault Mode if the umbilical is disconnected
-    else if (state::flight::usb_failed_reads == constants::max_usb_failed_reads) {
+    else if (usb_failed_reads == constants::max_usb_failed_reads) {
         sv.open();
         events.push(Event::umbilical_disconnected);
-        state::flight::usb_failed_reads = 0; // TODO remove
+        usb_failed_reads = 0; // TODO remove
         gpio_put(LED, 0); // TODO remove
         // to_mode(state::flight::fault); // TODO add back in
     }

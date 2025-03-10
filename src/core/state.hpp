@@ -54,9 +54,7 @@ namespace state {
         // TODO: Move from state?
         extern uint16_t boot_count;
         extern uint8_t watchdog_boot_count;
-        extern int old_mode;
-
-        extern int usb_failed_reads;
+        extern uint8_t old_mode;
 
         extern bool key_armed;
         extern bool alt_armed;
@@ -141,10 +139,12 @@ namespace state {
     namespace actuator {
         extern bool mav_open;
         extern bool sv_open;
+
     } // namespace actuator
     namespace blims {
         extern float motor_position;
-    }
+
+    } // namespace blims
 
 }; // namespace state
 
