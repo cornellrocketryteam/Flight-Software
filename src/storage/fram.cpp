@@ -17,12 +17,17 @@ FRAM::FRAM() : fram(SPI_PORT, FRAM_CS) {}
 void FRAM::begin() {
     if (fram.begin()) {
         state::fram::init = true;
+
         load(Data::boot_count);
         load(Data::old_mode);
         load(Data::watchdog_boot_count);
         load(Data::mav_state);
         load(Data::sv_state);
+        if (state::flight::old_mode > 1) {
+            load(Data::ref_pressure);
+        }
 
+        // Increment boot counters
         state::flight::boot_count++;
         store(Data::boot_count);
 
@@ -30,11 +35,6 @@ void FRAM::begin() {
             state::flight::watchdog_boot_count++;
         }
         store(Data::watchdog_boot_count);
-
-        // Load old reference pressure if we're in flight
-        if (state::flight::old_mode > 1) {
-            load(Data::ref_pressure);
-        }
 
         // Set SV state from previous boot
         if (!state::actuator::sv_open) {
@@ -178,10 +178,15 @@ void FRAM::store(Data data) {
 }
 
 void FRAM::reset_data() {
+    // Clear all relevant data
     if (!fram.write_bytes(0, clear, sizeof(clear))) {
         events.push(Event::fram_write_fail);
         return;
     }
 
+    // Save the old SV state
     fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::actuator::sv_open), 1);
+
+    // Update state variables
+    begin();
 }
