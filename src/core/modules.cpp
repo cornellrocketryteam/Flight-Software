@@ -22,5 +22,6 @@ Umbilical umb;
 MAV mav;
 SV sv;
 SSA ssa;
+Buzzer buzzer;
 
 BLIMS blims_obj;

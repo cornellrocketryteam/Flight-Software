@@ -56,6 +56,7 @@ namespace state {
         extern uint8_t watchdog_boot_count;
         extern uint8_t old_mode;
 
+        extern bool umb_connected;
         extern bool key_armed;
         extern bool alt_armed;
         extern bool safed;

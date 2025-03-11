@@ -30,6 +30,7 @@ extern Umbilical umb;
 extern MAV mav;
 extern SV sv;
 extern SSA ssa;
+extern Buzzer buzzer;
 
 extern BLIMS blims_obj;
 

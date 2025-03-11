@@ -49,8 +49,6 @@ namespace constants {
 
     constexpr uint8_t cycle_time = 50;                           // ms
 
-    constexpr uint16_t max_usb_failed_reads = 250;
-
     constexpr uint8_t channel_pt3 = 3;
     constexpr uint8_t channel_pt4 = 2;
     constexpr uint8_t channel_rtd = 1;
@@ -78,6 +76,9 @@ namespace constants {
 
     constexpr uint32_t sync_word = 0x3E5D5967;
     constexpr uint8_t rfm_packet_size = 107;                     // bytes
+
+    constexpr uint16_t min_umb_successful_reads = 100;
+    constexpr uint16_t max_umb_failed_reads = 250;
     constexpr uint8_t umb_packet_size = 24;                      // bytes
 
     constexpr BLIMSMode blims_mode = MVP_Flight;

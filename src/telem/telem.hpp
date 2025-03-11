@@ -27,16 +27,21 @@ public:
     void transmit();
 
 private:
-    uint32_t sync_word = constants::sync_word;
     uint8_t packet[constants::rfm_packet_size];
+    uint32_t sync_word = constants::sync_word;
 };
 
 class Umbilical : Telem {
 public:
     void transmit();
 
+    bool connection_changed();
+
 private:
     uint8_t packet[constants::umb_packet_size];
+
+    uint16_t successful_connections = 0;
+    uint16_t failed_connections = 0;
 };
 
 #endif // TELEM_HPP

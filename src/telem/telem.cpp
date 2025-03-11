@@ -8,6 +8,7 @@
 #include "telem.hpp"
 #include "pins.hpp"
 #include "state.hpp"
+#include "tusb.h"
 #include <bitset>
 
 void Telem::pack_data() {
@@ -87,4 +88,31 @@ void Umbilical::transmit() {
         printf("%c", packet[i]);
     }
     printf("\n");
+}
+
+bool Umbilical::connection_changed() {
+    if (state::flight::umb_connected) {
+        if (!tud_cdc_connected()) {
+            failed_connections++;
+        } else {
+            failed_connections = 0;
+        }
+        if (failed_connections == constants::max_umb_failed_reads) {
+            state::flight::umb_connected = false;
+            failed_connections = 0;
+            return true;
+        }
+    } else {
+        if (tud_cdc_connected()) {
+            successful_connections++;
+        } else {
+            successful_connections = 0;
+        }
+        if (successful_connections == constants::min_umb_successful_reads) {
+            state::flight::umb_connected = true;
+            successful_connections = 0;
+            return true;
+        }
+    }
+    return false;
 }

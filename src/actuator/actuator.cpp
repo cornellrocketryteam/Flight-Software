@@ -24,6 +24,19 @@ int64_t SSA::time_off(alarm_id_t id, void *user_data) {
     return 0;
 }
 
+// Buzzer
+
+void Buzzer::on() {
+    pwm_set_enabled(buzzer_slice_num, true);
+}
+
+void Buzzer::off() {
+    pwm_set_enabled(buzzer_slice_num, false);
+}
+
+void Buzzer::buzz_num(uint buzzes) {
+}
+
 // MAV
 
 void MAV::open(uint duration) {

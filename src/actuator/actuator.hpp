@@ -25,6 +25,14 @@ private:
     static int64_t time_off(alarm_id_t id, void *user_data);
 };
 
+class Buzzer {
+public:
+    void on();
+    void off();
+
+    void buzz_num(uint buzzes);
+};
+
 class MAV {
 public:
     void open(uint duration = 0);

@@ -114,8 +114,8 @@ void FlightMode::check_command() {
 void StartupMode::execute() {
     // Check to see if the arming key has been turned
     if (gpio_get(ARM_IN)) {
+        buzzer.on();
         state::flight::key_armed = true;
-        pwm_set_enabled(buzzer_slice_num, true);
     }
 
     // Attempt to initialize all modules
@@ -142,6 +142,15 @@ void StartupMode::execute() {
     }
 
     // blims_obj.begin(constants::blims_mode);
+
+    // Check the umbilical connection
+    if (umb.connection_changed()) {
+        if (state::flight::umb_connected) {
+            buzzer.buzz_num(2);
+        } else {
+            buzzer.buzz_num(3);
+        }
+    }
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
@@ -175,19 +184,27 @@ void StandbyMode::execute() {
 
     // Check to see if the arming key has been turned off
     if (!gpio_get(ARM_IN)) {
+        buzzer.off();
         state::flight::key_armed = false;
-        pwm_set_enabled(buzzer_slice_num, false);
     }
 
     // Check the umbilical connection
-    if (!tud_cdc_connected()) {
-        usb_failed_reads++;
-    } else if (usb_failed_reads > 0) {
-        usb_failed_reads = 0;
+    // if (!tud_cdc_connected()) {
+    //     usb_failed_reads++;
+    // } else if (usb_failed_reads > 0) {
+    //     usb_failed_reads = 0;
+    // }
+
+    // Check the umbilical connection
+    if (umb.connection_changed()) {
+        if (state::flight::umb_connected) {
+            buzzer.buzz_num(2);
+        } else {
+            buzzer.buzz_num(3);
+        }
     }
 
     check_command();
-
 #ifdef LAUNCH
     umb.transmit();
 #endif
@@ -199,10 +216,9 @@ void StandbyMode::transition() {
         to_mode(state::flight::ascent);
     }
     // Transition to Fault Mode if the umbilical is disconnected
-    else if (usb_failed_reads == constants::max_usb_failed_reads) {
+    else if (!state::flight::umb_connected) {
         sv.open();
         events.push(Event::umbilical_disconnected);
-        usb_failed_reads = 0; // TODO remove
         gpio_put(LED, 0); // TODO remove
         // to_mode(state::flight::fault); // TODO add back in
     }
@@ -318,7 +334,6 @@ void FaultMode::execute() {
     FlightMode::execute();
 
     check_command();
-
 #ifdef LAUNCH
     umb.transmit();
 #endif
