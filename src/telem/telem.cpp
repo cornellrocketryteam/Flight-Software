@@ -9,7 +9,6 @@
 #include "pins.hpp"
 #include "state.hpp"
 #include "tusb.h"
-#include <bitset>
 
 void Telem::pack_data() {
     packed_metadata = 0;
@@ -22,6 +21,7 @@ void Telem::pack_data() {
     packed_metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 8;
     packed_metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 7;
     packed_metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 6;
+    packed_metadata |= (static_cast<uint8_t>(state::flight::umb_connected) & 0b1) << 5;
     packed_metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
     packed_metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
     packed_metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
