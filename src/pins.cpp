@@ -59,7 +59,7 @@ void init_pins() {
 
     // Init PWM pins
     gpio_set_function(ARM_OUT, GPIO_FUNC_PWM);
-    gpio_set_function(RELAY, GPIO_FUNC_PWM);
+    gpio_set_function(SV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
 

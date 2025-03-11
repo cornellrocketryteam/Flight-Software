@@ -38,7 +38,7 @@
 
 #define FRAM_CS 17
 
-#define RELAY 21
+#define SV_SIGNAL 21
 #define MAV_SIGNAL 22
 
 #define LED 25
@@ -48,7 +48,7 @@
 #define ADC_VSYS 29
 
 inline const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
-inline const uint sv_slice_num = pwm_gpio_to_slice_num(RELAY);
+inline const uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
 inline const uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
 
 /**
