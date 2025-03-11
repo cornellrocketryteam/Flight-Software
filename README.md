@@ -26,7 +26,7 @@ By default, FSW builds in ```LAUNCH``` mode. There are 2 build options you can s
 * ```VERBOSE```: Displays state information over serial. FSW will only start running once a serial connection is made. 
 * ```SIM```: FSW will execute a simulated flight path once the launch command is sent.
 
-You can set these options in ```CMakeLists.txt```. The executable name will change based on which build option(s) are set. 
+You can set these options in ```CMakeLists.txt```. The executable name will change based on which build option(s) are set: ```fsw```, ```fsw_verbose```, ```fsw_sim```, or ```fsw_sim_verbose```.
 
 ### Building
 
@@ -34,9 +34,9 @@ You can set these options in ```CMakeLists.txt```. The executable name will chan
 2. _(First-time setup only)_ Run ```cmake ..``` from within ```build/```  
 3. Set build options (see above)
 4. Run ```make```
-5. Move ```fsw.uf2``` to a Pico in boot select mode
+5. Move the generated ```uf2``` file to a Pico in boot select mode
 
-_Note: You can also run_ ```make upload``` _to automatically make and move the uf2 to a Pico in boot select mode_
+_You can also run_ ```make upload``` _to automatically make and move the uf2 to a Pico in boot select mode_
 
 ## Contributing
 1. Create a new branch with ```git checkout -b YOUR_BRANCH_NAME```
