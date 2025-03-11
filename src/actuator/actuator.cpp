@@ -26,6 +26,10 @@ int64_t SSA::time_off(alarm_id_t id, void *user_data) {
 
 // Buzzer
 
+// TODO: Look into moving these
+bool is_wait = false;
+uint num_buzzes = 0;
+
 void Buzzer::on() {
     pwm_set_enabled(buzzer_slice_num, true);
 }
@@ -35,6 +39,27 @@ void Buzzer::off() {
 }
 
 void Buzzer::buzz_num(uint buzzes) {
+    if (num_buzzes != 0) {
+        // TODO
+    }
+
+    add_repeating_timer_ms(constants::buzz_delay, buzz, NULL, &timer);
+}
+
+bool Buzzer::buzz(struct repeating_timer *t) {
+    is_wait = !is_wait;
+
+    if (is_wait) {
+        pwm_set_enabled(buzzer_slice_num, false);
+    } else {
+        pwm_set_enabled(buzzer_slice_num, true);
+        num_buzzes--;
+    }
+
+    if (num_buzzes == 0) {
+        cancel_repeating_timer(t);
+    }
+    return true;
 }
 
 // MAV

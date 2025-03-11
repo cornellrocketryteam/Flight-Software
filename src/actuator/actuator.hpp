@@ -31,6 +31,10 @@ public:
     void off();
 
     void buzz_num(uint buzzes);
+
+private:
+    static bool buzz(struct repeating_timer *t);
+    struct repeating_timer timer;
 };
 
 class MAV {

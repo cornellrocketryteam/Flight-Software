@@ -140,7 +140,6 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         sd.begin();
     }
-
     // blims_obj.begin(constants::blims_mode);
 
     // Check the umbilical connection
