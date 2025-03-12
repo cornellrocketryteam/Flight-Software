@@ -80,7 +80,7 @@ namespace constants {
 
     constexpr uint16_t min_umb_successful_reads = 100;
     constexpr uint16_t max_umb_failed_reads = 250;
-    constexpr uint8_t umb_packet_size = 24;                      // bytes
+    constexpr uint8_t umb_packet_size = 26;                      // bytes
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
 
