@@ -38,7 +38,7 @@ namespace state {
         uint8_t watchdog_boot_count = 0;
         uint8_t old_mode = -1;
 
-        bool umb_connected = false;
+        bool umb_connected = true;
         bool key_armed = false;
         bool alt_armed = false;
         bool safed = false;

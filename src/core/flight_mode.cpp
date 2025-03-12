@@ -143,13 +143,13 @@ void StartupMode::execute() {
     // blims_obj.begin(constants::blims_mode);
 
     // Check the umbilical connection
-    if (umb.connection_changed()) {
-        if (state::flight::umb_connected) {
-            buzzer.buzz_num(2);
-        } else {
-            buzzer.buzz_num(3);
-        }
-    }
+    // if (umb.connection_changed()) {
+    //     if (state::flight::umb_connected) {
+    //         buzzer.buzz_num(2);
+    //     } else {
+    //         buzzer.buzz_num(3);
+    //     }
+    // }
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
@@ -195,13 +195,13 @@ void StandbyMode::execute() {
     // }
 
     // Check the umbilical connection
-    if (umb.connection_changed()) {
-        if (state::flight::umb_connected) {
-            buzzer.buzz_num(2);
-        } else {
-            buzzer.buzz_num(3);
-        }
-    }
+    // if (umb.connection_changed()) {
+    //     if (state::flight::umb_connected) {
+    //         buzzer.buzz_num(2);
+    //     } else {
+    //         buzzer.buzz_num(3);
+    //     }
+    // }
 
     check_command();
 #ifdef LAUNCH
