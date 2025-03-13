@@ -67,7 +67,7 @@ namespace constants {
 
     constexpr uint8_t ematch_threshold = 200;                    // ms
     constexpr uint8_t sv_peak_threshold = 150;                   // ms
-    constexpr uint16_t buzz_delay = 500;                         // ms
+    constexpr uint16_t buzz_delay = 200;                         // ms
 
     const uint16_t file_writes_threshold = 50000;                // cycles
     constexpr float log_threshold = 50;                          // meters

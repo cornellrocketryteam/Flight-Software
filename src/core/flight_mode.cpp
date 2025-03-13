@@ -114,7 +114,7 @@ void FlightMode::check_command() {
 void StartupMode::execute() {
     // Check to see if the arming key has been turned
     if (gpio_get(ARM_IN)) {
-        buzzer.on();
+        // buzzer.on();
         state::flight::key_armed = true;
     }
 
@@ -140,16 +140,18 @@ void StartupMode::execute() {
     if (!state::sd::init) {
         sd.begin();
     }
+    rfm.transmit();
+
     // blims_obj.begin(constants::blims_mode);
 
     // Check the umbilical connection
-    // if (umb.connection_changed()) {
-    //     if (state::flight::umb_connected) {
-    //         buzzer.buzz_num(2);
-    //     } else {
-    //         buzzer.buzz_num(3);
-    //     }
-    // }
+    if (umb.connection_changed()) {
+        if (state::flight::umb_connected) {
+            buzzer.buzz_num(2);
+        } else {
+            buzzer.buzz_num(3);
+        }
+    }
 
     // Continuously update reference pressure before launch
     if (state::alt::status == VALID) {
@@ -163,7 +165,8 @@ void StartupMode::execute() {
 void StartupMode::transition() {
     if (state::flight::old_mode == 5) {
         // Transition to Fault Mode if we faulted in the last boot
-        to_mode(state::flight::fault);
+        // to_mode(state::flight::fault);
+        to_mode(state::flight::standby);
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID) {
             // Transition to Fault Mode if the altimeter is non-operational
@@ -188,20 +191,13 @@ void StandbyMode::execute() {
     }
 
     // Check the umbilical connection
-    // if (!tud_cdc_connected()) {
-    //     usb_failed_reads++;
-    // } else if (usb_failed_reads > 0) {
-    //     usb_failed_reads = 0;
-    // }
-
-    // Check the umbilical connection
-    // if (umb.connection_changed()) {
-    //     if (state::flight::umb_connected) {
-    //         buzzer.buzz_num(2);
-    //     } else {
-    //         buzzer.buzz_num(3);
-    //     }
-    // }
+    if (umb.connection_changed()) {
+        if (state::flight::umb_connected) {
+            buzzer.buzz_num(2);
+        } else {
+            buzzer.buzz_num(3);
+        }
+    }
 
     check_command();
 #ifdef LAUNCH
@@ -214,6 +210,11 @@ void StandbyMode::transition() {
     if (launch_commanded) {
         to_mode(state::flight::ascent);
     }
+    // Transition to Startup Mode if the arming key was turned off
+    else if (!state::flight::key_armed) {
+        to_mode(state::flight::startup);
+    }
+#ifdef LAUNCH
     // Transition to Fault Mode if the umbilical is disconnected
     else if (!state::flight::umb_connected) {
         sv.open();
@@ -221,10 +222,7 @@ void StandbyMode::transition() {
         gpio_put(LED, 0); // TODO remove
         // to_mode(state::flight::fault); // TODO add back in
     }
-    // Transition to Startup Mode if the arming key was turned off
-    else if (!state::flight::key_armed) {
-        to_mode(state::flight::startup);
-    }
+#endif
 }
 
 // Ascent Mode

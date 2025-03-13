@@ -42,21 +42,24 @@ void Buzzer::buzz_num(uint buzzes) {
     if (num_buzzes != 0) {
         // TODO
     }
-
+    num_buzzes = buzzes;
     add_repeating_timer_ms(constants::buzz_delay, buzz, NULL, &timer);
 }
 
 bool Buzzer::buzz(struct repeating_timer *t) {
-    is_wait = !is_wait;
-
+    // printf("BUZZ: is_wait %d, num_buzzes %d\n\n\n\n\n\n\n", is_wait, num_buzzes);
     if (is_wait) {
         pwm_set_enabled(buzzer_slice_num, false);
     } else {
         pwm_set_enabled(buzzer_slice_num, true);
         num_buzzes--;
     }
+    is_wait = !is_wait;
 
-    if (num_buzzes == 0) {
+    if (is_wait == true && num_buzzes <= 0) {
+        pwm_set_enabled(buzzer_slice_num, false);
+        is_wait = false;
+        num_buzzes = 0;
         cancel_repeating_timer(t);
     }
     return true;

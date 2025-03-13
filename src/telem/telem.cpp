@@ -84,13 +84,13 @@ void Umbilical::transmit() {
     memcpy(&packet[18], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[22], &state::adc::temp_rtd, sizeof(float));
 
-    for (uint i = 0; i < constants::umb_packet_size; ++i) {
-        printf("%c", packet[i]);
-    }
-    printf("\n");
+    tud_cdc_write(packet, constants::umb_packet_size);
+    tud_cdc_write("\n", 1);
+    tud_cdc_write_flush();
 }
 
 bool Umbilical::connection_changed() {
+    // printf("Successful connections: %d, failed connections: %d\n", successful_connections, failed_connections);
     if (state::flight::umb_connected) {
         if (!tud_cdc_connected()) {
             failed_connections++;
