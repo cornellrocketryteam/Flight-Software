@@ -229,7 +229,7 @@ void StartupMode::execute() {
         }
     }
 
-    modules::blims.begin(constants::blims_mode);
+    modules::blims.begin(constants::blims_mode, BLIMS_MOTOR);
 }
 
 void StartupMode::transition() {
