@@ -83,6 +83,8 @@ namespace constants {
     constexpr uint8_t umb_packet_size = 26;                      // bytes
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
+    constexpr float target_lon = 42.4534;
+    constexpr float target_lat = -76.4735;
 
 }; // namespace constants
 
