@@ -205,6 +205,7 @@ ADC::ADC() : adc(I2C_PORT) {}
 
 void ADC::begin() {
     if (adc.begin()) {
+        adc.set_gain(constants::channel_rtd, GAIN_FOUR);
         state::adc::status = VALID;
     } else {
         events.push(Event::adc_init_fail);
