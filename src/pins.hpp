@@ -43,7 +43,7 @@
 
 #define LED 25
 
-#define BLIMS_MOTOR 26
+#define BLIMS_MOTOR 28
 
 #define ADC_VSYS 29
 

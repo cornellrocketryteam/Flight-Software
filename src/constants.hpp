@@ -62,7 +62,7 @@ namespace constants {
 
     constexpr int gps_data_rate = 20;                            // Hz
 
-    constexpr float pt_conversion_factor = 0.9;
+    constexpr float pt_conversion_factor = 0.8998;
     constexpr float bv_conversion_factor = 3.3f / (1 << 12) * 3;
 
     constexpr uint8_t ematch_threshold = 200;                    // ms

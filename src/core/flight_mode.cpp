@@ -219,7 +219,6 @@ void StandbyMode::transition() {
     else if (!state::flight::umb_connected) {
         sv.open();
         events.push(Event::umbilical_disconnected);
-        gpio_put(LED, 0); // TODO remove
         // to_mode(state::flight::fault); // TODO add back in
     }
 #endif
