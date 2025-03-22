@@ -239,6 +239,12 @@ void AscentMode::execute() {
     if (!state::sd::init) {
         fram.store(Data::pt);
     }
+
+// TODO: Remove this after wet dress rehearsal
+    check_command();
+#ifdef LAUNCH
+    umb.transmit();
+#endif
 }
 
 void AscentMode::transition() {

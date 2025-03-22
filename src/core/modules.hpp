@@ -15,18 +15,22 @@
 #include "sensor.hpp"
 #include "telem.hpp"
 
+// Sensors
 extern Altimeter altimeter;
 extern GPS gps;
 extern Accel accel;
 extern IMU imu;
 extern ADC adc;
 
+// Storage
 extern SD sd;
 extern FRAM fram;
 
+// Telemetry
 extern RFM rfm;
 extern Umbilical umb;
 
+// Actuators
 extern MAV mav;
 extern SV sv;
 extern SSA ssa;

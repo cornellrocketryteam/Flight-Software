@@ -19,7 +19,7 @@
 #endif
 
 enum class Command : char {
-    launch = '0',
+    launch = '9',
     mav_open = '1',
     mav_close = '2',
     sv_open = '3',
