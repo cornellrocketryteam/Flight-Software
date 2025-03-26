@@ -8,8 +8,6 @@
 #ifndef PINS_HPP
 #define PINS_HPP
 
-#include "hardware/pwm.h"
-
 #define SD_SCK 2
 #define SD_CMD 3
 #define SD_D0 4
@@ -46,10 +44,6 @@
 #define BLIMS_MOTOR 28
 
 #define ADC_VSYS 29
-
-inline const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
-inline const uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
-inline const uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
 
 /**
  * Initializes all GPIO, I2C, SPI, UART, and PWM pins

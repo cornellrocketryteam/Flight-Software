@@ -63,6 +63,10 @@ void init_pins() {
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
 
+    const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
+    const uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
+    const uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
+
     uint32_t f_sys = clock_get_hz(clk_sys);
     float divider = f_sys / 1000000;
     pwm_set_clkdiv(buzzer_slice_num, divider);

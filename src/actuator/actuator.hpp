@@ -33,6 +33,7 @@ public:
     void buzz_num(uint buzzes);
 
 private:
+    static inline uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
     static bool buzz(struct repeating_timer *t);
     struct repeating_timer timer;
 };
@@ -43,6 +44,7 @@ public:
     void close();
 
 private:
+    static inline uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
     void set_position(float position);
     static int64_t time_close(alarm_id_t id, void *user_data);
 };
@@ -53,6 +55,7 @@ public:
     void close();
 
 private:
+    static inline uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
     static int64_t hold_pwm(alarm_id_t id, void *user_data);
 };
 
