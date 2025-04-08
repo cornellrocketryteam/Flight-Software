@@ -127,13 +127,11 @@ void FlightMode::process_command() {
         watchdog_reboot(0, 0, 0);
 
     } else if (strncmp(command_buffer, command::change_target_lat, 2) == 0) {
-        float target_lat = atof(command_buffer + 2);
-
+        state::blims::target_lat = atof(command_buffer + 2);
         events.push(Event::state_change_command_received);
 
     } else if (strncmp(command_buffer, command::change_target_long, 2) == 0) {
-        float target_long = atof(command_buffer + 2);
-
+        state::blims::target_long = atof(command_buffer + 2);
         events.push(Event::state_change_command_received);
 
     } else {
@@ -174,7 +172,7 @@ void StartupMode::execute() {
     }
     rfm.transmit();
 
-    blims_obj.begin(constants::blims_mode, BLIMS_MOTOR, constants::target_lat, constants::target_lon);
+    blims_obj.begin(constants::blims_mode, BLIMS_MOTOR, state::blims::target_lat, state::blims::target_long);
 
     // Check the umbilical connection
     if (umb.connection_changed()) {

@@ -35,6 +35,10 @@ namespace command {
     constexpr char change_target_lat[] = "C1";
     constexpr char change_target_long[] = "C2";
     constexpr char change_ref_pressure[] = "C3";
+    constexpr char change_alt_state[] = "C4";
+    constexpr char change_card_state[] = "C5";
+    constexpr char change_alt_armed[] = "C6";
+    constexpr char change_flight_mode[] = "C7";
 
 }; // namespace command
 
@@ -89,8 +93,6 @@ namespace constants {
     constexpr char command_stop = '>';
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
-    constexpr float target_lon = 42.4534;
-    constexpr float target_lat = -76.4735;
 
 }; // namespace constants
 
