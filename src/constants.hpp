@@ -18,22 +18,25 @@
 #define logf(...)
 #endif
 
-enum class Command : char {
-    launch = '9',
-    mav_open = '1',
-    mav_close = '2',
-    sv_open = '3',
-    sv_close = '4',
+namespace command {
+    constexpr char launch[] = "L";
+    constexpr char mav_open[] = "M";
+    constexpr char mav_close[] = "m";
+    constexpr char sv_open[] = "S";
+    constexpr char sv_close[] = "s";
 
-    safe = '5',
+    constexpr char safe[] = "V";
 
-    reset_card = '6',
-    reset_fram = '7',
+    constexpr char reset_card[] = "D";
+    constexpr char reset_fram[] = "F";
 
-    reboot = '8',
+    constexpr char reboot[] = "R";
 
-    // TODO: State change command
-};
+    constexpr char change_target_lat[] = "C1";
+    constexpr char change_target_long[] = "C2";
+    constexpr char change_ref_pressure[] = "C3";
+
+}; // namespace command
 
 /**
  * Container for flight-related constants
@@ -81,6 +84,9 @@ namespace constants {
     constexpr uint16_t min_umb_successful_reads = 100;
     constexpr uint16_t max_umb_failed_reads = 250;
     constexpr uint8_t umb_packet_size = 26;                      // bytes
+
+    constexpr char command_start = '<';
+    constexpr char command_stop = '>';
 
     constexpr BLIMSMode blims_mode = MVP_Flight;
     constexpr float target_lon = 42.4534;

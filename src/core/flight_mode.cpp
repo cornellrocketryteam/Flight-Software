@@ -56,56 +56,88 @@ void FlightMode::to_mode(FlightMode *mode) {
 void FlightMode::check_command() {
     int c = getchar_timeout_us(0);
 
-    if (c != PICO_ERROR_TIMEOUT) {
-        switch ((char)c) {
-        case static_cast<char>(Command::launch):
-            if (state::flight::mode->id() != 1) {
-                return;
+    while (c != PICO_ERROR_TIMEOUT) {
+        if (!receiving) {
+            if (c == constants::command_start) {
+                receiving = true;
+                command_index = 0;
             }
-
-            mav.open(constants::mav_open_time);
-            altimeter.update_ref_pressure();
-            fram.store(Data::ref_pressure);
-            gpio_put(LED, 0);
-            launch_commanded = true;
-
-            events.push(Event::launch_command_received);
-            break;
-        case static_cast<char>(Command::mav_open):
-            mav.open();
-            events.push(Event::mav_command_received);
-            break;
-        case static_cast<char>(Command::mav_close):
-            mav.close();
-            events.push(Event::mav_command_received);
-            break;
-        case static_cast<char>(Command::sv_open):
-            sv.open();
-            events.push(Event::sv_command_received);
-            break;
-        case static_cast<char>(Command::sv_close):
-            sv.close();
-            events.push(Event::sv_command_received);
-            break;
-        case static_cast<char>(Command::safe):
-            sv.open();
-            state::flight::safed = true;
-            events.push(Event::safe_command_received);
-            break;
-        case static_cast<char>(Command::reset_card):
-            sd.reset_data();
-            events.push(Event::reset_card_command_received);
-            break;
-        case static_cast<char>(Command::reset_fram):
-            fram.reset_data();
-            events.push(Event::reset_fram_command_received);
-            break;
-        case static_cast<char>(Command::reboot):
-            watchdog_reboot(0, 0, 0);
-            break;
-        default:
-            events.push(Event::unknown_command_received);
+        } else if (c == constants::command_stop) {
+            receiving = false;
+            command_buffer[command_index] = '\0';
+            command_index = 0;
+            process_command();
+        } else {
+            if (command_index < sizeof(command_buffer) - 1) {
+                command_buffer[command_index++] = c;
+            } else {
+                receiving = false;
+                command_index = 0;
+                events.push(Event::unknown_command_received);
+            }
         }
+
+        c = getchar_timeout_us(0);
+    }
+}
+
+void FlightMode::process_command() {
+    if (strcmp(command_buffer, command::launch) == 0) {
+        if (state::flight::mode->id() != 1) {
+            return;
+        }
+        mav.open(constants::mav_open_time);
+        altimeter.update_ref_pressure();
+        fram.store(Data::ref_pressure);
+        gpio_put(LED, 0);
+        launch_commanded = true;
+
+        events.push(Event::launch_command_received);
+
+    } else if (strcmp(command_buffer, command::mav_open) == 0) {
+        mav.open();
+        events.push(Event::mav_command_received);
+
+    } else if (strcmp(command_buffer, command::mav_close) == 0) {
+        mav.close();
+        events.push(Event::mav_command_received);
+
+    } else if (strcmp(command_buffer, command::sv_open) == 0) {
+        sv.open();
+        events.push(Event::sv_command_received);
+
+    } else if (strcmp(command_buffer, command::sv_close) == 0) {
+        sv.close();
+        events.push(Event::sv_command_received);
+
+    } else if (strcmp(command_buffer, command::safe) == 0) {
+        sv.open();
+        state::flight::safed = true;
+        events.push(Event::safe_command_received);
+
+    } else if (strcmp(command_buffer, command::reset_card) == 0) {
+        sd.reset_data();
+        events.push(Event::reset_card_command_received);
+
+    } else if (strcmp(command_buffer, command::reset_fram) == 0) {
+        fram.reset_data();
+        events.push(Event::reset_fram_command_received);
+
+    } else if (strcmp(command_buffer, command::reboot) == 0) {
+        watchdog_reboot(0, 0, 0);
+
+    } else if (strncmp(command_buffer, command::change_target_lat, 2) == 0) {
+        float target_lat = atof(command_buffer + 2);
+
+        events.push(Event::state_change_command_received);
+
+    } else if (strncmp(command_buffer, command::change_target_long, 2) == 0) {
+        float target_long = atof(command_buffer + 2);
+
+        events.push(Event::state_change_command_received);
+
+    } else {
+        events.push(Event::unknown_command_received);
     }
 }
 
