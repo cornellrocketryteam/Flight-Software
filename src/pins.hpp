@@ -41,7 +41,8 @@
 
 #define LED 25
 
-#define BLIMS_MOTOR 28
+#define BLIMS_PWM_PIN 28
+#define BLIMS_ENABLE_PIN 26
 
 #define ADC_VSYS 29
 

@@ -142,7 +142,7 @@ void StartupMode::execute() {
     }
     rfm.transmit();
 
-    blims_obj.begin(constants::blims_mode, BLIMS_MOTOR, constants::target_lat, constants::target_lon);
+    blims_obj.begin(constants::blims_mode, BLIMS_PWM_PIN, BLIMS_ENABLE_PIN, constants::target_lat, constants::target_lon);
 
     // Check the umbilical connection
     if (umb.connection_changed()) {

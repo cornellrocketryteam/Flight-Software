@@ -61,7 +61,9 @@ void init_pins() {
     gpio_set_function(ARM_OUT, GPIO_FUNC_PWM);
     gpio_set_function(SV_SIGNAL, GPIO_FUNC_PWM);
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
-    gpio_set_function(BLIMS_MOTOR, GPIO_FUNC_PWM);
+    // TODO
+    gpio_set_function(BLIMS_PWM_PIN, GPIO_FUNC_PWM);
+    gpio_set_function(BLIMS_ENABLE_PIN, GPIO_FUNC_PWM);
 
     const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
     const uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
