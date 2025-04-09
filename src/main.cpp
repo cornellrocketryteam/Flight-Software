@@ -47,7 +47,6 @@ int main() {
 
     init_pins();
     watchdog_enable(constants::watchdog_delay, true);
-    sleep_ms(15000);
 
     while (true) {
         flight.execute();

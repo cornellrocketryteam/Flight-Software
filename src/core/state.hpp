@@ -145,6 +145,9 @@ namespace state {
     namespace blims {
         extern float motor_position;
 
+        extern float target_lat;
+        extern float target_long;
+
     } // namespace blims
 
 }; // namespace state

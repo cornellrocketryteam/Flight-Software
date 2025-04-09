@@ -122,8 +122,13 @@ namespace state {
     namespace actuator {
         bool mav_open = false;
         bool sv_open = true;
+
     } // namespace actuator
     namespace blims {
         float motor_position = -1;
+
+        float target_lat = -76.4735;
+        float target_long = 42.4534;
+
     } // namespace blims
 }; // namespace state
