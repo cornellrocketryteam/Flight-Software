@@ -76,7 +76,6 @@ void FlightMode::check_command() {
                 events.push(Event::unknown_command_received);
             }
         }
-
         c = getchar_timeout_us(0);
     }
 }
@@ -134,6 +133,40 @@ void FlightMode::process_command() {
         state::blims::target_long = atof(command_buffer + 2);
         events.push(Event::state_change_command_received);
 
+    } else if (strncmp(command_buffer, command::change_ref_pressure, 2) == 0) {
+        state::alt::ref_pressure = atof(command_buffer + 2);
+        events.push(Event::state_change_command_received);
+
+    } else if (strncmp(command_buffer, command::change_alt_state, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::alt::status = static_cast<SensorState>(state - '0');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_card_state, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::sd::init = (state == '1');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_alt_armed, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::flight::alt_armed = (state == '1');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_flight_mode, 2) == 0) {
+        // TODO
+        events.push(Event::state_change_command_received);
     } else {
         events.push(Event::unknown_command_received);
     }
@@ -270,7 +303,6 @@ void AscentMode::execute() {
         fram.store(Data::pt);
     }
 
-// TODO: Remove this after wet dress rehearsal
     check_command();
 #ifdef LAUNCH
     umb.transmit();
