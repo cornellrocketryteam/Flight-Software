@@ -56,7 +56,6 @@ namespace state {
         extern uint8_t watchdog_boot_count;
         extern uint8_t old_mode;
 
-        extern bool umb_connected;
         extern bool key_armed;
         extern bool alt_armed;
         extern bool safed;
@@ -129,14 +128,14 @@ namespace state {
     } // namespace sd
     namespace fram {
         extern bool init;
-
         extern uint16_t pt_index;
 
     } // namespace fram
-    namespace rfm {
-        extern bool init;
+    namespace umb {
+        extern bool connected;
+        extern bool launch_commanded;
 
-    } // namespace rfm
+    } // namespace umb
     namespace actuator {
         extern bool mav_open;
         extern bool sv_open;
@@ -144,6 +143,9 @@ namespace state {
     } // namespace actuator
     namespace blims {
         extern float motor_position;
+
+        extern float target_lat;
+        extern float target_long;
 
     } // namespace blims
 

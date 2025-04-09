@@ -6,6 +6,8 @@
  */
 
 #include "telem.hpp"
+#include "hardware/watchdog.h"
+#include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
 #include "tusb.h"
@@ -21,7 +23,7 @@ void Telem::pack_data() {
     packed_metadata |= (static_cast<uint8_t>(state::sd::init) & 0b1) << 8;
     packed_metadata |= (static_cast<uint8_t>(state::fram::init) & 0b1) << 7;
     packed_metadata |= (static_cast<uint8_t>(state::adc::status) & 0b1) << 6;
-    packed_metadata |= (static_cast<uint8_t>(state::flight::umb_connected) & 0b1) << 5;
+    packed_metadata |= (static_cast<uint8_t>(state::umb::connected) & 0b1) << 5;
     packed_metadata |= (static_cast<uint8_t>(state::accel::status) & 0b1) << 4;
     packed_metadata |= (static_cast<uint8_t>(state::imu::status) & 0b1) << 3;
     packed_metadata |= (static_cast<uint8_t>(state::gps::status) & 0b1) << 2;
@@ -89,16 +91,130 @@ void Umbilical::transmit() {
     tud_cdc_write_flush();
 }
 
+void Umbilical::check_command() {
+    int c = getchar_timeout_us(0);
+
+    while (c != PICO_ERROR_TIMEOUT) {
+        if (!receiving) {
+            if (c == constants::command_start) {
+                receiving = true;
+                command_index = 0;
+            }
+        } else if (c == constants::command_stop) {
+            receiving = false;
+            command_buffer[command_index] = '\0';
+            command_index = 0;
+            process_command();
+        } else {
+            if (command_index < sizeof(command_buffer) - 1) {
+                command_buffer[command_index++] = c;
+            } else {
+                receiving = false;
+                command_index = 0;
+                events.push(Event::unknown_command_received);
+            }
+        }
+        c = getchar_timeout_us(0);
+    }
+}
+
+void Umbilical::process_command() {
+    if (strcmp(command_buffer, command::launch) == 0) {
+        if (state::flight::mode->id() != 1) {
+            return;
+        }
+        state::umb::launch_commanded = true;
+        events.push(Event::launch_command_received);
+
+    } else if (strcmp(command_buffer, command::mav_open) == 0) {
+        mav.open();
+        events.push(Event::mav_command_received);
+
+    } else if (strcmp(command_buffer, command::mav_close) == 0) {
+        mav.close();
+        events.push(Event::mav_command_received);
+
+    } else if (strcmp(command_buffer, command::sv_open) == 0) {
+        sv.open();
+        events.push(Event::sv_command_received);
+
+    } else if (strcmp(command_buffer, command::sv_close) == 0) {
+        sv.close();
+        events.push(Event::sv_command_received);
+
+    } else if (strcmp(command_buffer, command::safe) == 0) {
+        sv.open();
+        state::flight::safed = true;
+        events.push(Event::safe_command_received);
+
+    } else if (strcmp(command_buffer, command::reset_card) == 0) {
+        sd.reset_data();
+        events.push(Event::reset_card_command_received);
+
+    } else if (strcmp(command_buffer, command::reset_fram) == 0) {
+        fram.reset_data();
+        events.push(Event::reset_fram_command_received);
+
+    } else if (strcmp(command_buffer, command::reboot) == 0) {
+        watchdog_reboot(0, 0, 0);
+
+    } else if (strncmp(command_buffer, command::change_target_lat, 2) == 0) {
+        state::blims::target_lat = atof(command_buffer + 2);
+        events.push(Event::state_change_command_received);
+
+    } else if (strncmp(command_buffer, command::change_target_long, 2) == 0) {
+        state::blims::target_long = atof(command_buffer + 2);
+        events.push(Event::state_change_command_received);
+
+    } else if (strncmp(command_buffer, command::change_ref_pressure, 2) == 0) {
+        state::alt::ref_pressure = atof(command_buffer + 2);
+        events.push(Event::state_change_command_received);
+
+    } else if (strncmp(command_buffer, command::change_alt_state, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::alt::status = static_cast<SensorState>(state - '0');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_card_state, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::sd::init = (state == '1');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_alt_armed, 2) == 0) {
+        char state = command_buffer[2];
+        if (state == '0' || state == '1') {
+            state::flight::alt_armed = (state == '1');
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
+    } else if (strncmp(command_buffer, command::change_flight_mode, 2) == 0) {
+        // TODO
+        events.push(Event::state_change_command_received);
+    } else {
+        events.push(Event::unknown_command_received);
+    }
+}
+
 bool Umbilical::connection_changed() {
     // printf("Successful connections: %d, failed connections: %d\n", successful_connections, failed_connections);
-    if (state::flight::umb_connected) {
+    if (state::umb::connected) {
         if (!tud_cdc_connected()) {
             failed_connections++;
         } else {
             failed_connections = 0;
         }
         if (failed_connections == constants::max_umb_failed_reads) {
-            state::flight::umb_connected = false;
+            state::umb::connected = false;
             failed_connections = 0;
             return true;
         }
@@ -109,7 +225,7 @@ bool Umbilical::connection_changed() {
             successful_connections = 0;
         }
         if (successful_connections == constants::min_umb_successful_reads) {
-            state::flight::umb_connected = true;
+            state::umb::connected = true;
             successful_connections = 0;
             return true;
         }

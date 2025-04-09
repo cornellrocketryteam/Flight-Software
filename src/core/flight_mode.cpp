@@ -8,11 +8,9 @@
 #include "flight_mode.hpp"
 #include "constants.hpp"
 #include "events.hpp"
-#include "hardware/watchdog.h"
 #include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
-#include "tusb.h"
 
 void FlightMode::execute() {
     // Execute the primary functionality of every module
@@ -53,62 +51,6 @@ void FlightMode::to_mode(FlightMode *mode) {
     }
 }
 
-void FlightMode::check_command() {
-    int c = getchar_timeout_us(0);
-
-    if (c != PICO_ERROR_TIMEOUT) {
-        switch ((char)c) {
-        case static_cast<char>(Command::launch):
-            if (state::flight::mode->id() != 1) {
-                return;
-            }
-
-            mav.open(constants::mav_open_time);
-            altimeter.update_ref_pressure();
-            fram.store(Data::ref_pressure);
-            gpio_put(LED, 0);
-            launch_commanded = true;
-
-            events.push(Event::launch_command_received);
-            break;
-        case static_cast<char>(Command::mav_open):
-            mav.open();
-            events.push(Event::mav_command_received);
-            break;
-        case static_cast<char>(Command::mav_close):
-            mav.close();
-            events.push(Event::mav_command_received);
-            break;
-        case static_cast<char>(Command::sv_open):
-            sv.open();
-            events.push(Event::sv_command_received);
-            break;
-        case static_cast<char>(Command::sv_close):
-            sv.close();
-            events.push(Event::sv_command_received);
-            break;
-        case static_cast<char>(Command::safe):
-            sv.open();
-            state::flight::safed = true;
-            events.push(Event::safe_command_received);
-            break;
-        case static_cast<char>(Command::reset_card):
-            sd.reset_data();
-            events.push(Event::reset_card_command_received);
-            break;
-        case static_cast<char>(Command::reset_fram):
-            fram.reset_data();
-            events.push(Event::reset_fram_command_received);
-            break;
-        case static_cast<char>(Command::reboot):
-            watchdog_reboot(0, 0, 0);
-            break;
-        default:
-            events.push(Event::unknown_command_received);
-        }
-    }
-}
-
 // Startup Mode
 
 void StartupMode::execute() {
@@ -142,11 +84,11 @@ void StartupMode::execute() {
     }
     rfm.transmit();
 
-    blims_obj.begin(constants::blims_mode, BLIMS_PWM_PIN, BLIMS_ENABLE_PIN, constants::target_lat, constants::target_lon);
+    blims_obj.begin(constants::blims_mode, BLIMS_PWM_PIN, BLIMS_ENABLE_PIN, state::blims::target_lat, state::blims::target_long);
 
     // Check the umbilical connection
     if (umb.connection_changed()) {
-        if (state::flight::umb_connected) {
+        if (state::umb::connected) {
             buzzer.buzz_num(2);
         } else {
             buzzer.buzz_num(3);
@@ -157,6 +99,8 @@ void StartupMode::execute() {
     if (state::alt::status == VALID) {
         altimeter.update_ref_pressure();
     }
+
+    umb.check_command();
 #ifdef LAUNCH
     umb.transmit();
 #endif
@@ -192,14 +136,14 @@ void StandbyMode::execute() {
 
     // Check the umbilical connection
     if (umb.connection_changed()) {
-        if (state::flight::umb_connected) {
+        if (state::umb::connected) {
             buzzer.buzz_num(2);
         } else {
             buzzer.buzz_num(3);
         }
     }
 
-    check_command();
+    umb.check_command();
 #ifdef LAUNCH
     umb.transmit();
 #endif
@@ -207,7 +151,10 @@ void StandbyMode::execute() {
 
 void StandbyMode::transition() {
     // Transition to Ascent Mode if launch was commanded through the umbilical
-    if (launch_commanded) {
+    if (state::umb::launch_commanded) {
+        mav.open(constants::mav_open_time);
+        altimeter.update_ref_pressure();
+        fram.store(Data::ref_pressure);
         to_mode(state::flight::ascent);
     }
     // Transition to Startup Mode if the arming key was turned off
@@ -216,7 +163,7 @@ void StandbyMode::transition() {
     }
 #ifdef LAUNCH
     // Transition to Fault Mode if the umbilical is disconnected
-    else if (!state::flight::umb_connected) {
+    else if (!state::umb::connected) {
         sv.open();
         events.push(Event::umbilical_disconnected);
         // to_mode(state::flight::fault); // TODO add back in
@@ -240,8 +187,7 @@ void AscentMode::execute() {
         fram.store(Data::pt);
     }
 
-// TODO: Remove this after wet dress rehearsal
-    check_command();
+    umb.check_command();
 #ifdef LAUNCH
     umb.transmit();
 #endif
@@ -335,7 +281,7 @@ void MainDeployedMode::execute() {
 void FaultMode::execute() {
     FlightMode::execute();
 
-    check_command();
+    umb.check_command();
 #ifdef LAUNCH
     umb.transmit();
 #endif

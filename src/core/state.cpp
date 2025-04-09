@@ -38,7 +38,6 @@ namespace state {
         uint8_t watchdog_boot_count = 0;
         uint8_t old_mode = -1;
 
-        bool umb_connected = false;
         bool key_armed = false;
         bool alt_armed = false;
         bool safed = false;
@@ -111,19 +110,24 @@ namespace state {
     } // namespace sd
     namespace fram {
         bool init = false;
-
         uint16_t pt_index = static_cast<uint8_t>(Data::pt_index);
 
     } // namespace fram
-    namespace rfm {
-        bool init = false;
+    namespace umb {
+        bool connected = false;
+        bool launch_commanded = false;
 
-    } // namespace rfm
+    } // namespace umb
     namespace actuator {
         bool mav_open = false;
         bool sv_open = true;
+
     } // namespace actuator
     namespace blims {
         float motor_position = -1;
+
+        float target_lat = -76.4735;
+        float target_long = 42.4534;
+
     } // namespace blims
 }; // namespace state

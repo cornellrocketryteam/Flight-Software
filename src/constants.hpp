@@ -18,23 +18,6 @@
 #define logf(...)
 #endif
 
-enum class Command : char {
-    launch = '9',
-    mav_open = '1',
-    mav_close = '2',
-    sv_open = '3',
-    sv_close = '4',
-
-    safe = '5',
-
-    reset_card = '6',
-    reset_fram = '7',
-
-    reboot = '8',
-
-    // TODO: State change command
-};
-
 /**
  * Container for flight-related constants
  */
@@ -82,9 +65,10 @@ namespace constants {
     constexpr uint16_t max_umb_failed_reads = 250;
     constexpr uint8_t umb_packet_size = 26;                      // bytes
 
+    constexpr char command_start = '<';
+    constexpr char command_stop = '>';
+
     constexpr BLIMSMode blims_mode = MVP_Flight;
-    constexpr float target_lon = 42.4534;
-    constexpr float target_lat = -76.4735;
 
 }; // namespace constants
 
