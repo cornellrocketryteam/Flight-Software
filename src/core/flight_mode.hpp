@@ -45,20 +45,6 @@ public:
      * A verbose name for debugging purposes.
      */
     virtual std::string name() = 0;
-
-protected:
-    /**
-     * Checks the umbilical for any incoming commands.
-     */
-    void check_command();
-
-    void process_command();
-
-    bool receiving = false;
-    uint8_t command_index = 0;
-    char command_buffer[64];
-
-    bool launch_commanded = false;
 };
 
 /**

@@ -18,30 +18,6 @@
 #define logf(...)
 #endif
 
-namespace command {
-    constexpr char launch[] = "L";
-    constexpr char mav_open[] = "M";
-    constexpr char mav_close[] = "m";
-    constexpr char sv_open[] = "S";
-    constexpr char sv_close[] = "s";
-
-    constexpr char safe[] = "V";
-
-    constexpr char reset_card[] = "D";
-    constexpr char reset_fram[] = "F";
-
-    constexpr char reboot[] = "R";
-
-    constexpr char change_target_lat[] = "C1";
-    constexpr char change_target_long[] = "C2";
-    constexpr char change_ref_pressure[] = "C3";
-    constexpr char change_alt_state[] = "C4";
-    constexpr char change_card_state[] = "C5";
-    constexpr char change_alt_armed[] = "C6";
-    constexpr char change_flight_mode[] = "C7";
-
-}; // namespace command
-
 /**
  * Container for flight-related constants
  */
