@@ -220,6 +220,8 @@ void StartupMode::execute() {
     if (state::alt::status == VALID) {
         altimeter.update_ref_pressure();
     }
+
+    check_command();
 #ifdef LAUNCH
     umb.transmit();
 #endif
