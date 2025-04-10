@@ -40,7 +40,7 @@ void Buzzer::off() {
 
 void Buzzer::buzz_num(uint buzzes) {
     if (num_buzzes != 0) {
-        // TODO
+        return;
     }
     num_buzzes = buzzes;
     add_repeating_timer_ms(constants::buzz_delay, buzz, NULL, &timer);

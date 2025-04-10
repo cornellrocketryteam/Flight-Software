@@ -116,6 +116,7 @@ void StartupMode::transition() {
             to_mode(state::flight::standby); // TODO Change
         } else {
             // Transition to Standby otherwise
+            buzzer.buzz_num(1);
             to_mode(state::flight::standby);
         }
     }
@@ -156,6 +157,7 @@ void StandbyMode::transition() {
     }
     // Transition to Startup if the arming key was turned off
     else if (!state::flight::key_armed) {
+        buzzer.buzz_num(1);
         to_mode(state::flight::startup);
     }
 #ifdef LAUNCH
