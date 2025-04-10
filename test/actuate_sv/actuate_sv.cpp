@@ -18,7 +18,7 @@ static int64_t hold_pwm(alarm_id_t id, void *user_data) {
 #ifdef VERBOSE
     printf("Setting PWM\n");
 #endif
-    pwm_set_gpio_level(RELAY, 1707);
+    pwm_set_gpio_level(SV_SIGNAL, 1707);
     return 0;
 }
 
@@ -32,9 +32,9 @@ int main() {
     printf("Connected\n");
 #endif
 
-    gpio_set_function(RELAY, GPIO_FUNC_PWM);
+    gpio_set_function(SV_SIGNAL, GPIO_FUNC_PWM);
 
-    uint slice_num = pwm_gpio_to_slice_num(RELAY);
+    uint slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
     pwm_config config = pwm_get_default_config();
     pwm_config_set_clkdiv(&config, 2);
     pwm_config_set_wrap(&config, 4095);
@@ -43,23 +43,22 @@ int main() {
 #ifdef VERBOSE
     printf("Setting SV off\n");
 #endif
-    pwm_set_gpio_level(RELAY, 0);
+    pwm_set_gpio_level(SV_SIGNAL, 0);
 
     sleep_ms(3000);
 
 #ifdef VERBOSE
     printf("Setting SV on\n");
 #endif
-    pwm_set_gpio_level(RELAY, 4095);
+    pwm_set_gpio_level(SV_SIGNAL, 4095);
     add_alarm_in_ms(150, hold_pwm, NULL, true);
 
-   
     sleep_ms(5000);
 
 #ifdef VERBOSE
     printf("Setting SV off\n");
 #endif
-    pwm_set_gpio_level(RELAY, 0);
+    pwm_set_gpio_level(SV_SIGNAL, 0);
 
     return 0;
 }

@@ -12,6 +12,8 @@
 #include "hardware/pwm.h"
 #include "pins.hpp"
 
+const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
+
 void buzz(const uint32_t length) {
 	pwm_set_enabled(buzzer_slice_num, true);
 	sleep_ms(length);
@@ -21,7 +23,6 @@ void buzz(const uint32_t length) {
 
 int main() {
     stdio_init_all();
-
 	init_pins();
 
 	while (true) {
