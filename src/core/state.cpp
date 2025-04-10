@@ -126,8 +126,8 @@ namespace state {
     namespace blims {
         float motor_position = -1;
 
-        float target_lat = -76.4735;
-        float target_long = 42.4534;
+        float target_lat = -1;
+        float target_long = -1;
 
     } // namespace blims
 }; // namespace state

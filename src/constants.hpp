@@ -36,6 +36,7 @@ namespace constants {
     constexpr float arming_altitude = 153;                       // meters
     constexpr float main_deploy_altitude = 610;                  // meters
     constexpr uint8_t ematch_threshold = 200;                    // ms
+    constexpr uint8_t alt_sample_interval = 10;
     constexpr uint16_t main_deploy_wait = 160;                   // cycles
 
     // Sensor parameters

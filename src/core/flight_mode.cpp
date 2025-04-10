@@ -56,7 +56,6 @@ void FlightMode::to_mode(FlightMode *mode) {
 void StartupMode::execute() {
     // Check to see if the arming key has been turned
     if (gpio_get(ARM_IN)) {
-        // buzzer.on();
         state::flight::key_armed = true;
     }
 
@@ -108,16 +107,15 @@ void StartupMode::execute() {
 
 void StartupMode::transition() {
     if (state::flight::old_mode == 5) {
-        // Transition to Fault Mode if we faulted in the last boot
-        // to_mode(state::flight::fault);
-        to_mode(state::flight::standby);
+        // Transition to Fault if we faulted in the last boot
+        to_mode(state::flight::fault);
     } else if (state::flight::key_armed) {
         if (state::alt::status != VALID) {
-            // Transition to Fault Mode if the altimeter is non-operational
+            // Transition to Fault if the altimeter is non-operational
             // to_mode(state::flight::fault);
             to_mode(state::flight::standby); // TODO Change
         } else {
-            // Transition to Standby Mode otherwise
+            // Transition to Standby otherwise
             to_mode(state::flight::standby);
         }
     }
@@ -130,7 +128,6 @@ void StandbyMode::execute() {
 
     // Check to see if the arming key has been turned off
     if (!gpio_get(ARM_IN)) {
-        buzzer.off();
         state::flight::key_armed = false;
     }
 
@@ -150,19 +147,19 @@ void StandbyMode::execute() {
 }
 
 void StandbyMode::transition() {
-    // Transition to Ascent Mode if launch was commanded through the umbilical
+    // Transition to Ascent if launch was commanded through the umbilical
     if (state::umb::launch_commanded) {
         mav.open(constants::mav_open_time);
         altimeter.update_ref_pressure();
         fram.store(Data::ref_pressure);
         to_mode(state::flight::ascent);
     }
-    // Transition to Startup Mode if the arming key was turned off
+    // Transition to Startup if the arming key was turned off
     else if (!state::flight::key_armed) {
         to_mode(state::flight::startup);
     }
 #ifdef LAUNCH
-    // Transition to Fault Mode if the umbilical is disconnected
+    // Transition to Fault if the umbilical is disconnected
     else if (!state::umb::connected) {
         sv.open();
         events.push(Event::umbilical_disconnected);
@@ -204,7 +201,7 @@ void AscentMode::transition() {
             index = 0;
         }
 
-        if (count == interval) {
+        if (count == constants::alt_sample_interval) {
             filtered_alt[2] = filtered_alt[1];
             filtered_alt[1] = filtered_alt[0];
             filtered_alt[0] = alt_sum * 0.1;
@@ -223,7 +220,7 @@ void AscentMode::transition() {
 // Drogue Deployed Mode
 
 void DrogueDeployedMode::transition() {
-    // Proceed to Main Deployed mode if the deployment altitude is reached and we have waited for main_deploy_wait
+    // Proceed to Main Deployed if the deployment altitude is reached and we have waited for main_deploy_wait
     if (main_cycle_count < constants::main_deploy_wait) {
         main_cycle_count++;
     } else if (main_cycle_count == constants::main_deploy_wait) {

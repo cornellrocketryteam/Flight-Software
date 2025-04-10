@@ -126,14 +126,9 @@ private:
     int index = 0;
 
     /**
-     * The interval over which to record sampled averaged data for apogee detection.
-     */
-    int interval = 10;
-
-    /**
      * The current counter of data points in a sample.
      */
-    int count = 0;
+    uint8_t count = 0;
 
     /**
      * Stores points of moving averages of altitudes.
@@ -200,7 +195,7 @@ public:
      */
     void execute() override;
 
-        /**
+    /**
      * Flight functionality is disabled. No transition criteria.
      */
     void transition() {};
