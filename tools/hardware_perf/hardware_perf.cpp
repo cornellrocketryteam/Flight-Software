@@ -50,8 +50,8 @@ FATFS fs;
 FRESULT fr;
 char buffer[205];
 
-uint8_t packet[constants::rfm_packet_size];
-char throwaway_buffer[200];
+uint8_t rfm_packet[constants::rfm_packet_size];
+uint8_t umb_packet[constants::umb_packet_size];
 
 void sd_begin() {
     fr = f_mount(&fs, "", 1);
@@ -80,13 +80,13 @@ void sd_write() {
 }
 
 void rfm_transmit() {
-    uart_write_blocking(UART_PORT, (const uint8_t *)packet, constants::rfm_packet_size);
+    uart_write_blocking(UART_PORT, (const uint8_t *)rfm_packet, constants::rfm_packet_size);
 }
 
 void umb_transmit() {
-    for (uint i = 0; i < constants::umb_packet_size; ++i) {
-        sprintf(throwaway_buffer, "%s ", std::bitset<8>(static_cast<uint8_t>(packet[i])).to_string().c_str());
-    }
+    tud_cdc_write(umb_packet, constants::umb_packet_size);
+    tud_cdc_write("\n", 1);
+    tud_cdc_write_flush();
 }
 
 void time_begin() {
@@ -94,7 +94,7 @@ void time_begin() {
     printf("Altimeter begin(): %llu us\n", time_func([&]() { altimeter.begin(); }));
     printf("Accel begin(): %llu us\n", time_func([&]() { accel.begin(); }));
     printf("IMU begin(): %llu us\n", time_func([&]() { imu.begin(); }));
-    printf("GPS begin(): %llu us\n", time_func([&]() { gps.begin(); }));
+    printf("GPS begin(): %llu us\n", time_func([&]() { gps.begin_PVT(20); }));
     printf("ADC begin(): %llu us\n\n", time_func([&]() { adc.begin(); }));
     printf("SD begin(): %llu us\n", time_func(sd_begin));
     printf("FRAM begin(): %llu us\n\n", time_func([&]() { fram.begin(); }));
@@ -126,8 +126,9 @@ uint64_t time_sensors() {
     });
 
     sensors_total_sum += run_sensor_test("GPS read_data()", [&]() { 
-        gnss_data_t gps_data;
-        gps.read_data(&gps_data); 
+        UbxNavPvt data = {};
+        gps.read_PVT_data(&data);
+        gps.get_unix_time(&data);
     });
 
     sensors_total_sum += run_sensor_test("IMU read_accel()", [&]() { 
