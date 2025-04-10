@@ -33,6 +33,7 @@ void SD::log() {
     data += std::to_string(state::flight::timestamp) + ","
          + std::to_string(state::flight::cycle_count) + ","
          + std::to_string(state::flight::mode->id()) + ","
+         + std::to_string(state::umb::connected) + ","
 
          + std::to_string(state::alt::status) + ","
          + std::to_string(state::alt::altitude) + ","
