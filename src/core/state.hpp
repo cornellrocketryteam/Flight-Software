@@ -16,6 +16,7 @@
 #include "sd.hpp"
 #include <stdint.h>
 #include "events.hpp"
+#include "blims.hpp"
 // clang-format on
 
 extern EventBuffer events;
@@ -142,6 +143,7 @@ namespace state {
 
     } // namespace actuator
     namespace blims {
+        extern BLIMSMode blims_mode;
         extern float motor_position;
 
         extern float target_lat;

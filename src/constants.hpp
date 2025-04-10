@@ -8,7 +8,7 @@
 #ifndef CONSTANTS_HPP
 #define CONSTANTS_HPP
 
-#include "blims.hpp"
+#include "pico/stdlib.h"
 
 #ifdef VERBOSE
 #define logf(...) printf(__VA_ARGS__)
@@ -70,9 +70,6 @@ namespace constants {
     constexpr uint8_t umb_packet_size = 26;                      // bytes
     constexpr char command_start = '<';
     constexpr char command_stop = '>';
-
-    // BLiMS
-    constexpr BLIMSMode blims_mode = MVP_Flight;
 
 }; // namespace constants
 

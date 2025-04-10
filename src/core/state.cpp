@@ -124,6 +124,7 @@ namespace state {
 
     } // namespace actuator
     namespace blims {
+        BLIMSMode blims_mode = MVP_Flight;
         float motor_position = -1;
 
         float target_lat = -1;
