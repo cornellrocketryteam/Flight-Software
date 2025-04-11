@@ -41,7 +41,7 @@ namespace constants {
 
     // Sensor parameters
     constexpr uint8_t max_failed_writes = 20;
-    constexpr uint8_t max_failed_reads = 10;
+    constexpr uint8_t max_failed_reads = 20;
     constexpr int gps_data_rate = 20;                            // Hz
     constexpr float pt_conversion_factor = 0.8998;
     constexpr float bv_conversion_factor = 3.3f / (1 << 12) * 3;

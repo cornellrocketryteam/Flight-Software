@@ -151,8 +151,7 @@ void StandbyMode::transition() {
     // Transition to Ascent if launch was commanded through the umbilical
     if (state::umb::launch_commanded) {
         mav.open(constants::mav_open_time);
-        altimeter.update_ref_pressure();
-        fram.store(Data::ref_pressure);
+        altimeter.update_ref_pressure(true);
         to_mode(state::flight::ascent);
     }
     // Transition to Startup if the arming key was turned off

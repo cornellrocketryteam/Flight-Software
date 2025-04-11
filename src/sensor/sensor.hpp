@@ -22,7 +22,7 @@ class Altimeter {
 public:
     Altimeter();
     void begin();
-    void update_ref_pressure();
+    void update_ref_pressure(bool store_in_fram = false);
     void read_altitude();
 
 private:

@@ -8,6 +8,7 @@
 #include "sensor.hpp"
 #include "events.hpp"
 #include "hardware/adc.h"
+#include "modules.hpp"
 #include "pins.hpp"
 #include "state.hpp"
 
@@ -33,11 +34,14 @@ void Altimeter::begin() {
     }
 }
 
-void Altimeter::update_ref_pressure() {
+void Altimeter::update_ref_pressure(bool store_in_fram) {
     if (alt.read_pressure(&pressure)) {
         state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
         if (state::alt::status == INVALID) {
             state::alt::status = VALID;
+        }
+        if (store_in_fram) {
+            fram.store(Data::ref_pressure);
         }
     } else {
         state::alt::failed_reads++;
@@ -217,6 +221,9 @@ void ADC::read_data() {
         state::adc::pressure_pt3 = ((float)data[0]) * constants::pt_conversion_factor;
         state::adc::pressure_pt4 = ((float)data[1]) * constants::pt_conversion_factor;
         state::adc::temp_rtd = data[2];
+        if (state::adc::status == INVALID) {
+            state::adc::status = VALID;
+        }
     } else {
         state::adc::failed_reads++;
         state::adc::status = INVALID;
