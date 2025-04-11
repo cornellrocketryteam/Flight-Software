@@ -198,15 +198,33 @@ void Umbilical::process_command() {
         }
 
     } else if (strncmp(command_buffer, command::change_flight_mode, 2) == 0) {
-        // TODO
-        events.push(Event::state_change_command_received);
+        int state = command_buffer[2] - '0';
+        if (0 <= state && state <= 5) {
+            switch (state) {
+            case 0:
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            case 5:
+                break;
+            }
+            events.push(Event::state_change_command_received);
+        } else {
+            events.push(Event::unknown_command_received);
+        }
+
     } else {
         events.push(Event::unknown_command_received);
     }
 }
 
 bool Umbilical::connection_changed() {
-    // printf("Successful connections: %d, failed connections: %d\n", successful_connections, failed_connections);
     if (state::umb::connected) {
         if (!tud_cdc_connected()) {
             failed_connections++;

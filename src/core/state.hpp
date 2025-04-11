@@ -21,12 +21,6 @@
 
 extern EventBuffer events;
 
-enum SensorState {
-    OFF = 0,
-    VALID,
-    INVALID
-};
-
 /**
  * Container for the current flight state. Contains sensor data,
  * sensor statuses, and flight level data.

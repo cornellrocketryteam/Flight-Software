@@ -18,6 +18,12 @@
 #include "hitl.hpp"
 #endif
 
+enum SensorState {
+    OFF = 0,
+    VALID,
+    INVALID
+};
+
 class Altimeter {
 public:
     Altimeter();
