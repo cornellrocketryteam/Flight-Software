@@ -20,6 +20,40 @@
 SimData sim_data;
 #endif
 
+void bus_reset() {
+    gpio_set_function(I2C_SDA, GPIO_FUNC_SIO);
+    gpio_set_function(I2C_SCL, GPIO_FUNC_SIO);
+
+    gpio_set_dir(I2C_SDA, GPIO_IN);
+    gpio_set_dir(I2C_SCL, GPIO_OUT);
+
+    for (int i = 0; i < 9; ++i) {
+        gpio_put(I2C_SCL, 0);
+        sleep_us(5);
+        gpio_put(I2C_SCL, 1);
+        sleep_us(5);
+
+        if (gpio_get(I2C_SDA)) {
+            break;
+        }
+    }
+
+    // Generate a STOP condition manually
+    gpio_put(I2C_SCL, 1);
+    sleep_us(5);
+    gpio_set_dir(I2C_SDA, GPIO_OUT);
+    gpio_put(I2C_SDA, 0);
+    sleep_us(5);
+    gpio_put(I2C_SDA, 1);
+    sleep_us(5);
+
+    i2c_deinit(I2C_PORT);
+    i2c_init(I2C_PORT, constants::i2c_baudrate);
+
+    gpio_set_function(I2C_SDA, GPIO_FUNC_I2C);
+    gpio_set_function(I2C_SCL, GPIO_FUNC_I2C);
+}
+
 Altimeter::Altimeter() : alt(I2C_PORT) {}
 
 void Altimeter::begin() {
@@ -63,6 +97,7 @@ void Altimeter::read_altitude() {
         state::alt::failed_reads++;
         state::alt::status = INVALID;
         events.push(Event::alt_read_fail);
+        // bus_reset();
         if (state::alt::failed_reads >= constants::max_failed_reads) {
             state::alt::status = OFF;
             // to_mode(state::flight::fault);
@@ -95,6 +130,7 @@ void GPS::read_data() {
         state::gps::failed_reads++;
         state::gps::status = INVALID;
         events.push(Event::gps_read_fail);
+        // bus_reset();
         if (state::gps::failed_reads >= constants::max_failed_reads) {
             state::gps::status = OFF;
         }
@@ -124,6 +160,7 @@ void Accel::read_accel() {
         state::accel::failed_reads++;
         state::accel::status = INVALID;
         events.push(Event::accel_read_fail);
+        // bus_reset();
         if (state::accel::failed_reads >= constants::max_failed_reads) {
             state::accel::status = OFF;
         }
@@ -200,6 +237,7 @@ void IMU::failed_read() {
     state::imu::failed_reads++;
     state::imu::status = INVALID;
     events.push(Event::imu_read_fail);
+    // bus_reset();
     if (state::imu::failed_reads >= constants::max_failed_reads) {
         state::imu::status = OFF;
     }
@@ -228,6 +266,7 @@ void ADC::read_data() {
         state::adc::failed_reads++;
         state::adc::status = INVALID;
         events.push(Event::adc_read_fail);
+        // bus_reset();
         if (state::adc::failed_reads >= constants::max_failed_reads) {
             state::adc::status = OFF;
         }
