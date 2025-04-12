@@ -213,6 +213,7 @@ void AscentMode::transition() {
         if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
             filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             ssa.trigger(Chute::drogue);
+            sv.open();
             to_mode(state::flight::drogue_deployed);
         }
     }
@@ -229,7 +230,6 @@ void DrogueDeployedMode::transition() {
         main_cycle_count++;
     } else if (state::alt::altitude < constants::main_deploy_altitude) {
         ssa.trigger(Chute::main);
-        sv.open();
         to_mode(state::flight::main_deployed);
     }
 }

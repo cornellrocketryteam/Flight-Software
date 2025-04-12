@@ -97,19 +97,17 @@ int64_t MAV::time_close(alarm_id_t id, void *user_data) {
 
 void SV::open() {
     gpio_put(SV_SIGNAL, false);
-    // pwm_set_gpio_level(SV_SIGNAL, 0);
     state::actuator::sv_open = true;
     fram.store(Data::sv_state);
 }
 
 void SV::close() {
     gpio_put(SV_SIGNAL, true);
-    // pwm_set_gpio_level(SV_SIGNAL, 4095);
-    // add_alarm_in_ms(constants::sv_peak_threshold, hold_pwm, NULL, true);
     state::actuator::sv_open = false;
     fram.store(Data::sv_state);
 }
 
+// Unused
 int64_t SV::hold_pwm(alarm_id_t id, void *user_data) {
     pwm_set_gpio_level(SV_SIGNAL, 1707);
     return 0;
