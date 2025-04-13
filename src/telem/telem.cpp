@@ -202,17 +202,26 @@ void Umbilical::process_command() {
         if (0 <= state && state <= 5) {
             switch (state) {
             case 0:
+                state::flight::mode = state::flight::startup;
                 break;
             case 1:
+                state::flight::mode = state::flight::standby;
                 break;
             case 2:
+                state::flight::mode = state::flight::ascent;
                 break;
             case 3:
+                state::flight::mode = state::flight::drogue_deployed;
                 break;
             case 4:
+                state::flight::mode = state::flight::main_deployed;
                 break;
             case 5:
+                state::flight::mode = state::flight::fault;
                 break;
+            }
+            if (state::fram::init) {
+                fram.store(Data::old_mode);
             }
             events.push(Event::state_change_command_received);
         } else {
