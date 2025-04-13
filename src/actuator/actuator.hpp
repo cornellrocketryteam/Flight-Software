@@ -51,12 +51,11 @@ private:
 
 class SV {
 public:
-    void open();
+    void open(uint delay = 0);
     void close();
 
 private:
-    static inline uint sv_slice_num = pwm_gpio_to_slice_num(SV_SIGNAL);
-    static int64_t hold_pwm(alarm_id_t id, void *user_data);
+    static int64_t time_open(alarm_id_t id, void *user_data);
 };
 
 #endif // ACTUATOR_HPP

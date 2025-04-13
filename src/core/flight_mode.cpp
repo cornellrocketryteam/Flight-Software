@@ -151,6 +151,7 @@ void StandbyMode::transition() {
     // Transition to Ascent if launch was commanded through the umbilical
     if (state::umb::launch_commanded) {
         mav.open(constants::mav_open_time);
+        sv.open(constants::sv_open_delay_time);
         altimeter.update_ref_pressure(true);
         to_mode(state::flight::ascent);
     }
@@ -213,7 +214,6 @@ void AscentMode::transition() {
         if (filtered_alt[2] != -1 && filtered_alt[1] != -1 && filtered_alt[0] != -1 &&
             filtered_alt[2] > filtered_alt[1] && filtered_alt[1] > filtered_alt[0]) {
             ssa.trigger(Chute::drogue);
-            sv.open();
             to_mode(state::flight::drogue_deployed);
         }
     }

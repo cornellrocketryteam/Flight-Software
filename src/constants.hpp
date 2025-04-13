@@ -33,8 +33,8 @@ namespace constants {
     constexpr uint8_t cycle_time = 50;                           // ms
 
     // Parachute deployment parameters
-    constexpr float arming_altitude = 153;                       // meters
-    constexpr float main_deploy_altitude = 610;                  // meters
+    constexpr float arming_altitude = 229;                       // meters
+    constexpr float main_deploy_altitude = 457;                  // meters
     constexpr uint8_t ematch_threshold = 200;                    // ms
     constexpr uint8_t alt_sample_interval = 10;
     constexpr uint16_t main_deploy_wait = 160;                   // cycles
@@ -53,7 +53,7 @@ namespace constants {
 
     // Actuator parameters
     constexpr uint mav_open_time = 7880;                         // ms
-    constexpr uint8_t sv_peak_threshold = 150;                   // ms
+    constexpr uint sv_open_delay_time = 60000;                   // ms
     constexpr uint16_t buzz_delay = 200;                         // ms
 
     // SD logging limits
