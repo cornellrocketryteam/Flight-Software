@@ -48,29 +48,79 @@ protected:
 
 class RFM : Telem {
 public:
+    /**
+     * Transmits a packet over radio
+     */
     void transmit();
 
 private:
+    /**
+     * Buffer for the radio packet
+     */
     uint8_t packet[constants::rfm_packet_size];
+
+    /**
+     * The syncword used in the radio packet
+     */
     uint32_t sync_word = constants::sync_word;
 };
 
 class Umbilical : Telem {
 public:
+    /**
+     * Transmits a packet over the umbilical
+     */
     void transmit();
+
+    /**
+     * Checks the umbilical to see if any commands were received
+     */
     void check_command();
 
+    /**
+     * Checks the connection of the umbilical and updates
+     * the connection locked state if thresholds are reached
+     * @return True on a connection lock change, False otherwise
+     */
     bool connection_changed();
 
 private:
+    /**
+     * If a command was received, perform the relevant action
+     */
     void process_command();
+
+    /**
+     * Buffer for the umbilical packet
+     */
     uint8_t packet[constants::umb_packet_size];
 
+    /**
+     * Whether we have received the command
+     * start flag but not the command end flag
+     */
     bool receiving = false;
-    uint8_t command_index = 0;
+
+    /**
+     * The buffer to which received commands are written
+     */
     char command_buffer[64];
 
+    /**
+     * Tracks the current location of received text in command_buffer
+     */
+    uint8_t command_index = 0;
+
+    /**
+     * The number of successful consecutive
+     * umbilical connection attempts (1 per cycle)
+     */
     uint16_t successful_connections = 0;
+
+    /**
+     * The number of failed consecutive
+     * umbilical connection attempts (1 per cycle)
+     */
     uint16_t failed_connections = 0;
 };
 

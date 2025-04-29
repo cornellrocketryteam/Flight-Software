@@ -46,6 +46,9 @@ public:
      */
     void store(Data data);
 
+    /**
+     * Resets all data in FRAM
+     */
     void reset_data();
 
 private:
@@ -54,6 +57,9 @@ private:
      */
     MB85RS fram;
 
+    /**
+     * Data that will be written to FRAM upon a reset
+     */
     uint8_t clear[11] = {0};
 };
 
