@@ -113,7 +113,8 @@ void SV::close() {
 }
 
 int64_t SV::time_open(alarm_id_t id, void *user_data) {
-    state::actuator::sv_open = true;
     gpio_put(SV_SIGNAL, false);
+    state::actuator::sv_open = true;
+    fram.store(Data::sv_state);
     return 0;
 }
