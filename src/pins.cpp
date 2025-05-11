@@ -28,14 +28,14 @@ void init_pins() {
     gpio_init(SSA_MAIN);
     gpio_init(FRAM_CS);
     gpio_init(SV_SIGNAL);
-    gpio_init(BLIMS_ENABLE_PIN);
+    gpio_init(BLIMS_ENABLE);
 
     gpio_set_dir(ARM_IN, GPIO_IN);
     gpio_set_dir(SSA_DROGUE, GPIO_OUT);
     gpio_set_dir(SSA_MAIN, GPIO_OUT);
     gpio_set_dir(FRAM_CS, GPIO_OUT);
     gpio_set_dir(SV_SIGNAL, GPIO_OUT);
-    gpio_set_dir(BLIMS_ENABLE_PIN, GPIO_OUT);
+    gpio_set_dir(BLIMS_ENABLE, GPIO_OUT);
 
     // Init I2C bus
     i2c_init(I2C_PORT, constants::i2c_baudrate);
@@ -65,7 +65,7 @@ void init_pins() {
     // Init PWM pins
     gpio_set_function(ARM_OUT, GPIO_FUNC_PWM);
     gpio_set_function(MAV_SIGNAL, GPIO_FUNC_PWM);
-    gpio_set_function(BLIMS_PWM_PIN, GPIO_FUNC_PWM);
+    gpio_set_function(BLIMS_SIGNAL, GPIO_FUNC_PWM);
 
     const uint buzzer_slice_num = pwm_gpio_to_slice_num(ARM_OUT);
     const uint mav_slice_num = pwm_gpio_to_slice_num(MAV_SIGNAL);
