@@ -83,5 +83,7 @@ void Flight::execute() {
     logf("MAV: %d%s", state::actuator::mav_open, "                  ");
     logf("SV: %d\n\n", state::actuator::sv_open);
 
+#ifdef USE_BLIMS
     logf("BLiMS: %f\n\n", state::blims::motor_position);
+#endif
 }

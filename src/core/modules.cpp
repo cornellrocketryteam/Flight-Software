@@ -24,4 +24,6 @@ SV sv;
 SSA ssa;
 Buzzer buzzer;
 
+#ifdef USE_BLIMS
 BLIMS blims_obj;
+#endif

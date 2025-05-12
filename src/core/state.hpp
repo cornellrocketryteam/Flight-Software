@@ -136,6 +136,7 @@ namespace state {
         extern bool sv_open;
 
     } // namespace actuator
+#ifdef USE_BLIMS
     namespace blims {
         extern BLIMSMode blims_mode;
         extern float motor_position;
@@ -144,7 +145,7 @@ namespace state {
         extern float target_long;
 
     } // namespace blims
-
+#endif
 }; // namespace state
 
 #endif // STATE_HPP

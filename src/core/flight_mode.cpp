@@ -83,7 +83,9 @@ void StartupMode::execute() {
     }
     rfm.transmit();
 
+#ifdef USE_BLIMS
     blims_obj.begin(state::blims::blims_mode, BLIMS_SIGNAL, BLIMS_ENABLE, state::blims::target_lat, state::blims::target_long);
+#endif
 
     // Check the umbilical connection
     if (umb.connection_changed()) {
@@ -249,8 +251,8 @@ void MainDeployedMode::execute() {
 
     FlightMode::execute();
 
+#ifdef USE_BLIMS
     MainDeployedMode::to_blims_data = {
-                                        // in future: let's send gps struct
         .lon = state::gps::data.lon,
         .lat = state::gps::data.lat,
         .hAcc = state::gps::data.hAcc,
@@ -262,16 +264,11 @@ void MainDeployedMode::execute() {
         .headMot = state::gps::data.headMot,
         .sAcc = state::gps::data.sAcc,
         .headAcc = state::gps::data.headAcc
-
     };
-    MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);
-    // pointers -> keeps data same size
-    // takes two params = *to_blimsdata, *from_blims_data
-    // function returns void
-    // alter motor position by using address passeed in within blims module
 
-    // save motor position in fsw
+    MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);
     state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
+#endif
 }
 
 // Fault Mode

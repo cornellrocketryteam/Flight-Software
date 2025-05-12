@@ -69,7 +69,9 @@ void RFM::transmit() {
     memcpy(&packet[95], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[99], &state::adc::temp_rtd, sizeof(float));
 
+#ifdef USE_BLIMS
     memcpy(&packet[103], &state::blims::motor_position, sizeof(float));
+#endif
 
     uart_write_blocking(UART_PORT, (const uint8_t *)packet, constants::rfm_packet_size);
 }
@@ -159,11 +161,15 @@ void Umbilical::process_command() {
         watchdog_reboot(0, 0, 0);
 
     } else if (strncmp(command_buffer, command::change_target_lat, 2) == 0) {
+#ifdef USE_BLIMS
         state::blims::target_lat = atof(command_buffer + 2);
+#endif
         events.push(Event::state_change_command_received);
 
     } else if (strncmp(command_buffer, command::change_target_long, 2) == 0) {
+#ifdef USE_BLIMS
         state::blims::target_long = atof(command_buffer + 2);
+#endif
         events.push(Event::state_change_command_received);
 
     } else if (strncmp(command_buffer, command::change_ref_pressure, 2) == 0) {

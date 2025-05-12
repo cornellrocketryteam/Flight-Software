@@ -9,11 +9,14 @@
 #define MODULES_HPP
 
 #include "actuator.hpp"
-#include "blims.hpp"
 #include "fram.hpp"
 #include "sd.hpp"
 #include "sensor.hpp"
 #include "telem.hpp"
+
+#ifdef USE_BLIMS
+#include "blims.hpp"
+#endif
 
 // Sensors
 extern Altimeter altimeter;
@@ -36,6 +39,8 @@ extern SV sv;
 extern SSA ssa;
 extern Buzzer buzzer;
 
+#ifdef USE_BLIMS
 extern BLIMS blims_obj;
+#endif
 
 #endif // MODULES_HPP

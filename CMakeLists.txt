@@ -39,6 +39,9 @@ else()
     set(EXEC_NAME "fsw")
 endif()
 
+# Whether to include BLiMS functionality
+add_definitions(-DUSE_BLIMS)
+
 # Set custom USB product descriptor
 add_definitions(-DUSBD_PRODUCT="FSW Pico")
 

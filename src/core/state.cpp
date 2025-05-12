@@ -123,6 +123,7 @@ namespace state {
         bool sv_open = true;
 
     } // namespace actuator
+#ifdef USE_BLIMS
     namespace blims {
         BLIMSMode blims_mode = MVP_Flight;
         float motor_position = -1;
@@ -131,4 +132,5 @@ namespace state {
         float target_long = -1;
 
     } // namespace blims
+#endif
 }; // namespace state

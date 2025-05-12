@@ -73,7 +73,11 @@ void SD::log() {
 
          + std::to_string(state::fram::init) + ","
 
-         + std::to_string(state::blims::motor_position) + ",";
+#ifdef USE_BLIMS
+         + std::to_string(state::blims::motor_position) + ","
+#endif
+         ;
+
 
     // clang-format on
 
