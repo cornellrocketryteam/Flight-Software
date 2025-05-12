@@ -78,7 +78,6 @@ void SD::log() {
 #endif
          ;
 
-
     // clang-format on
 
     if (!events.is_empty()) {
