@@ -263,7 +263,9 @@ void MainDeployedMode::execute() {
         .gSpeed = state::gps::data.gSpeed,
         .headMot = state::gps::data.headMot,
         .sAcc = state::gps::data.sAcc,
-        .headAcc = state::gps::data.headAcc
+        .headAcc = state::gps::data.headAcc,
+        .fixType = state::gps::data.fixType,
+        .gps_state = state::gps::status == VALID
     };
 
     MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);

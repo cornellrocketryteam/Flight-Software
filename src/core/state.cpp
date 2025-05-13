@@ -125,11 +125,11 @@ namespace state {
     } // namespace actuator
 #ifdef USE_BLIMS
     namespace blims {
-        BLIMSMode blims_mode = MVP_Flight;
+        BLIMSMode blims_mode = LV;
         float motor_position = -1;
 
-        float target_lat = -1;
-        float target_long = -1;
+        float target_lat = 42.446610;
+        float target_long = -76.461304;
 
     } // namespace blims
 #endif
