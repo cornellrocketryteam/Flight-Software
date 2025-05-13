@@ -43,8 +43,8 @@ void Flight::execute() {
     logf("Temperature (C): %.3f\n\n", state::alt::temperature);
 
     logf("GPS: %d, Message: %d ---- ", state::gps::status, state::gps::fresh);
-    logf("Latitude: %f\n%s", state::gps::data.lat, SPACER);
-    logf("Longitude: %f\n%s", state::gps::data.lon, SPACER);
+    logf("Latitude: %d\n%s", state::gps::data.lat, SPACER);
+    logf("Longitude: %d\n%s", state::gps::data.lon, SPACER);
     logf("Unix time: %d\n%s", state::gps::unix_time, SPACER);
     logf("Num satellites: %d\n\n", state::gps::data.numSV);
 
