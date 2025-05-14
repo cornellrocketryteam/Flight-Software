@@ -61,6 +61,7 @@ namespace state {
         extern uint8_t failed_reads;
 
         extern float altitude;
+        extern float pressure;
         extern float ref_pressure;
         extern float temperature;
     } // namespace alt

@@ -37,6 +37,7 @@ void SD::log() {
 
          + std::to_string(state::alt::status) + ","
          + std::to_string(state::alt::altitude) + ","
+         + std::to_string(state::alt::pressure) + ","
          + std::to_string(state::alt::temperature) + ","
 
          + std::to_string(state::gps::status) + ","

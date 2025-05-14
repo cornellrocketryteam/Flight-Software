@@ -140,7 +140,6 @@ void FRAM::store(Data data) {
         }
         break;
     case Data::ref_pressure:
-        printf("STORED REF PRESSURE: %f\n", state::alt::ref_pressure);
         if (fram.write_bytes(static_cast<uint8_t>(Data::ref_pressure), reinterpret_cast<uint8_t *>(&state::alt::ref_pressure), 4)) {
             return;
         }

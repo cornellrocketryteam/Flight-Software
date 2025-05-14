@@ -33,7 +33,6 @@ public:
 
 private:
     BMP388 alt;
-    float pressure;
     const float alpha = 0.1;
 };
 

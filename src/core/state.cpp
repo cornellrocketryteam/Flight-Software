@@ -48,6 +48,7 @@ namespace state {
         uint8_t failed_reads = 0;
 
         float altitude = -1;
+        float pressure = -1;
         float ref_pressure = -1;
         float temperature = -1;
     } // namespace alt

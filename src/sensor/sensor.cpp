@@ -35,8 +35,8 @@ void Altimeter::begin() {
 }
 
 void Altimeter::update_ref_pressure(bool store_in_fram) {
-    if (alt.read_pressure(&pressure)) {
-        state::alt::ref_pressure = alpha * pressure + (1 - alpha) * state::alt::ref_pressure;
+    if (alt.read_pressure(&state::alt::pressure)) {
+        state::alt::ref_pressure = alpha * state::alt::pressure + (1 - alpha) * state::alt::ref_pressure;
         if (state::alt::status == INVALID) {
             state::alt::status = VALID;
         }
