@@ -81,7 +81,7 @@ void FRAM::load(Data data) {
     case Data::ref_pressure: {
         uint8_t ref_pressure[4];
         if (fram.read_bytes(static_cast<uint8_t>(Data::ref_pressure), ref_pressure, 4)) {
-            state::alt::ref_pressure = (ref_pressure[3] << 24) | (ref_pressure[2] << 16) | (ref_pressure[1] << 8) | ref_pressure[0];
+            std::memcpy(&state::alt::ref_pressure, ref_pressure, sizeof(float));
             return;
         }
         break;
@@ -140,6 +140,7 @@ void FRAM::store(Data data) {
         }
         break;
     case Data::ref_pressure:
+        printf("STORED REF PRESSURE: %f\n", state::alt::ref_pressure);
         if (fram.write_bytes(static_cast<uint8_t>(Data::ref_pressure), reinterpret_cast<uint8_t *>(&state::alt::ref_pressure), 4)) {
             return;
         }
