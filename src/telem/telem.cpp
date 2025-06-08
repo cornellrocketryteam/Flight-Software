@@ -87,6 +87,7 @@ void Umbilical::transmit() {
     memcpy(&packet[14], &state::adc::pressure_pt3, sizeof(float));
     memcpy(&packet[18], &state::adc::pressure_pt4, sizeof(float));
     memcpy(&packet[22], &state::adc::temp_rtd, sizeof(float));
+    memcpy(&packet[26], &state::alt::altitude, sizeof(float));
 
     tud_cdc_write(packet, constants::umb_packet_size);
     tud_cdc_write("\n", 1);
