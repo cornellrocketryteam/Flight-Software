@@ -102,6 +102,7 @@ void FRAM::load(Data data) {
         }
         break;
     }
+#ifdef USE_BLIMS
     case Data::blims_target_lat: {
         uint8_t blims_target_lat[4];
         if (fram.read_bytes(static_cast<uint8_t>(Data::blims_target_lat), blims_target_lat, 4)) {
@@ -118,6 +119,7 @@ void FRAM::load(Data data) {
         }
         break;
     }
+#endif
     case Data::pt_index: {
         uint8_t pt_index[2];
         if (fram.read_bytes(static_cast<uint8_t>(Data::pt_index), pt_index, 2)) {
@@ -170,6 +172,7 @@ void FRAM::store(Data data) {
             return;
         }
         break;
+#ifdef USE_BLIMS
     case Data::blims_target_lat:
         if (fram.write_bytes(static_cast<uint8_t>(Data::blims_target_lat), reinterpret_cast<uint8_t *>(&state::blims::target_lat), 4)) {
             return;
@@ -180,6 +183,7 @@ void FRAM::store(Data data) {
             return;
         }
         break;
+#endif
     case Data::pt: {
         // Write PT3 and PT4 values
         if (!fram.write_bytes(state::fram::pt_index, reinterpret_cast<uint8_t *>(&state::adc::pressure_pt3), 4)) {

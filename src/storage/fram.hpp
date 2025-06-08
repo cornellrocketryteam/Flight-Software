@@ -18,8 +18,10 @@ enum class Data : uint8_t {
     ref_pressure = 5,
     mav_state = 9,
     sv_state = 10,
+#ifdef USE_BLIMS
     blims_target_lat = 11,
     blims_target_long = 15,
+#endif
     pt_index = 19,
     pt = 21
 };
