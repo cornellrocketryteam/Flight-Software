@@ -163,12 +163,14 @@ void Umbilical::process_command() {
     } else if (strncmp(command_buffer, command::change_target_lat, 2) == 0) {
 #ifdef USE_BLIMS
         state::blims::target_lat = atof(command_buffer + 2);
+        fram.store(Data::blims_target_lat);
 #endif
         events.push(Event::state_change_command_received);
 
     } else if (strncmp(command_buffer, command::change_target_long, 2) == 0) {
 #ifdef USE_BLIMS
         state::blims::target_long = atof(command_buffer + 2);
+        fram.store(Data::blims_target_long);
 #endif
         events.push(Event::state_change_command_received);
 

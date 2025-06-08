@@ -102,6 +102,22 @@ void FRAM::load(Data data) {
         }
         break;
     }
+    case Data::blims_target_lat: {
+        uint8_t blims_target_lat[4];
+        if (fram.read_bytes(static_cast<uint8_t>(Data::blims_target_lat), blims_target_lat, 4)) {
+            std::memcpy(&state::blims::target_lat, blims_target_lat, sizeof(float));
+            return;
+        }
+        break;
+    }
+    case Data::blims_target_long: {
+        uint8_t blims_target_long[4];
+        if (fram.read_bytes(static_cast<uint8_t>(Data::blims_target_lat), blims_target_long, 4)) {
+            std::memcpy(&state::blims::target_long, blims_target_long, sizeof(float));
+            return;
+        }
+        break;
+    }
     case Data::pt_index: {
         uint8_t pt_index[2];
         if (fram.read_bytes(static_cast<uint8_t>(Data::pt_index), pt_index, 2)) {
@@ -151,6 +167,16 @@ void FRAM::store(Data data) {
         break;
     case Data::sv_state:
         if (fram.write_bytes(static_cast<uint8_t>(Data::sv_state), reinterpret_cast<uint8_t *>(&state::actuator::sv_open), 1)) {
+            return;
+        }
+        break;
+    case Data::blims_target_lat:
+        if (fram.write_bytes(static_cast<uint8_t>(Data::blims_target_lat), reinterpret_cast<uint8_t *>(&state::blims::target_lat), 4)) {
+            return;
+        }
+        break;
+    case Data::blims_target_long:
+        if (fram.write_bytes(static_cast<uint8_t>(Data::blims_target_long), reinterpret_cast<uint8_t *>(&state::blims::target_long), 4)) {
             return;
         }
         break;
