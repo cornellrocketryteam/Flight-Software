@@ -132,6 +132,8 @@ namespace state {
         float target_lat = 42.446610;
         float target_long = -76.461304;
 
+        BLIMSDataOut from_blims_data = {0};
+
     } // namespace blims
 #endif
 }; // namespace state

@@ -268,8 +268,8 @@ void MainDeployedMode::execute() {
         .gps_state = state::gps::status == VALID
     };
 
-    MainDeployedMode::from_blims_data = blims_obj.execute(&to_blims_data);
-    state::blims::motor_position = MainDeployedMode::from_blims_data.motor_position;
+    state::blims::from_blims_data = blims_obj.execute(&to_blims_data);
+    state::blims::motor_position = state::blims::from_blims_data.motor_position;
 #endif
 }
 

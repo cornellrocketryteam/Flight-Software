@@ -177,7 +177,6 @@ private:
 #ifdef USE_BLIMS
     // Data to send to the blims module
     BLIMSDataIn to_blims_data = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-    BLIMSDataOut from_blims_data = {0}; // will fix to
 #endif
 };
 

@@ -76,6 +76,10 @@ void SD::log() {
 
 #ifdef USE_BLIMS
          + std::to_string(state::blims::motor_position) + ","
+         + std::to_string(state::gps::data.gSpeed) + ","
+         + std::to_string(state::gps::data.fixType) + ","
+         + std::to_string(state::blims::from_blims_data.pid_P) + ","
+         + std::to_string(state::blims::from_blims_data.pid_I) + ","
 #endif
          ;
 

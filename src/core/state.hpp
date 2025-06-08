@@ -145,6 +145,8 @@ namespace state {
         extern float target_lat;
         extern float target_long;
 
+        extern BLIMSDataOut from_blims_data;
+
     } // namespace blims
 #endif
 }; // namespace state
