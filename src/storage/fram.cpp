@@ -117,7 +117,7 @@ void FRAM::load(Data data) {
     }
     case Data::blims_target_long: {
         uint8_t blims_target_long[4];
-        if (fram.read_bytes(static_cast<uint8_t>(Data::blims_target_lat), blims_target_long, 4)) {
+        if (fram.read_bytes(static_cast<uint8_t>(Data::blims_target_long), blims_target_long, 4)) {
             std::memcpy(&state::blims::target_long, blims_target_long, sizeof(float));
             return;
         }
