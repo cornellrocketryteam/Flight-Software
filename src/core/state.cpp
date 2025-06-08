@@ -129,8 +129,8 @@ namespace state {
         BLIMSMode blims_mode = LV;
         float motor_position = -1;
 
-        float target_lat = 42.446610;
-        float target_long = -76.461304;
+        float target_lat = -1;
+        float target_long = -1;
 
         BLIMSDataOut from_blims_data = {0};
 

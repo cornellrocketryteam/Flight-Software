@@ -85,5 +85,8 @@ void Flight::execute() {
 
 #ifdef USE_BLIMS
     logf("BLiMS: %f\n\n", state::blims::motor_position);
+
+    logf("Target Lat: %f\n", state::blims::target_lat);
+    logf("Target Long: %f\n", state::blims::target_long);
 #endif
 }

@@ -23,6 +23,10 @@ void FRAM::begin() {
         load(Data::watchdog_boot_count);
         load(Data::mav_state);
         load(Data::sv_state);
+#ifdef USE_BLIMS
+        load(Data::blims_target_lat);
+        load(Data::blims_target_long);
+#endif
         if (state::flight::old_mode > 1) {
             load(Data::ref_pressure);
         }
