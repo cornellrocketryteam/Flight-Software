@@ -83,6 +83,10 @@ void StartupMode::execute() {
     }
     rfm.transmit();
 
+#ifdef USE_BLIMS
+    blims_obj.begin(state::blims::blims_mode, BLIMS_SIGNAL, BLIMS_ENABLE);
+#endif
+
     // Check the umbilical connection
     if (umb.connection_changed()) {
         if (state::umb::connected) {
@@ -152,9 +156,6 @@ void StandbyMode::transition() {
         sv.open(constants::sv_open_delay_time);
         altimeter.update_ref_pressure(true);
         to_mode(state::flight::ascent);
-#ifdef USE_BLIMS
-        blims_obj.begin(state::blims::blims_mode, BLIMS_SIGNAL, BLIMS_ENABLE, state::blims::target_lat, state::blims::target_long);
-#endif
     }
     // Transition to Startup if the arming key was turned off
     else if (!state::flight::key_armed) {
