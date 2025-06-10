@@ -11,7 +11,7 @@
 #include "tusb.h"
 #include <cstdio>
 
-#define BYTES_TO_CLEAR 20
+#define BYTES_TO_CLEAR 30
 
 MB85RS fram(SPI_PORT, FRAM_CS);
 
