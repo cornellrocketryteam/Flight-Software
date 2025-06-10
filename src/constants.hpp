@@ -52,7 +52,7 @@ namespace constants {
     constexpr uint8_t channel_rtd = 1;
 
     // Actuator parameters
-    constexpr uint mav_open_time = 7880;                         // ms
+    constexpr uint mav_open_time = 5300;                         // ms
     constexpr uint sv_open_delay_time = 60000;                   // ms
     constexpr uint16_t buzz_delay = 200;                         // ms
 
