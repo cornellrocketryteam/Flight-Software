@@ -59,6 +59,9 @@ void StartupMode::execute() {
         state::flight::key_armed = true;
     }
 
+#ifdef USE_BLIMS
+    blims_obj.begin(state::blims::blims_mode, BLIMS_SIGNAL, BLIMS_ENABLE);
+#endif
     // Attempt to initialize all modules
     if (state::alt::status == OFF) {
         altimeter.begin();
@@ -82,10 +85,6 @@ void StartupMode::execute() {
         sd.begin();
     }
     rfm.transmit();
-
-#ifdef USE_BLIMS
-    blims_obj.begin(state::blims::blims_mode, BLIMS_SIGNAL, BLIMS_ENABLE);
-#endif
 
     // Check the umbilical connection
     if (umb.connection_changed()) {

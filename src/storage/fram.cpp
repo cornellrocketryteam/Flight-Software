@@ -25,7 +25,13 @@ void FRAM::begin() {
         load(Data::sv_state);
 #ifdef USE_BLIMS
         load(Data::blims_target_lat);
+        if (state::blims::target_lat != -1) {
+            blims_obj.set_target_lat(state::blims::target_lat);
+        }
         load(Data::blims_target_long);
+        if (state::blims::target_long != -1) {
+            blims_obj.set_target_lon(state::blims::target_long);
+        }
 #endif
         if (state::flight::old_mode > 1) {
             load(Data::ref_pressure);
