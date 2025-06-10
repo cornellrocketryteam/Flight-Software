@@ -80,6 +80,8 @@ void SD::log() {
          + std::to_string(state::gps::data.fixType) + ","
          + std::to_string(state::blims::from_blims_data.pid_P) + ","
          + std::to_string(state::blims::from_blims_data.pid_I) + ","
+         + std::to_string(state::blims::from_blims_data.bearing) + ","
+         + std::to_string(state::gps::data.headMot) + ","
 #endif
          ;
 
