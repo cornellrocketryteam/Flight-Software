@@ -228,9 +228,9 @@ void ADC::read_data() {
         state::adc::failed_reads++;
         state::adc::status = INVALID;
         events.push(Event::adc_read_fail);
-        if (state::adc::failed_reads >= constants::max_failed_reads) {
-            state::adc::status = OFF;
-        }
+        // if (state::adc::failed_reads >= constants::max_failed_reads) {
+        //     state::adc::status = OFF;
+        // }
     }
 }
 
